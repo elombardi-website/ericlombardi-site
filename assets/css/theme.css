@@ -54,7 +54,7 @@
   --display-tracking:-.01em;
 
   /* Type scale (fluid, rem). Targets from the briefs at default settings. */
-  --fs-display:clamp(2.75rem,1.5rem + 5.4vw,6.25rem);   /* 44 → 100 */
+  --fs-display:clamp(2.75rem,1.5rem + 5vw,5.5rem);      /* 44 → 88 */
   --fs-h1:clamp(2.25rem,1.6rem + 2.6vw,4rem);            /* 36 → 64: inner-page title */
   --fs-h2:clamp(1.75rem,1.45rem + 1.2vw,2.625rem);      /* 28 → 42: significant section heading */
   --fs-feature:clamp(2.25rem,1.75rem + 1.6vw,2.75rem);  /* 36 → 44: featured essay */
@@ -88,7 +88,9 @@
   /* Layout */
   --content-max:80rem;
   --hero-max:90rem;                                     /* the opening may run wider */
-  --reading-max:65ch;
+  --measure:36rem;                                      /* one text measure for ledes, prose, section intros */
+  --reading-max:var(--measure);
+  --col:calc((var(--content-max) - 2 * var(--gutter)) / 12);  /* 12-column grid inside the content width */
   --gutter:clamp(1.25rem,.6rem + 3.5vw,5rem);           /* 20 → 80 */
   --header-h:clamp(4.25rem,4rem + 1vw,5.25rem);         /* 68 → 84 */
   --radius-subtle:.125rem;

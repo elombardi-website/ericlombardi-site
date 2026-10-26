@@ -643,8 +643,8 @@ def article_entry(a, compact=False):
     src = a["cat"] if a["cat"] else f'<span class="cat">{esc(a["source"])}</span>'
     meta = f'<div class="meta">{src}<span>{fmt_date(a["d"])}</span></div>'
     summ = f'<p>{esc(a["summary"])}</p>' if a.get("summary") else ""
-    comp = f' <a class="more" href="{a["companion"][1]}">{esc(a["companion"][0])} &rarr;</a>' if a.get("companion") else ""
-    body = f'<div><h3 class="title-editorial"><a href="{esc(a["url"])}"{ext}>{esc(a["title"])}</a></h3>{summ}<a class="more" href="{esc(a["url"])}"{ext}>{esc(a["action"])}{" &#8599;" if a["external"] else " &rarr;"}</a>{comp}</div>'
+    comp = f'<a class="more" href="{a["companion"][1]}">{esc(a["companion"][0])} &rarr;</a>' if a.get("companion") else ""
+    body = f'<div><h3 class="title-editorial"><a href="{esc(a["url"])}"{ext}>{esc(a["title"])}</a></h3>{summ}<div class="entry-actions"><a class="more" href="{esc(a["url"])}"{ext}>{esc(a["action"])}{" &#8599;" if a["external"] else " &rarr;"}</a>{comp}</div></div>'
     return f'<li data-filter-item="writing" data-values="{"external" if a["external"] else "local"}"><article class="{cls}">{meta}{body}</article></li>'
 
 
@@ -1024,7 +1024,7 @@ def build_about():
     facts = """<dl class="facts"><div><dt>Based in</dt><dd>Toronto, Ontario</dd></div><div><dt>Education</dt><dd>BASc, Nanotechnology Engineering, University of Waterloo</dd></div><div><dt>Work</dt><dd>Consultant, financial services and technology</dd></div><div><dt>Civic</dt><dd>Founder and former president, More Neighbours Toronto (2021 to 2026). Former chair, Build Toronto (2025 to 2026). Ontario Liberal leadership candidate, 2026.</dd></div></dl>"""
     body = f"""{page_hero('About', esc(meta.get('headline', 'About')), esc(meta.get('lede', '')), cta_actions(), image=meta.get('image'), alt=NAME)}
 <section class="section tight"><div class="wrap">{facts}<div class="prose">{md_to_html(md)}</div>
-<p style="margin-top:2rem"><a class="more" href="{u('/assets/img/eric-headshot.jpg')}" download>Download headshot &darr;</a> &nbsp; <a class="more" href="{u('/media/#media-kit')}">Media kit &rarr;</a></p></div></section>"""
+<div class="entry-actions" style="margin-top:2rem"><a class="more" href="{u('/assets/img/eric-headshot.jpg')}" download>Download headshot &darr;</a><a class="more" href="{u('/media/#media-kit')}">Media kit &rarr;</a></div></div></section>"""
     render(T("About Eric"), SITE["description"], body, path="/about/", current="", image=meta.get("image"), kind="profile", reading=True)
 
 

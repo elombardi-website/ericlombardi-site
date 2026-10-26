@@ -1,5 +1,50 @@
 # Change log
 
+## Revision 3.1 (26 October 2026): alignment linter and site-wide consistency
+
+Eric marked alignment failures on the live site. The fastest way to evaluate this site-wide is
+not more screenshots but a linter, so this pass adds `audit.js`: it loads every page in real
+Chrome at chosen widths, reads the grid geometry the layout actually defines (content edges,
+every grid column start and end, every grid item's content box, bordered components' inner
+edges), then flags any heading, paragraph, label, control or list row whose left edge sits on
+none of those axes, any text measure whose width is neither the shared measure nor its column,
+any sibling grid areas whose headings, descriptions or actions do not share rows, and, on the
+home page, whether the hero copy and portrait sit on the header's own left and right edges.
+It writes a JSON finding list and an annotated screenshot per page and width (red, purple and
+blue boxes are findings; faint orange lines are the axes), plus `index.html`. Run:
+
+```bash
+cd "/Users/ericlombardi/HSR Proposal/PersonalSite" && node audit.js build/audit http://localhost:8788 1440,1728,390
+```
+
+### Root causes found and fixed
+
+1. **Hero copy drifted right of the header on wide windows.** The hero's left padding was
+   computed with a percentage, which browsers resolve against the parent, so above 1440 px the
+   text column moved right of the content axis (by 144 px at 1728). Captures at 1440 and below
+   never showed it. The hero is now an explicit full-width 12-column grid: the copy spans the
+   first seven content columns, the portrait the last five, both on the same axes as the header.
+   Measured after: header left and hero left equal at 1024, 1280, 1440, 1728 and 1920, and the
+   portrait's right edge equals the header's right edge (the Support button) at every width.
+   This replaces the earlier deliberate bleed of the image past the content grid.
+2. **Titles wrapped early.** `text-wrap: balance` was applied to every heading, so featured and
+   list titles broke lines to equalize them rather than filling the column. Balance now applies
+   only to the display statement and page titles; other headings wrap normally.
+3. **Text measures disagreed.** Ledes, section intros, prose and card paragraphs used different
+   maximum widths (34em, 46em, 65ch, 60ch), so consecutive text blocks ended at different
+   right edges. One token, `--measure: 36rem`, now governs all of them.
+4. **Equal-height columns did not share an action row.** Divided columns (contact, media kit,
+   consulting steps) now stretch to the row and push their action to a common bottom edge.
+5. **Inline link pairs** ("Download headshot / Media kit", "Read at Toronto Star / Companion
+   note") were run together in a paragraph; they are now a defined action row.
+6. **Display statement** reduced from a 100 px cap to the brief's 88 px lower bound so
+   "A future / worth building." holds two lines in the narrower text column at every width.
+
+### Result
+
+Linter: 0 findings on all 11 pages at 1440, 1728 and 390 px, no overflow, Canela delivered
+everywhere. Overlays for the final run are in `build/audit-3/`.
+
 ## Revision 3 (26 October 2026)
 
 Applies "Eric Lombardi — revision 3: alignment audit, unified writing, and a more consistent
