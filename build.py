@@ -478,8 +478,9 @@ def label(text, rule=False):
 def page_hero(kicker, headline, lede="", actions="", image=None, alt=""):
     lede_html = f'<p class="lede">{lede}</p>' if lede else ""
     if image:
+        media_html = portrait(image, alt) if is_cutout(image) else f'<img src="{u(image)}" alt="{esc(alt)}" width="1600" height="1200">'
         return (f'<section class="page-hero"><div class="wrap"><div class="inner with-image"><div>{label(esc(kicker), rule=True)}<h1>{headline}</h1>{lede_html}{actions}</div>'
-                f'<img src="{u(image)}" alt="{esc(alt)}" width="1600" height="1200"></div></div></section>')
+                f'{media_html}</div></div></section>')
     return (f'<section class="page-hero"><div class="wrap"><div class="inner"><div>{label(esc(kicker), rule=True)}<h1>{headline}</h1></div>'
             f'<div class="side">{lede_html}{actions}</div></div></div></section>')
 
@@ -721,7 +722,7 @@ def build_home(posts, media, events, policy_items):
     <div class="actions"><a class="btn primary" href="{u('/consulting/')}">Work with me</a><a class="btn secondary" href="{u('/writing/')}">Read my writing</a></div>
     <p class="record-line">{record}</p>
   </div>
-  <figure class="hero-photo"><img src="{u('/assets/img/eric-hero.jpg')}" alt="{esc(NAME)}" width="1600" height="900" fetchpriority="high">{DECAL_PORTAL}</figure>
+  {portrait(img_path('eric-hero'), NAME, cls='hero-photo portrait-stage', attrs='fetchpriority="high"')}
 </div></section>
 
 {signup_section()}
@@ -765,7 +766,7 @@ def build_consulting():
     ptext = "".join(f"<p>{inline(p)}</p>" for p in partner["text"])
     pserv = "".join(f'<span class="tag">{esc(s)}</span>' for s in partner["services"])
     sectors = "".join(f'<span class="tag">{esc(s)}</span>' for s in c["sectors"])
-    body = f"""{page_hero(c['kicker'], esc(c['headline']), esc(c['lede']), cta_actions('Consulting enquiry'), image='/assets/img/eric-consulting.jpg', alt=NAME)}
+    body = f"""{page_hero(c['kicker'], esc(c['headline']), esc(c['lede']), cta_actions('Consulting enquiry'), image=img_path('eric-consulting'), alt=NAME)}
 {intro_html}
 {services}
 <section class="section tight"><div class="wrap">{label("Sectors")}<div class="tags">{sectors}</div></div></section>
@@ -786,7 +787,7 @@ def build_consulting():
            "provider": {"@id": PERSON_ID}, "areaServed": ["Canada", "United States"], "description": desc,
            "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Services", "itemListElement": [
                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": s["title"], "description": s["summary"]}} for s in c["services"]]}}]
-    render(T("Consulting in financial services and technology"), desc, body, path="/consulting/", current="/consulting/", image="/assets/img/eric-consulting.jpg", jsonld=ld)
+    render(T("Consulting in financial services and technology"), desc, body, path="/consulting/", current="/consulting/", image=None if is_cutout(img_path("eric-consulting")) else img_path("eric-consulting"), jsonld=ld)
 
 
 def build_writing(posts, media):
@@ -1035,7 +1036,8 @@ def build_support():
 def build_about():
     meta, md = read_md(CONTENT / "pages" / "about.md")
     facts = """<dl class="facts"><div><dt>Based in</dt><dd>Toronto, Ontario</dd></div><div><dt>Education</dt><dd>BASc, Nanotechnology Engineering, University of Waterloo</dd></div><div><dt>Work</dt><dd>Consultant, financial services and technology</dd></div><div><dt>Civic</dt><dd>Founder and former president, More Neighbours Toronto (2021 to 2026). Former chair, Build Toronto (2025 to 2026). Ontario Liberal leadership candidate, 2026.</dd></div></dl>"""
-    body = f"""{page_hero('About', esc(meta.get('headline', 'About')), esc(meta.get('lede', '')), cta_actions(), image=meta.get('image'), alt=NAME)}
+    about_img = img_path('eric-about') if meta.get('image', '').startswith('/assets/img/eric-about') else meta.get('image')
+    body = f"""{page_hero('About', esc(meta.get('headline', 'About')), esc(meta.get('lede', '')), cta_actions(), image=about_img, alt=NAME)}
 <section class="section tight"><div class="wrap">{facts}<div class="prose">{md_to_html(md)}</div>
 <div class="entry-actions" style="margin-top:2rem"><a class="more" href="{u('/assets/img/eric-headshot.jpg')}" download>Download headshot &darr;</a><a class="more" href="{u('/media/#media-kit')}">Media kit &rarr;</a></div></div></section>"""
     render(T("About Eric"), SITE["description"], body, path="/about/", current="", image=meta.get("image"), kind="profile", reading=True)
@@ -1179,14 +1181,34 @@ def sync_photos():
     if not pdir.exists():
         return
     exts = (".jpg", ".jpeg", ".png", ".heic", ".tif", ".tiff", ".webp")
+    def has_alpha(src):
+        r = subprocess.run(["sips", "-g", "hasAlpha", str(src)], capture_output=True, text=True)
+        return "hasAlpha: yes" in r.stdout
+    def source_max(src):
+        r = subprocess.run(["sips", "-g", "pixelWidth", "-g", "pixelHeight", str(src)], capture_output=True, text=True)
+        dims = [int(x.split(":")[1]) for x in r.stdout.splitlines() if "pixel" in x]
+        return max(dims) if dims else 0
     def convert(src, dest, maxdim):
-        subprocess.run(["sips", "-s", "format", "jpeg", "-s", "formatOptions", "85", "-Z", str(maxdim), str(src), "--out", str(dest)], capture_output=True)
+        maxdim = min(maxdim, source_max(src) or maxdim)            # never upscale
+        if src.suffix.lower() == ".png" and has_alpha(src):      # keep cut-outs transparent
+            dest = dest.with_suffix(".png")
+            subprocess.run(["sips", "-s", "format", "png", "-Z", str(maxdim), str(src), "--out", str(dest)], capture_output=True)
+            jpg = dest.with_suffix(".jpg")
+            if jpg.exists():
+                jpg.unlink()
+        else:
+            dest = dest.with_suffix(".jpg")
+            subprocess.run(["sips", "-s", "format", "jpeg", "-s", "formatOptions", "85", "-Z", str(maxdim), str(src), "--out", str(dest)], capture_output=True)
+            png = dest.with_suffix(".png")
+            if png.exists():
+                png.unlink()
+        return dest
     for stem, (target, maxdim) in PHOTO_SLOTS.items():
         for ext in exts:
             src = pdir / (stem + ext)
             if src.exists():
-                convert(src, ASSETS / "img" / target, maxdim)
-                print("  photo:", src.name, "->", target)
+                out = convert(src, ASSETS / "img" / target, maxdim)
+                print("  photo:", src.name, "->", out.name)
                 break
     for ext in exts:
         src = pdir / ("share" + ext)
@@ -1203,6 +1225,30 @@ def sync_photos():
             if src.suffix.lower() in exts:
                 convert(src, ASSETS / "img" / "writing" / (src.stem + ".jpg"), 1200)
                 print("  photo: writing/" + src.name)
+
+
+def img_path(stem):
+    """Site path for an image slot: the transparent .png if one was supplied, otherwise the .jpg."""
+    for ext in (".png", ".jpg"):
+        if (ASSETS / "img" / (stem + ext)).exists():
+            return f"/assets/img/{stem}{ext}"
+    return f"/assets/img/{stem}.jpg"
+
+
+def is_cutout(path):
+    return path.endswith(".png")
+
+
+DECAL_STAGE = ('<svg class="decal decal-stage" viewBox="0 0 400 500" preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">'
+               '<path d="M30 499V210A170 170 0 0 1 370 210V499"/><path d="M0 210H30M370 210H400"/><path d="M0 499H400"/>'
+               '<path d="M370 120H396V92"/></svg>')
+
+
+def portrait(path, alt, cls="portrait-stage", attrs=""):
+    """A portrait slot: a cut-out stands on a baseline inside an open portal; a photograph is shown plain."""
+    if is_cutout(path):
+        return f'<figure class="{cls} cutout">{DECAL_STAGE}<img src="{u(path)}" alt="{esc(alt)}" width="1122" height="1402" {attrs}></figure>'
+    return f'<figure class="{cls}"><img src="{u(path)}" alt="{esc(alt)}" width="1600" height="1200" {attrs}></figure>'
 
 
 def copy_assets():

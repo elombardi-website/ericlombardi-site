@@ -18,4 +18,7 @@ here (this folder is not published; only the resized copies in `assets/img/` are
 | `article-placeholder.jpg` | Thumbnail for any piece of writing that has no image of its own | Landscape, at least 1200 px wide. Something neutral and non-portrait. |
 | `writing/<slug>.jpg` | Image for one specific piece of writing, where `<slug>` is the post's file name (for posts on this site) or the `id` field in `content/media.json` (for columns elsewhere) | Landscape, at least 1200 px wide. Shown large when the piece is featured, as a small 4:3 thumbnail elsewhere. |
 
-JPEG or PNG. HEIC from an iPhone also works (the build converts it). Then run `python3 build.py`.
+JPEG or PNG. HEIC from an iPhone also works (the build converts it). A PNG with a transparent
+background (a cut-out) is kept transparent: the hero, consulting and about slots then show the
+figure standing inside an open arch drawn in bronze instead of a framed photograph. Images are
+never upscaled, so supply at least the sizes above. Then run `python3 build.py`.
