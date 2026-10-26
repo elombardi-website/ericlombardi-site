@@ -1,0 +1,61 @@
+{
+ "name": "Eric Lombardi",
+ "url": "https://elombardi-website.github.io/ericlombardi-site",
+ "description": "Eric Lombardi is a Toronto-based strategy consultant in financial services and technology, a writer on Ontario's economy and growth, founder of More Neighbours Toronto, and the 2026 Ontario Liberal leadership candidate who published a fully costed platform for the province.",
+ "email": "eric@ericlombardi.ca",
+ "location": "Toronto, Ontario, Canada",
+ "socials": [
+  {
+   "name": "LinkedIn",
+   "url": "https://www.linkedin.com/in/ericlombardi"
+  },
+  {
+   "name": "X",
+   "url": "https://x.com/EricDLombardi"
+  },
+  {
+   "name": "Bluesky",
+   "url": "https://bsky.app/profile/ericlombardi.ca"
+  },
+  {
+   "name": "Instagram",
+   "url": "https://www.instagram.com/ericlombardi"
+  },
+  {
+   "name": "YouTube",
+   "url": "https://www.youtube.com/@EricDLombardi"
+  }
+ ],
+ "pages": [
+  {
+   "label": "Consulting",
+   "url": "https://elombardi-website.github.io/ericlombardi-site/consulting/"
+  },
+  {
+   "label": "Writing",
+   "url": "https://elombardi-website.github.io/ericlombardi-site/writing/"
+  },
+  {
+   "label": "Media",
+   "url": "https://elombardi-website.github.io/ericlombardi-site/media/"
+  },
+  {
+   "label": "Public policy",
+   "url": "https://elombardi-website.github.io/ericlombardi-site/policy/"
+  },
+  {
+   "label": "Events",
+   "url": "https://elombardi-website.github.io/ericlombardi-site/events/"
+  },
+  {
+   "label": "Contact",
+   "url": "https://elombardi-website.github.io/ericlombardi-site/contact/"
+  }
+ ],
+ "feeds": {
+  "rss": "https://elombardi-website.github.io/ericlombardi-site/feed.xml",
+  "json": "https://elombardi-website.github.io/ericlombardi-site/feed.json",
+  "ics": "https://elombardi-website.github.io/ericlombardi-site/events.ics"
+ },
+ "generated": "2026-10-26T12:50:24.439115+00:00"
+}

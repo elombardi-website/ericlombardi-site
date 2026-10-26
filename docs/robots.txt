@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://elombardi-website.github.io/ericlombardi-site/sitemap.xml

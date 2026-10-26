@@ -1,0 +1,36 @@
+[
+  {
+    "title": "Example: Panel on Ontario's growth problem",
+    "date": "2026-11-19",
+    "time": "6:30 pm",
+    "end_time": "8:00 pm",
+    "city": "Toronto",
+    "venue": "Venue to be announced",
+    "kind": "Panel",
+    "url": "",
+    "summary": "A placeholder so you can see how an upcoming event looks. Replace or delete it.",
+    "placeholder": true
+  },
+  {
+    "title": "Example: Community meetup, Ottawa",
+    "date": "2026-12-03",
+    "time": "",
+    "city": "Ottawa",
+    "venue": "",
+    "kind": "Meetup",
+    "url": "https://luma.com/ericforolp",
+    "summary": "A placeholder with a third-party registration link (opens the link when clicked).",
+    "placeholder": true
+  },
+  {
+    "title": "Ontario Liberal leadership campaign launch",
+    "date": "2026-06-09",
+    "time": "",
+    "city": "Toronto",
+    "venue": "",
+    "kind": "Campaign",
+    "url": "/policy/ontario-liberal-leadership-2026/",
+    "summary": "Formally entered the 2026 Ontario Liberal leadership race.",
+    "placeholder": false
+  }
+]

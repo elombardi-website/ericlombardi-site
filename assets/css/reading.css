@@ -1,0 +1,10 @@
+/* reading.css — Newsreader for sustained reading. Linked only on long-form pages. */
+@font-face{font-family:"Newsreader";src:url("../fonts/newsreader/NewsreaderText-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Newsreader";src:url("../fonts/newsreader/NewsreaderText-Italic.woff2") format("woff2");font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:"Newsreader";src:url("../fonts/newsreader/NewsreaderText-SemiBold.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:"Newsreader";src:url("../fonts/newsreader/NewsreaderText-SemiBoldItalic.woff2") format("woff2");font-weight:600;font-style:italic;font-display:swap}
+.prose{font-family:var(--font-reading);font-size:var(--fs-reading);line-height:var(--lh-reading)}
+.prose strong{font-weight:600}
+.prose h2,.prose h3{font-family:var(--font-display)}
+.prose figcaption,.prose .embed,.prose code,.prose pre{font-family:var(--font-interface)}
+.prose code,.prose pre{font-family:var(--font-mono)}

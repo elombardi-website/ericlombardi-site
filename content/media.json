@@ -1,0 +1,662 @@
+[
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Democracy requires political renewal, not just political experience",
+  "date": "2026-10-13",
+  "url": "https://thehub.ca/2026/10/13/democracy-requires-political-renewal-not-just-political-experience/"
+ },
+ {
+  "kind": "coverage",
+  "campaign": true,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Liberals are finally rediscovering capitalism. Conservatives should welcome it (Sean Speer)",
+  "date": "2026-10-02",
+  "url": "https://thehub.ca/2026/10/02/liberals-are-finally-rediscovering-capitalism-conservatives-should-welcome-it/"
+ },
+ {
+  "kind": "coverage",
+  "campaign": true,
+  "outlet": "CP24",
+  "format": "online",
+  "title": "OLP leadership candidate Eric Lombardi withdraws from race",
+  "date": "2026-10-01",
+  "url": "https://www.cp24.com/politics/queens-park/2026/10/01/olp-leadership-candidate-eric-lombardi-withdraws-from-race/"
+ },
+ {
+  "kind": "coverage",
+  "campaign": true,
+  "outlet": "CBC News",
+  "format": "online",
+  "title": "Eric Lombardi drops out of Ontario Liberal Party leadership race",
+  "date": "2026-09-30",
+  "url": "https://www.cbc.ca/news/canada/toronto/eric-lombardi-drops-out-ontario-liberal-party-leadership-race-9.7364850"
+ },
+ {
+  "kind": "coverage",
+  "campaign": true,
+  "outlet": "The Globe and Mail",
+  "format": "print",
+  "title": "Ontario Liberal leadership candidate Eric Lombardi drops out",
+  "date": "2026-09-30",
+  "url": "https://www.theglobeandmail.com/politics/article-ontario-liberal-leadership-candidate-eric-lombardi-drops-out/"
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "The Herle Burly",
+  "format": "video",
+  "title": "Ontario Liberal leadership debate",
+  "date": "2026-09-17",
+  "url": "https://www.youtube.com/watch?v=5X8kohWWUJ4"
+ },
+ {
+  "kind": "coverage",
+  "campaign": true,
+  "outlet": "TBNewswatch",
+  "format": "online",
+  "title": "Ontario Liberal leadership candidate Eric Lombardi in Thunder Bay",
+  "date": "2026-09-14",
+  "url": "https://www.tbnewswatch.com/local-news/ont-liberal-leadership-candidate-eric-lombardi-12770188"
+ },
+ {
+  "kind": "coverage",
+  "campaign": true,
+  "outlet": "iPolitics",
+  "format": "online",
+  "title": "Conservative MP Matt Strauss joins Ontario Liberals to back Eric Lombardi",
+  "date": "2026-09-02",
+  "url": "https://www.ipolitics.ca/2026/09/02/conservative-mp-matt-strauss-joins-ontario-liberals-to-back-eric-lombardi/"
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "The Trillium",
+  "format": "print",
+  "title": "Ideas, tweets and the vapidity of modern media: Q&A with Eric Lombardi",
+  "date": "2026-08-26",
+  "url": "https://www.thetrillium.ca/news/politics/ideas-tweets-and-the-vapidity-of-modern-media-qa-with-ontario-liberal-leadership-candidate-eric-lombardi-12709122"
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "The Hub",
+  "format": "video",
+  "title": "'We've been squandering our potential': Eric Lombardi on his plan to save his province",
+  "date": "2026-08-18",
+  "url": "https://thehub.ca/podcast/video/weve-been-squandering-our-potential-ontario-liberal-leader-contender-eric-lombardi-on-his-plan-to-save-his-province/"
+ },
+ {
+  "kind": "column",
+  "campaign": true,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Ordinary hard work no longer buys the Canadian dream. It's time to restore that promise",
+  "date": "2026-08-11",
+  "url": "https://thehub.ca/2026/08/11/ordinary-hard-work-no-longer-buys-the-canadian-dream-its-time-to-restore-that-promise/"
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "Ontario Liberal Party",
+  "format": "video",
+  "title": "Leadership debate",
+  "date": "2026-08-10",
+  "url": "https://www.youtube.com/watch?v=tXUlg6o5ZZs"
+ },
+ {
+  "kind": "coverage",
+  "campaign": true,
+  "outlet": "National Post",
+  "format": "print",
+  "title": "Meet the outsider Ontario Liberal candidate who says the party has lost its way",
+  "date": "2026-08-07",
+  "url": "https://nationalpost.com/opinion/eric-lombardi-ontario-liberal-leadership"
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "Toronto Today",
+  "format": "podcast",
+  "title": "Why Eric Lombardi wants to lead the Ontario Liberals",
+  "date": "2026-07-31",
+  "url": "https://open.spotify.com/episode/2058YWoFMVR5pgcHH2RsWW"
+ },
+ {
+  "kind": "column",
+  "campaign": true,
+  "outlet": "Canada Real",
+  "format": "online",
+  "title": "The housing crisis did not stay in housing",
+  "date": "2026-07-28",
+  "url": "https://canadareal.ca/",
+  "verify": "Listed on the campaign news page; exact article URL not located."
+ },
+ {
+  "kind": "coverage",
+  "campaign": true,
+  "outlet": "CTV News London",
+  "format": "video",
+  "title": "Candidates vie for Ontario Liberal leadership with stop in London",
+  "date": "2026-07-23",
+  "url": "https://www.ctvnews.ca/london/video/2026/07/24/candidates-vie-for-ontario-liberal-leadership-with-stop-in-london/"
+ },
+ {
+  "kind": "coverage",
+  "campaign": true,
+  "outlet": "The Sudbury Star",
+  "format": "print",
+  "title": "Housing crisis prompted Eric Lombardi to run to become Liberal leader",
+  "date": "2026-07-22",
+  "url": "https://www.thesudburystar.com/news/housing-crisis-prompted-eric-lombardi-to-run-to-become-liberal-leader"
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "CBC Morning North",
+  "format": "radio",
+  "title": "Eric Lombardi talks vision for the future of the province he seeks to lead",
+  "date": "2026-07-21",
+  "url": "https://www.cbc.ca/listen/live-radio/1-41-morning-north/clip/16227337-eric-lombardi-talks-vision-future-province-seeks-lead"
+ },
+ {
+  "kind": "column",
+  "campaign": true,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "The most important provincial economic reforms are federal",
+  "date": "2026-07-20",
+  "url": "https://thehub.ca/2026/07/20/the-most-important-provincial-economic-reforms-are-federal/"
+ },
+ {
+  "kind": "coverage",
+  "campaign": true,
+  "outlet": "Toronto Star",
+  "format": "print",
+  "title": "Billy Bishop expansion plan prompts mixed responses from Liberal leadership candidates",
+  "date": "2026-07-02",
+  "url": "https://www.thestar.com/politics/provincial/billy-bishop-expansion-plan-prompts-mixed-responses-from-liberal-leadership-candidates/article_4743d9dc-ff48-43e5-a31f-f46cd73c11f2.html"
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "CJAD 800 Montreal",
+  "format": "radio",
+  "title": "What liberalism actually means",
+  "date": "2026-07-01",
+  "url": "https://www.youtube.com/watch?v=JRdgfj2aINw"
+ },
+ {
+  "kind": "coverage",
+  "campaign": true,
+  "outlet": "York Region",
+  "format": "print",
+  "title": "Ontario Liberal leadership candidates slam 'undemocratic' plan to appoint 'strong' chairs for 8 regional governments this fall",
+  "date": "2026-06-22",
+  "url": "https://www.yorkregion.com/news/ontario-liberal-leadership-hopefuls-dislike-plan-for-regions/article_2b266611-8a25-5339-9da9-08a05ee81ed3.html"
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "Culture Lab",
+  "format": "video",
+  "title": "Who the hell is Eric Lombardi?",
+  "date": "2026-06-18",
+  "url": "https://www.youtube.com/watch?v=XDDMgQzUYP4"
+ },
+ {
+  "kind": "coverage",
+  "campaign": true,
+  "outlet": "Global News",
+  "format": "online",
+  "title": "Ontario Liberal leadership candidate vows to make health care more competitive",
+  "date": "2026-06-15",
+  "url": "https://globalnews.ca/news/11904275/ontario-liberal-leadership-candidate-vows-to-make-health-care-more-competitive/"
+ },
+ {
+  "kind": "coverage",
+  "campaign": true,
+  "outlet": "Changing Lanes",
+  "format": "online",
+  "title": "Eric Lombardi's abundance agenda",
+  "date": "2026-06-11",
+  "url": "https://www.changinglanesnewsletter.com/p/eric-lombardis-abundance-agenda"
+ },
+ {
+  "kind": "coverage",
+  "campaign": true,
+  "outlet": "CP24",
+  "format": "online",
+  "title": "Housing advocate Eric Lombardi joins Ontario Liberal leadership race",
+  "date": "2026-06-09",
+  "url": "https://www.cp24.com/politics/queens-park/2026/06/09/housing-advocate-eric-lombardi-joins-ontario-liberal-leadership-race/"
+ },
+ {
+  "kind": "coverage",
+  "campaign": true,
+  "outlet": "The Canadian Press",
+  "format": "online",
+  "title": "Housing advocate Eric Lombardi enters Ontario Liberal leadership race",
+  "date": "2026-06-09",
+  "url": "https://nationalnewswatch.com/2026/06/09/housing-advocate-eric-lombardi-enters-ontario-liberal-leadership-race"
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "Toronto Today",
+  "format": "podcast",
+  "title": "More flights, more growth, more problems?",
+  "date": "2026-05-22",
+  "url": "https://open.spotify.com/episode/4D6DWmP5R4qQynmBsrTu9Q"
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "Progress Canada",
+  "format": "video",
+  "title": "Eric Lombardi: the next Ontario Liberal Party leader",
+  "date": "2026-05-20",
+  "url": "https://www.youtube.com/watch?v=4Bpd1WhUq-U"
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "Civic Square Podcast",
+  "format": "podcast",
+  "title": "Eric Lombardi on his plan to fix Ontario",
+  "date": "2026-04-29",
+  "url": "https://open.spotify.com/episode/6RajNvqWePMR73A7D5n00B"
+ },
+ {
+  "kind": "column",
+  "campaign": true,
+  "outlet": "Toronto Star",
+  "format": "print",
+  "title": "Alto should be just the beginning of Ontario's high-speed rail network",
+  "date": "2026-04-29",
+  "url": "https://www.thestar.com/opinion/contributors/alto-should-be-just-the-beginning-of-ontarios-high-speed-rail-network/article_8abf67cf-4b1b-46c3-b4e9-05d0ee8602a0.html"
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "Zed Has Thoughts",
+  "format": "video",
+  "title": "Why he's running for Ontario Liberal leader, and the inheritance economy",
+  "date": "2026-04-29",
+  "url": "https://www.youtube.com/watch?v=UToGHbQCCjY"
+ },
+ {
+  "kind": "coverage",
+  "campaign": true,
+  "outlet": "The Brock Press",
+  "format": "print",
+  "title": "OLP candidate Eric Lombardi promises an affordable life through growth",
+  "date": "2026-04-12",
+  "url": "https://brockpress.com/olp-candidate-eric-lombardi-promises-an-affordable-life-through-growth/"
+ },
+ {
+  "kind": "column",
+  "campaign": true,
+  "outlet": "The Bridge",
+  "format": "online",
+  "title": "Ontario needs a new deal with its cities",
+  "date": "2026-04-04",
+  "url": "https://thebridgenews.ca/ontario-needs-a-new-deal-with-its-cities/",
+  "verify": "Confirm this is an op-ed by Eric rather than coverage."
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "The Brian Crombie Hour",
+  "format": "video",
+  "title": "Eric Lombardi on The Brian Crombie Hour",
+  "date": "2026-04-01",
+  "url": "https://www.youtube.com/watch?v=APTtyUidBc0"
+ },
+ {
+  "kind": "column",
+  "campaign": true,
+  "outlet": "Toronto Sun",
+  "format": "print",
+  "title": "Premier Doug Ford's eighth budget another step in Ontario's decline",
+  "date": "2026-03-28",
+  "url": "https://torontosun.com/opinion/columnists/premier-doug-ford-budget-ontario-decline"
+ },
+ {
+  "kind": "column",
+  "campaign": true,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "A milestone recession is stealing young Canadians' future",
+  "date": "2026-03-24",
+  "url": "https://thehub.ca/2026/03/24/a-milestone-recession-is-stealing-the-future-from-young-canadians/"
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "Under Construction",
+  "format": "podcast",
+  "title": "Toronto Under Construction with Eric Lombardi, Liberal Party candidate",
+  "date": "2026-03-13",
+  "url": "https://podcasts.apple.com/ca/podcast/episode-101-toronto-under-construction-with-matt-from/id1489742977?i=1000755091909"
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "Toronto Today",
+  "format": "podcast",
+  "title": "OSAP cuts spark student protests and arrests",
+  "date": "2026-03-05",
+  "url": "https://open.spotify.com/episode/04eGsrHh1IPtZMBDpt36m2"
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "Hogtown Podcast",
+  "format": "podcast",
+  "title": "The Liberal leadership race and Ontario's future with Eric Lombardi",
+  "date": "2026-02-23",
+  "url": "https://open.spotify.com/episode/6h4q3vtxTlNKSleDnWJQNZ"
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "Storeys",
+  "format": "print",
+  "title": "Eric Lombardi 'more than likely' to cement run for Ontario Liberal Party leader: Q&A",
+  "date": "2026-02-12",
+  "url": "https://storeys.com/eric-lombardi-ontario-liberal-qa/"
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "Canadian Affairs",
+  "format": "print",
+  "title": "A conversation with the 31-year-old hoping to lead Ontario",
+  "date": "2026-01-30",
+  "url": "https://www.canadianaffairs.news/2026/01/30/a-conversation-with-the-31-year-old-hoping-to-lead-ontario/"
+ },
+ {
+  "kind": "interview",
+  "campaign": true,
+  "outlet": "Toronto Today",
+  "format": "podcast",
+  "title": "From idea to action: a new Liberal vision for Ontario",
+  "date": "2026-01-29",
+  "url": "https://open.spotify.com/episode/7duR0E4EaY74Y42pNkAys3"
+ },
+ {
+  "kind": "column",
+  "campaign": true,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Everyone's managing decline. I'm exploring a run for Ontario Liberal leader to fight for growth",
+  "date": "2026-01-29",
+  "url": "https://thehub.ca/2026/01/29/everyones-managing-decline-im-exploring-a-run-for-ontario-liberal-leader-to-fight-for-growth/"
+ },
+ {
+  "kind": "coverage",
+  "campaign": true,
+  "outlet": "Policorner",
+  "format": "online",
+  "title": "Scoop: is this the dark horse in the race for Liberal leader?",
+  "date": "2026-01-12",
+  "url": "https://www.policorner.ca/p/scoop-is-this-the-dark-horse-in-the-race-for-liberal-leader"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Dare to build, again: 10 big ideas for a better Canada in 2026",
+  "date": "2026-01-09",
+  "url": "https://thehub.ca/2026/01/09/dare-to-build-again-10-big-ideas-for-a-better-canada-in-2026/"
+ },
+ {
+  "kind": "coverage",
+  "campaign": true,
+  "outlet": "TVO",
+  "format": "online",
+  "title": "Is the Ontario Liberal leadership race poised for an upset?",
+  "date": "2026-01-08",
+  "url": "https://www.tvo.org/article/analysis-is-the-ontario-liberal-leadership-race-poised-for-an-upset",
+  "verify": "Campaign site dated this Jan 8; TVO's page shows Jan 19 2026."
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Canadians must open their eyes to our growing culture of corruption",
+  "date": "2025-12-06",
+  "url": "https://thehub.ca/2025/12/06/canadians-must-open-their-eyes-to-our-growing-culture-of-corruption/"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "Build Canada",
+  "format": "online",
+  "title": "Old Toronto must grow to relieve the suburbs",
+  "date": "2025-10-06",
+  "url": "https://www.buildcanada.com/toronto/memos"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Canada has made real progress on housing. Now comes the hardest part",
+  "date": "2025-10-03",
+  "url": "https://thehub.ca/2025/10/03/eric-lombardi-canada-has-made-real-progress-on-housing-now-comes-the-hardest-part/"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "The 2030s could be Canada's catch-up decade",
+  "date": "2025-08-29",
+  "url": "https://thehub.ca/2025/08/29/eric-lombardi-the-2030s-could-be-canadas-catch-up-decade/"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "It's time to make property rights our defining liberal cause",
+  "date": "2025-08-05",
+  "url": "https://thehub.ca/2025/08/05/eric-lombardi-its-time-to-make-property-rights-our-defining-liberal-cause/"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Our politicians want you to forget about Canada's biggest socioeconomic challenge. Yes, it's still housing",
+  "date": "2025-07-18",
+  "url": "https://thehub.ca/2025/07/18/eric-lombardi-our-politicians-want-you-to-forget-about-canadas-biggest-socioeconomic-challenge-yes-its-still-housing/"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Ontario has become Canada's sick province. Its failures drag down the country",
+  "date": "2025-06-16",
+  "url": "https://thehub.ca/2025/06/16/eric-lombardi-ontario-has-become-canadas-sick-province-its-failures-drag-down-the-country/"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Canada can no longer afford to be governed by luxury beliefs",
+  "date": "2025-05-28",
+  "url": "https://thehub.ca/2025/05/28/eric-lombardi-canada-can-no-longer-afford-to-be-governed-by-luxury-beliefs/"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Canadians are ready to build. What about our leaders?",
+  "date": "2025-03-31",
+  "url": "https://thehub.ca/2025/03/31/eric-lombardi-canadians-are-ready-to-build-what-about-our-leaders/"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Why the rise of Mark Carney is good for Pierre Poilievre, and for Canada",
+  "date": "2025-02-19",
+  "url": "https://thehub.ca/2025/02/19/eric-lombardi-why-the-rise-of-mark-carney-is-good-for-pierre-poilievre-and-for-canada/"
+ },
+ {
+  "kind": "interview",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "video",
+  "title": "'A failure of this country': Eric Lombardi on how the Liberal Party became illiberal",
+  "date": "2025-01-24",
+  "url": "https://thehub.ca/podcast/video/a-failure-of-this-country-eric-lombardi-on-how-the-liberal-party-became-illiberal/"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "It's time to make the Liberal Party liberal again",
+  "date": "2025-01-23",
+  "url": "https://thehub.ca/2025/01/23/eric-lombardi-its-time-to-make-the-liberal-party-liberal-again/"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Dare to be great: ten radical ideas to reinvent Canada in 2025",
+  "date": "2024-12-19",
+  "url": "https://thehub.ca/2024/12/19/eric-lombardi-dare-to-be-great-ten-radical-ideas-to-reinvent-canada-in-2025/"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Your bribe is in the mail: Trudeau and Ford's populist gimmicks play Canadians for fools",
+  "date": "2024-11-26",
+  "url": "https://thehub.ca/2024/11/26/eric-lombardi-your-bribe-is-in-the-mail-trudeau-and-fords-populist-gimmicks-play-canadians-for-fools/"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Canada can no longer afford to ignore its soft corruption problem",
+  "date": "2024-10-03",
+  "url": "https://thehub.ca/2024/10/03/eric-lombardi-canada-can-no-longer-afford-to-ignore-its-soft-corruption-problem/"
+ },
+ {
+  "kind": "interview",
+  "campaign": false,
+  "outlet": "Munk Debates",
+  "format": "podcast",
+  "title": "The baby boomers debate",
+  "date": "2024-09-17",
+  "url": "https://munkdebates.com/podcasts/baby-boomers-debate/"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Don't give up on Canada just yet, young people",
+  "date": "2024-08-01",
+  "url": "https://thehub.ca/2024/08/01/eric-lombardi-dont-give-up-on-canada-just-yet-young-people/"
+ },
+ {
+  "kind": "interview",
+  "campaign": false,
+  "outlet": "The Missing Middle Podcast",
+  "format": "podcast",
+  "title": "Why we need missing middle homes: Eric Lombardi at the Missing Middle Summit 2024",
+  "date": "2024-07-12",
+  "url": "https://missingmiddle.buzzsprout.com/2249373/15400380"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "How established interests hijack government to crush Canada's middle class",
+  "date": "2024-06-21",
+  "url": "https://thehub.ca/2024/06/21/eric-lombardi-how-established-interests-hijack-government-to-crush-canadas-middle-class/"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Canadians are witnessing the slow and relentless erosion of economic freedoms",
+  "date": "2024-05-17",
+  "url": "https://thehub.ca/2024/05/17/eric-lombardi-canadians-are-witnessing-the-slow-and-relentless-erosion-of-economic-freedoms/"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Baby boomers have won the generational war. Was it worth young Canadians' future?",
+  "date": "2024-04-16",
+  "url": "https://thehub.ca/2024/04/16/eric-lombardi-baby-boomers-have-won-the-generational-war-was-it-worth-young-canadians-future/"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Canada's zero-sum economy",
+  "date": "2024-03-15",
+  "url": "https://thehub.ca/2024/03/15/eric-lombardi-canadas-zero-sum-economy/"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "Will Pierre Poilievre stand up to Doug Ford, Canada's biggest gatekeeper?",
+  "date": "2024-02-13",
+  "url": "https://thehub.ca/2024/02/13/eric-lombardi-will-pierre-poilievre-stand-up-to-doug-ford-canadas-biggest-gatekeeper/"
+ },
+ {
+  "kind": "column",
+  "campaign": false,
+  "outlet": "The Hub",
+  "format": "online",
+  "title": "The death of merit, the birth of aristocracy, and Canada's quiet descent into neofeudalism",
+  "date": "2024-02-02",
+  "url": "https://thehub.ca/2024/02/02/eric-lombardi-the-death-of-merit-the-birth-of-aristocracy-and-canadas-quiet-descent-into-neofeudalism/"
+ },
+ {
+  "kind": "coverage",
+  "campaign": false,
+  "outlet": "The Christian Science Monitor",
+  "format": "print",
+  "title": "Toronto has a housing crisis. Activists are trying empathy to ease it",
+  "date": "2022-10-25",
+  "url": "https://proof.csmonitor.com/World/Americas/2022/1025/Toronto-has-a-housing-crisis.-Activists-are-trying-empathy-to-ease-it"
+ },
+ {
+  "kind": "coverage",
+  "campaign": false,
+  "outlet": "Toronto Star",
+  "format": "print",
+  "title": "In a city of NIMBYs, this community group has made it a mission to say yes in my backyard",
+  "date": "2022-02-14",
+  "url": "https://www.thestar.com/news/gta/2022/02/14/in-a-city-of-nimbys-this-community-group-has-made-it-a-mission-to-say-yes-in-my-backyard.html"
+ }
+]

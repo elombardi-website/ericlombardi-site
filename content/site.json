@@ -1,0 +1,180 @@
+{
+  "name": "Eric Lombardi",
+  "domain": "https://ericlombardi.ca",
+  "x_handle": "EricDLombardi",
+  "email": "eric@ericlombardi.ca",
+  "location": {
+    "city": "Toronto",
+    "region": "ON",
+    "country": "CA",
+    "label": "Toronto, Ontario, Canada"
+  },
+  "mailing_address": "",
+  "booking_url": "",
+  "og_image": "/assets/img/og-default.jpg",
+  "description": "Eric Lombardi is a Toronto-based strategy consultant in financial services and technology, a writer on Ontario's economy and growth, founder of More Neighbours Toronto, and the 2026 Ontario Liberal leadership candidate who published a fully costed platform for the province.",
+  "short_description": "Strategy consultant in financial services and technology. Writer and advocate on growth, housing and government capability in Ontario.",
+  "job_title": "Strategy consultant, financial services and technology",
+  "knows_about": [
+    "Financial services strategy",
+    "Payments",
+    "Digital banking",
+    "Embedded finance",
+    "Mergers and acquisitions",
+    "Venture capital and startups",
+    "Program delivery",
+    "Housing policy",
+    "Ontario public policy",
+    "Infrastructure and transit",
+    "Economic growth"
+  ],
+  "nav": [
+    {
+      "label": "Consulting",
+      "href": "/consulting/"
+    },
+    {
+      "label": "Writing",
+      "href": "/writing/"
+    },
+    {
+      "label": "Media",
+      "href": "/media/"
+    },
+    {
+      "label": "Public policy",
+      "href": "/policy/"
+    },
+    {
+      "label": "Events",
+      "href": "/events/"
+    },
+    {
+      "label": "Contact",
+      "href": "/contact/"
+    }
+  ],
+  "socials": [
+    {
+      "name": "LinkedIn",
+      "url": "https://www.linkedin.com/in/ericlombardi",
+      "show": true,
+      "verify": "Slug inferred from a linkedin.com/posts/ericlombardi_... URL. Confirm."
+    },
+    {
+      "name": "X",
+      "handle": "@EricDLombardi",
+      "url": "https://x.com/EricDLombardi",
+      "show": true
+    },
+    {
+      "name": "Bluesky",
+      "handle": "@ericlombardi.ca",
+      "url": "https://bsky.app/profile/ericlombardi.ca",
+      "show": true
+    },
+    {
+      "name": "Instagram",
+      "handle": "@ericlombardi",
+      "url": "https://www.instagram.com/ericlombardi",
+      "show": true
+    },
+    {
+      "name": "YouTube",
+      "handle": "@EricDLombardi",
+      "url": "https://www.youtube.com/@EricDLombardi",
+      "show": true
+    },
+    {
+      "name": "Threads",
+      "handle": "@ericlombardi",
+      "url": "https://www.threads.com/@ericlombardi",
+      "show": false
+    },
+    {
+      "name": "TikTok",
+      "handle": "@ericdlombardi",
+      "url": "https://www.tiktok.com/@ericdlombardi",
+      "show": false
+    },
+    {
+      "name": "Facebook",
+      "url": "https://www.facebook.com/profile.php?id=61586972019308",
+      "show": false,
+      "note": "Campaign page"
+    }
+  ],
+  "hero": {
+    "kicker": "Strategy, writing and public life",
+    "headline": "A future worth building.",
+    "lede": "I'm a strategy consultant in financial services and technology, and I write and organize for the reforms that help people build secure lives: homes they can afford, useful work, services that function, and more room for the next generation to succeed.",
+    "note": "Finance and technology entrepreneur turned civic builder. Founder of More Neighbours Toronto. Candidate for Ontario Liberal leader in 2026. Columns in The Hub and the Toronto Star."
+  },
+  "pillars": [
+    {
+      "title": "Consulting",
+      "href": "/consulting/",
+      "cta": "Explore the consulting",
+      "text": "Strategy, mergers and acquisitions, ventures and delivery for financial services and technology companies, from a two-week decision to a multi-year program."
+    },
+    {
+      "title": "Writing and media",
+      "href": "/writing/",
+      "cta": "Read the writing",
+      "text": "Essays on growth, housing, infrastructure and government capability, plus columns, interviews and appearances elsewhere."
+    },
+    {
+      "title": "Public policy",
+      "href": "/policy/",
+      "cta": "See the civic work",
+      "text": "The 2026 Ontario Liberal leadership campaign and its platform, More Neighbours Toronto, and Build Toronto."
+    }
+  ],
+  "categories": {
+    "economy": "Economy and growth",
+    "housing-and-cities": "Housing and cities",
+    "infrastructure": "Infrastructure and transit",
+    "government": "Government and public service",
+    "finance-and-technology": "Finance and technology",
+    "campaign-notes": "Campaign notes"
+  },
+  "form": {
+    "endpoint": "",
+    "method": "POST",
+    "fields": {
+      "first_name": "first_name",
+      "last_name": "last_name",
+      "email": "email",
+      "postal": "postal_code"
+    },
+    "hidden": {},
+    "consent": "statement",
+    "_how": "endpoint = the email tool's form-post URL; map its field names in fields; consent = 'statement' (text under the button) or 'checkbox' (CASL-conservative). Empty endpoint = mailto fallback."
+  },
+  "analytics": {
+    "provider": "simpleanalytics",
+    "enabled": false,
+    "custom_snippet": "",
+    "_how": "simpleanalytics was used on ericforolp.ca. Add ericlombardi.ca in that account, then set enabled: true."
+  },
+  "support": {
+    "contribute_url": "",
+    "one_time_url": "",
+    "platform": "",
+    "live": false,
+    "_how": "contribute_url = a pay-what-you-want monthly link (e.g. a Stripe Payment Link with 'customer chooses amount', recurring); one_time_url = the same for a single gift; platform = the name shown to visitors (e.g. Stripe). live: true turns the buttons on."
+  },
+  "x_feed": {
+    "enabled": true,
+    "handle": "EricDLombardi",
+    "height": 700
+  },
+  "platform_url": "https://platform.ericforolp.ca",
+  "legacy_site": "https://ericforolp.ca",
+  "x_bio": "Proud Canadian | Wonk Cowboy (@BuildCanada) | Tech & Finance | Housing Abundance (@MoreNeighbours) | Prev @OntLiberal Leadership",
+  "signup": {
+    "title": "Stay up to date",
+    "text": "New writing, invitations to events near you, and the occasional ask for help. Free, and you can unsubscribe at any time.",
+    "statement": "By signing up you agree to receive emails from Eric Lombardi about his writing, events and public policy work. Unsubscribe any time."
+  }
+}

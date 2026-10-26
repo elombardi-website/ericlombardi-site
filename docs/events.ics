@@ -1,0 +1,38 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Eric Lombardi//elombardi-website.github.io/ericlombardi-site//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Eric Lombardi: events
+X-WR-TIMEZONE:America/Toronto
+BEGIN:VEVENT
+UID:2026-06-09-ontario-liberal-leadership-campaign-launch@elombardi-website.github.io/ericlombardi-site
+DTSTAMP:20261026T125024Z
+DTSTART;VALUE=DATE:20260609
+DTEND;VALUE=DATE:20260610
+SUMMARY:Ontario Liberal leadership campaign launch
+LOCATION:Toronto
+URL:https://elombardi-website.github.io/ericlombardi-site/policy/ontario-liberal-leadership-2026/
+DESCRIPTION:Formally entered the 2026 Ontario Liberal leadership race.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-19-example-panel-on-ontario-s-growth-problem@elombardi-website.github.io/ericlombardi-site
+DTSTAMP:20261026T125024Z
+DTSTART;TZID=America/Toronto:20261119T183000
+DTEND;TZID=America/Toronto:20261119T200000
+SUMMARY:Example: Panel on Ontario's growth problem
+LOCATION:Venue to be announced\, Toronto
+URL:https://elombardi-website.github.io/ericlombardi-site/events/
+DESCRIPTION:A placeholder so you can see how an upcoming event looks. Replace or delete it.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-03-example-community-meetup-ottawa@elombardi-website.github.io/ericlombardi-site
+DTSTAMP:20261026T125024Z
+DTSTART;VALUE=DATE:20261203
+DTEND;VALUE=DATE:20261204
+SUMMARY:Example: Community meetup\, Ottawa
+LOCATION:Ottawa
+URL:https://luma.com/ericforolp
+DESCRIPTION:A placeholder with a third-party registration link (opens the link when clicked).
+END:VEVENT
+END:VCALENDAR

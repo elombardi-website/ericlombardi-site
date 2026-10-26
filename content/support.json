@@ -1,0 +1,63 @@
+{
+  "kicker": "Support",
+  "headline": "Help build a community around these ideas.",
+  "lede": "Sign up for free and you'll get the writing and the invitations. If you want to do more, contribute whatever you like, monthly or once, to fund the community, the events and the travel behind the public policy work.",
+  "pledge": {
+    "title": "My commitment on how the money is used",
+    "paragraphs": [
+      "Everything raised here goes to the work and nothing goes to me. I earn my living as a consultant. Supporter funds are dedicated to building a community around the ideas I advocate for: convening people, running events, producing research and writing, and travelling to connect with audiences across Ontario and, where there's interest, across the country.",
+      "I'll publish a plain summary of what came in and what it was spent on, so anyone who contributes can see where it went.",
+      "This is not a political contribution and it is not a charitable donation. It is support for independent public policy work, and no tax receipt is issued."
+    ]
+  },
+  "uses": [
+    {
+      "title": "Community",
+      "text": "Member calls, a forum for the people who want to work on these problems, and the tools to keep it running."
+    },
+    {
+      "title": "Events",
+      "text": "Talks, panels and meetups in Toronto and in the regions, with the venue, travel and production costs they carry."
+    },
+    {
+      "title": "Travel",
+      "text": "Getting to the places where Ontario's growth problem is felt most: the North, the East, the Southwest, and beyond the province."
+    },
+    {
+      "title": "Research and writing",
+      "text": "Data, tools and the occasional collaborator to make the arguments sharper and the ideas easier to use."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is this a political donation?",
+      "a": "No. This supports my independent public policy and advocacy work. It is not a contribution to any party, candidate or campaign, and it is not governed by election-finance rules. If I ever seek office again, this program will be wound down or clearly separated before that happens."
+    },
+    {
+      "q": "Do I get a tax receipt?",
+      "a": "No. This is not a registered charity and no tax receipt is issued."
+    },
+    {
+      "q": "Is there a minimum, or a set amount?",
+      "a": "No. Contribute whatever you like, monthly or once."
+    },
+    {
+      "q": "How do I change or cancel a monthly contribution?",
+      "a": "Any time, from the confirmation email or your account on the payment platform. No questions asked."
+    },
+    {
+      "q": "Where does the money go?",
+      "a": "Community, events, travel, research and writing. None of it to me personally. I'll post a plain summary of income and spending."
+    },
+    {
+      "q": "Do I have to contribute to get the updates?",
+      "a": "No. Signing up for updates is free and always will be."
+    }
+  ],
+  "_review": "Have the 'not a political contribution' wording reviewed before launch. Pick the payment platform (a Stripe Payment Link with 'customer chooses amount' supports both monthly and one-time).",
+  "contribute": {
+    "title": "Contribute what you want",
+    "text": "There are no levels and no minimum. Pick any amount, monthly or once. Monthly contributions make the work plannable, but a single gift is just as welcome.",
+    "note": "Payments are handled by a third-party platform. I never see your card details. You can change or cancel a monthly contribution at any time."
+  }
+}
