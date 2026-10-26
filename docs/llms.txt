@@ -7,7 +7,7 @@ Email: eric@ericlombardi.ca. Location: Toronto, Ontario, Canada. Socials: Linked
 ## Pages
 
 - [Consulting](https://elombardi-website.github.io/ericlombardi-site/consulting/)
-- [Writing](https://elombardi-website.github.io/ericlombardi-site/writing/)
+- [Writing and media](https://elombardi-website.github.io/ericlombardi-site/writing/)
 - [Public policy](https://elombardi-website.github.io/ericlombardi-site/policy/)
 - [Events](https://elombardi-website.github.io/ericlombardi-site/events/)
 - [Contact](https://elombardi-website.github.io/ericlombardi-site/contact/)

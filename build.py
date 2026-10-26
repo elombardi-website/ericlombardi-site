@@ -41,7 +41,7 @@ SITEMAP = []     # (url, lastmod date)
 WARN = []
 PERSON_ID = DOMAIN + "/#person"
 SITE_ID = DOMAIN + "/#website"
-CRUMB = {"consulting": "Consulting", "writing": "Writing", "media": "Media", "policy": "Public policy",
+CRUMB = {"consulting": "Consulting", "writing": "Writing and media", "media": "Media", "policy": "Public policy",
          "events": "Events", "support": "Support", "about": "About",
          "contact": "Contact", "privacy": "Privacy", "category": "Category"}
 
@@ -508,7 +508,7 @@ def media_row(m, group="media", extra=False):
             f'<span class="date">{fmt_date(m["d"])}<br><span class="fmt">{esc(fmt)}</span></span></a></li>')
 
 
-def media_by_year(items, group="media", limit=None, wide=False):
+def media_by_year(items, group="media", limit=None, wide=False, batch=10):
     out, year, i = [], None, 0
     cls = "list wide" if wide else "list compact"
     for m in items:
@@ -525,7 +525,16 @@ def media_by_year(items, group="media", limit=None, wide=False):
     html_ = "".join(out)
     if limit is not None and len(items) > limit:
         html_ = (f'<div class="expander" data-expander="{group}" data-expanded="0">{html_}'
-                 f'<button class="btn secondary small expand" type="button" data-expand-for="{group}">Show all {len(items)}</button></div>')
+                 f'<button class="btn secondary small expand" type="button" data-expand-for="{group}" data-batch="{batch}">Show more ({len(items) - limit} more)</button></div>')
+    return html_
+
+
+def writing_list(items, group="writing", limit=3, batch=10):
+    rows = "".join(article_entry(a, extra=(i >= limit)) for i, a in enumerate(items))
+    html_ = f'<ul class="rule-list">{rows}</ul>'
+    if len(items) > limit:
+        html_ = (f'<div class="expander" data-expander="{group}" data-expanded="0">{html_}'
+                 f'<button class="btn secondary small expand" type="button" data-expand-for="{group}" data-batch="{batch}">Show more ({len(items) - limit} more)</button></div>')
     return html_
 
 
@@ -617,12 +626,18 @@ def record_rows(items):
 def authored_items(posts, media):
     """One collection of Eric's written work, classified by authorship, sorted by publication date.
     Local posts that are companions to an external canonical piece are linked from that piece, not listed twice."""
+    def pic(slug, fallback=""):
+        cand = ASSETS / "img" / "writing" / f"{slug}.jpg"
+        if cand.exists():
+            return f"/assets/img/writing/{slug}.jpg"
+        return fallback or "/assets/img/article-placeholder.jpg"
     items = []
     for p in posts:
         if p.get("canonical_external"):
             continue
         items.append({"title": p["title"], "d": p["date"], "url": u(p["url"]), "external": False, "source": "This site",
-                      "summary": p["summary"], "cat": cat_link(p), "action": "Read the essay", "featured": p.get("featured", False), "companion": None})
+                      "summary": p["summary"], "cat": cat_link(p), "action": "Read the essay", "featured": p.get("featured", False), "companion": None,
+                      "image": pic(p["slug"], p.get("image", ""))})
     for m in media:
         if m.get("kind") != "column":
             continue
@@ -631,21 +646,22 @@ def authored_items(posts, media):
             comp = (m.get("companion_label", "Companion note on this site"), u(m["companion"]))
         items.append({"title": m["title"], "d": m["d"], "url": m["url"], "external": True, "source": m["outlet"],
                       "summary": m.get("summary", ""), "cat": "", "action": f"Read at {m['outlet']}", "featured": False, "companion": comp,
-                      "verify": m.get("verify", "")})
+                      "verify": m.get("verify", ""), "image": pic(m.get("id", ""))})
     items.sort(key=lambda x: x["d"], reverse=True)
     return items
 
 
-def article_entry(a, compact=False):
-    """One card family for local and external authored work. Source is metadata, not a different category."""
-    cls = "entry compact" if compact else "entry with-meta"
+def article_entry(a, compact=False, extra=False):
+    """One card family for local and external authored work, with a small thumbnail. Source is metadata."""
+    cls = "entry with-thumb compact" if compact else "entry with-thumb"
     ext = ' target="_blank" rel="noopener"' if a["external"] else ""
     src = a["cat"] if a["cat"] else f'<span class="cat">{esc(a["source"])}</span>'
     meta = f'<div class="meta">{src}<span>{fmt_date(a["d"])}</span></div>'
-    summ = f'<p>{esc(a["summary"])}</p>' if a.get("summary") else ""
+    summ = "" if compact else (f'<p>{esc(a["summary"])}</p>' if a.get("summary") else "")
     comp = f'<a class="more" href="{a["companion"][1]}">{esc(a["companion"][0])} &rarr;</a>' if a.get("companion") else ""
+    thumb = f'<a class="thumb" href="{esc(a["url"])}"{ext} tabindex="-1" aria-hidden="true"><img src="{u(a["image"])}" alt="" loading="lazy" width="400" height="300"></a>'
     body = f'<div><h3 class="title-editorial"><a href="{esc(a["url"])}"{ext}>{esc(a["title"])}</a></h3>{summ}<div class="entry-actions"><a class="more" href="{esc(a["url"])}"{ext}>{esc(a["action"])}{" &#8599;" if a["external"] else " &rarr;"}</a>{comp}</div></div>'
-    return f'<li data-filter-item="writing" data-values="{"external" if a["external"] else "local"}"><article class="{cls}">{meta}{body}</article></li>'
+    return f'<li data-filter-item="writing" data-values="{"external" if a["external"] else "local"}"{" data-extra hidden" if extra else ""}><article class="{cls}">{thumb}{meta}{body}</article></li>'
 
 
 def feature_article(a):
@@ -653,7 +669,7 @@ def feature_article(a):
     src = a["cat"] if a["cat"] else f'<span class="cat">{esc(a["source"])}</span>'
     summ = f'<p class="summary">{esc(a["summary"])}</p>' if a.get("summary") else ""
     comp = f'<a class="more" href="{a["companion"][1]}" style="margin-left:1rem">{esc(a["companion"][0])} &rarr;</a>' if a.get("companion") else ""
-    return (f'<article class="feature-post"><div class="meta">{src}<span>{fmt_date(a["d"])}</span></div>'
+    return (f'<article class="feature-post"><a href="{esc(a["url"])}"{ext} tabindex="-1" aria-hidden="true"><img class="feature-img" src="{u(a["image"])}" alt="" width="1600" height="1000"></a><div class="meta">{src}<span>{fmt_date(a["d"])}</span></div>'
             f'<h3 class="title-feature"><a href="{esc(a["url"])}"{ext}>{esc(a["title"])}</a></h3>{summ}'
             f'<div class="actions" style="margin-top:0"><a class="btn secondary small" href="{esc(a["url"])}"{ext}>{esc(a["action"])}{" &#8599;" if a["external"] else ""}</a>{comp}</div></article>')
 
@@ -684,14 +700,12 @@ def build_home(posts, media, events, policy_items):
     work = band_areas("What I do", SITE["pillars"], cols=3)
     authored = authored_items(posts, media)
     featured = next((a for a in authored if a.get("featured")), authored[0] if authored else None)
-    others = [a for a in authored if a is not featured][:2]
+    others = [a for a in authored if a is not featured][:3]
     writing = ""
     if featured:
         writing = f'<div class="feature-grid">{feature_article(featured)}<div class="secondary"><ul class="rule-list">{"".join(article_entry(a, compact=True) for a in others)}</ul></div></div>'
-    recent_media = [m for m in media if m["kind"] in ("interview", "coverage")][:6]
-    half = (len(recent_media) + 1) // 2
-    media_cols = (f'<div class="list-cols"><ul class="list compact">{"".join(media_row(m, "home") for m in recent_media[:half])}</ul>'
-                  f'<ul class="list compact">{"".join(media_row(m, "home") for m in recent_media[half:])}</ul></div>')
+    recent_media = [m for m in media if m["kind"] in ("interview", "coverage")][:3]
+    media_cols = f'<ul class="list wide">{"".join(media_row(m, "home") for m in recent_media)}</ul>'
     upcoming = [e for e in events if not e["past"]][:3]
     events_html = ""
     if upcoming:
@@ -720,7 +734,7 @@ def build_home(posts, media, events, policy_items):
 </div></section>
 
 <section class="section tight"><div class="wrap">
-  <div class="section-head row"><h2 class="title-editorial">In the media</h2><a class="more" href="{u('/media/')}">Interviews and coverage &rarr;</a></div>
+  <div class="section-head row"><h2 class="title-editorial">In the media</h2><a class="more" href="{u('/media/')}">More interviews and coverage &rarr;</a></div>
   {media_cols}
 </div></section>
 
@@ -733,7 +747,7 @@ def build_home(posts, media, events, policy_items):
 
 <section class="section tight"><div class="wrap feature">
   <div><h2 class="title-editorial">Support the work</h2><p>Contributions fund events, travel and the community around the public policy work. None of it is personal income, and the support page says how it is used.</p><div class="actions"><a class="btn secondary" href="{u('/support/')}">How support works</a></div></div>
-  <img src="{u('/assets/img/topic-democracy.jpg')}" alt="" loading="lazy" width="1600" height="1000">
+  <img src="{u('/assets/img/support.jpg')}" alt="" loading="lazy" width="1600" height="1000">
 </div></section>
 
 {contact_band()}"""
@@ -742,21 +756,17 @@ def build_home(posts, media, events, policy_items):
 
 def build_consulting():
     c = load_json("consulting.json")
-    intro = "".join(f"<p>{inline(p)}</p>" for p in c["intro"])
-
-    services = band_areas("Services", [{"symbol": sv.get("symbol"), "title": sv["title"], "text": sv["summary"],
-                                        "href": f"/consulting/#{sv['example']['anchor']}" if sv.get("example") else None,
-                                        "cta": f"Example: {sv['example']['label']}" if sv.get("example") else None} for sv in c["services"]], cols=4)
+    intro = "".join(f"<p>{inline(p)}</p>" for p in c.get("intro", []))
+    intro_html = f'<section class="section tight"><div class="wrap"><div class="prose">{intro}</div></div></section>' if intro else ""
+    services = band_areas("Services", [{"symbol": sv.get("symbol"), "title": sv["title"], "text": sv["summary"]} for sv in c["services"]], cols=4)
     steps = "".join(f'<div><div class="num">{i}</div><h3>{esc(st["title"])}</h3><p>{esc(st["text"])}</p></div>'
                     for i, st in enumerate(c["how"]["steps"], start=1))
     partner = c["partner"]
     ptext = "".join(f"<p>{inline(p)}</p>" for p in partner["text"])
     pserv = "".join(f'<span class="tag">{esc(s)}</span>' for s in partner["services"])
-    work = "".join(f'<article class="work-item-project" id="{esc(w.get("id", slugify(w["client"])))}"><div class="meta"><span>{esc(w["dates"])}</span><span>&middot;</span><span>{esc(w["role"])}</span></div><h3>{esc(w["client"])}</h3><p>{esc(w["text"])}</p></article>'
-                   for w in c["work"])
     sectors = "".join(f'<span class="tag">{esc(s)}</span>' for s in c["sectors"])
     body = f"""{page_hero(c['kicker'], esc(c['headline']), esc(c['lede']), cta_actions('Consulting enquiry'), image='/assets/img/eric-consulting.jpg', alt=NAME)}
-<section class="section tight"><div class="wrap"><div class="prose">{intro}</div></div></section>
+{intro_html}
 {services}
 <section class="section tight"><div class="wrap">{label("Sectors")}<div class="tags">{sectors}</div></div></section>
 <section class="section"><div class="wrap">
@@ -767,15 +777,11 @@ def build_consulting():
   <div>{label("Partners")}<h2 class="title-editorial">{esc(partner['headline'])}</h2>{ptext}<p><a class="more" href="{esc(partner['url'])}" target="_blank" rel="noopener">Visit {esc(partner['name'])} &#8599;</a></p></div>
   <div>{label("What the partnership brings")}<div class="tags">{pserv}</div></div>
 </div></section>
-<section class="section" id="projects"><div class="wrap">
-  <div class="section-head">{label(esc(c.get('work_title', 'Selected projects')), rule=True)}<h2>Selected projects.</h2><p class="muted">Client names are shared where I'm able to. Others are described by type.</p></div>
-  <div class="cols cols-2">{work}</div>
-</div></section>
 <section class="section band dark"><div class="wrap two-col">
   <div><h2>{esc(c['cta']['headline'])}</h2><p class="lede">{esc(c['cta']['text'])}</p></div>
   <div class="actions" style="margin:0;align-self:center"><a class="btn primary" href="mailto:{EMAIL}?subject=Consulting%20enquiry">{EMAIL}</a>{f'<a class="btn secondary" href="{esc(SITE["booking_url"])}" target="_blank" rel="noopener">Book a call</a>' if SITE.get('booking_url') else ''}</div>
 </div></section>"""
-    desc = "Eric Lombardi advises companies and investors in financial services and technology on strategy, acquisitions, product development and technology delivery, independently and with partner firms like Electric Mind."
+    desc = "Eric Lombardi advises companies and investors in financial services and technology on strategy, acquisitions, product development and delivery, independently and with partner firms like Electric Mind."
     ld = [{"@type": "ProfessionalService", "@id": DOMAIN + "/consulting/#service", "name": f"{NAME} Consulting", "url": absu("/consulting/"),
            "provider": {"@id": PERSON_ID}, "areaServed": ["Canada", "United States"], "description": desc,
            "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Services", "itemListElement": [
@@ -785,22 +791,29 @@ def build_consulting():
 
 def build_writing(posts, media):
     authored = authored_items(posts, media)
+    featured = next((a for a in authored if a.get("featured")), authored[0] if authored else None)
+    rest = [a for a in authored if a is not featured]
+    top3, archive = rest[:3], rest[3:]
+    feature = f'<div class="feature-grid">{feature_article(featured)}<div class="secondary"><ul class="rule-list">{"".join(article_entry(a, compact=True) for a in top3)}</ul></div></div>' if featured else ""
     chips = ('<div class="chips" data-filter-group="writing"><button class="chip" data-value="all" aria-pressed="true">All</button>'
              '<button class="chip" data-value="local" aria-pressed="false">On this site</button>'
              '<button class="chip" data-value="external" aria-pressed="false">Elsewhere</button></div>')
-    entries = '<ul class="rule-list">' + "".join(article_entry(a) for a in authored) + "</ul>"
-    about_me = [m for m in media if m["kind"] in ("interview", "coverage")][:6]
-    media_sub = ('<ul class="list compact">' + "".join(media_row(m, "writing-media") for m in about_me) + "</ul>")
+    about_me = [m for m in media if m["kind"] in ("interview", "coverage")][:3]
+    media_sub = f'<ul class="list wide">{"".join(media_row(m, "writing-media") for m in about_me)}</ul>'
     lede = "Essays, columns and notes on politics, prosperity and technology, with a focus on Ontario. Everything I have written is here in one list, whether it was published on this site, in The Hub, in the Toronto Star or elsewhere."
     actions = f'<div class="actions"><a class="btn secondary small" href="{u("/feed.xml")}">RSS feed</a><a class="btn secondary small" href="#signup">New writing by email</a></div>'
-    body = f"""{page_hero('Writing', 'Writing on politics, prosperity and technology.', lede, actions)}
-<section class="section tight"><div class="wrap">{chips}{entries}</div></section>
+    body = f"""{page_hero('Writing and media', 'Writing on politics, prosperity and technology.', lede, actions)}
+<section class="section tight"><div class="wrap">{feature}</div></section>
 <section class="section tight"><div class="wrap">
-  <div class="section-head row"><div>{label("About the work")}<h2 class="title-editorial">In the media</h2></div><a class="more" href="{u('/media/')}">Interviews, coverage and media kit &rarr;</a></div>
-  <div class="list-cols">{media_sub}</div>
+  <div class="section-head row"><h2 class="title-editorial">More writing</h2>{chips}</div>
+  {writing_list(archive, 'writing', limit=3, batch=10)}
+</div></section>
+<section class="section tight"><div class="wrap">
+  <div class="section-head row"><div>{label("About the work")}<h2 class="title-editorial">In the media</h2></div><a class="more" href="{u('/media/')}">More interviews, coverage and the media kit &rarr;</a></div>
+  {media_sub}
 </div></section>
 {signup_section('signup', dark=True)}"""
-    render(T("Writing"), "Essays and columns by Eric Lombardi on politics, prosperity and technology, published on this site, in The Hub, the Toronto Star and elsewhere.", body, path="/writing/", current="/writing/",
+    render(T("Writing and media"), "Essays and columns by Eric Lombardi on politics, prosperity and technology, published on this site, in The Hub, the Toronto Star and elsewhere.", body, path="/writing/", current="/writing/",
            jsonld=[{"@type": "Blog", "@id": DOMAIN + "/writing/#blog", "name": f"{NAME}: writing", "url": absu("/writing/"), "author": {"@id": PERSON_ID},
                     "blogPost": [{"@type": "BlogPosting", "headline": a["title"], "url": a["url"] if a["external"] else absu(a["url"].replace(BASE, "", 1)), "datePublished": a["d"].isoformat(),
                                   **({"publisher": {"@type": "Organization", "name": a["source"]}} if a["external"] else {})} for a in authored[:30]]}],
@@ -832,7 +845,7 @@ def build_writing(posts, media):
                  f'<a href="https://bsky.app/intent/compose?text={esc(p["title"])}%20{share_url}" target="_blank" rel="noopener">Bluesky</a>'
                  f'<a href="mailto:?subject={esc(p["title"])}&body={share_url}">Email</a></div>')
         more = [a for a in authored if a["url"] != u(p["url"])][:3]
-        related = ('<section class="section tight"><div class="wrap"><div class="section-head row"><h2 class="title-editorial">More writing</h2><a class="more" href="' + u("/writing/") + '">All writing &rarr;</a></div><ul class="rule-list">' + "".join(article_entry(a, compact=True) for a in more) + "</ul></div></section>") if more else ""
+        related = ('<section class="section tight"><div class="wrap"><div class="section-head row"><h2 class="title-editorial">More writing</h2><a class="more" href="' + u("/writing/") + '">All writing and media &rarr;</a></div><ul class="rule-list">' + "".join(article_entry(a, compact=True) for a in more) + "</ul></div></section>") if more else ""
         body = f"""<section class="wrap"><header class="article-head">
   {label(cat_link(p), rule=True)}
   <h1>{esc(p['title'])}</h1>
@@ -858,16 +871,16 @@ def build_media(media):
     formats = sorted({m.get("format", "") for m in interviews if m.get("format")})
     chips = '<div class="chips" data-filter-group="media"><button class="chip" data-value="all" aria-pressed="true">All</button>' + "".join(
         f'<button class="chip" data-value="{esc(f)}" aria-pressed="false">{esc(f.title())}</button>' for f in formats) + "</div>"
-    lede = f"Interviews, profiles and coverage about the work. My own columns and essays are in <a href=\"{u('/writing/')}\">Writing</a>, and coverage of the 2026 leadership campaign is archived <a href=\"{u('/policy/ontario-liberal-leadership-2026/#coverage')}\">on the campaign page</a>."
+    lede = f"Interviews, profiles and coverage about the work. My own columns and essays are in <a href=\"{u('/writing/')}\">Writing and media</a>, and coverage of the 2026 leadership campaign is archived <a href=\"{u('/policy/ontario-liberal-leadership-2026/#coverage')}\">on the campaign page</a>."
     actions = f'<div class="actions"><a class="btn primary small" href="mailto:{EMAIL}?subject=Media%20request">Media and speaking requests</a><a class="btn secondary small" href="#media-kit">Media kit</a></div>'
     news = ""
     if coverage:
-        news = f"""<section class="section tight"><div class="wrap"><div class="section-head"><h2 class="title-editorial">Coverage of the work</h2></div>{media_by_year(coverage, 'news', limit=6, wide=True)}</div></section>"""
+        news = f"""<section class="section tight"><div class="wrap"><div class="section-head"><h2 class="title-editorial">Coverage of the work</h2></div>{media_by_year(coverage, 'news', limit=3, wide=True)}</div></section>"""
     body = f"""{page_hero('In the media', 'Interviews, coverage and appearances.', lede, actions)}
 <section class="section tight"><div class="wrap">
   <div class="section-head">{label("Interviews and appearances", rule=True)}<h2 class="title-editorial">Podcasts, broadcast and print</h2></div>
   {chips}
-  {media_by_year(interviews, 'media', limit=10, wide=True)}
+  {media_by_year(interviews, 'media', limit=3, wide=True)}
 </div></section>
 <section class="section band limestone" id="media-kit"><div class="wrap">
   <div class="section-head">{label("Media kit")}<h2 class="title-editorial">For producers, editors and organizers.</h2></div>
@@ -907,7 +920,7 @@ def build_policy(policy, media):
             coverage = f"""<section class="section" id="coverage"><div class="wrap">
   <div class="section-head">{label("Archive", rule=True)}<h2 class="title-editorial">Campaign coverage, columns and interviews</h2><p class="muted">{len(campaign_items)} items from the 2026 leadership campaign, kept separate from my other <a href="{u('/media/')}">media</a> and <a href="{u('/writing/')}">writing</a>.</p></div>
   <div class="chips" data-filter-group="coverage"><button class="chip" data-value="all" aria-pressed="true">All</button><button class="chip" data-value="column" aria-pressed="false">Columns by Eric</button><button class="chip" data-value="interview" aria-pressed="false">Interviews</button><button class="chip" data-value="coverage" aria-pressed="false">Coverage</button></div>
-  {media_by_year(campaign_items, 'coverage', limit=12, wide=True)}
+  {media_by_year(campaign_items, 'coverage', limit=3, wide=True)}
 </div></section>"""
         feature = ""
         if it.get("feature_title"):
@@ -1151,6 +1164,47 @@ def build_api(posts, media, events):
     write("api/events.json", json.dumps([clean(e) for e in events], ensure_ascii=False, indent=1))
 
 
+PHOTO_SLOTS = {  # photos/<name> -> assets/img/<target>, max dimension
+    "hero": ("eric-hero.jpg", 1800), "consulting": ("eric-consulting.jpg", 1800), "about": ("eric-about.jpg", 1600),
+    "headshot": ("eric-headshot.jpg", 1600), "support": ("support.jpg", 1800), "campaign": ("eric-campaign.jpg", 1800),
+    "more-neighbours": ("more-neighbours.jpg", 1800), "build-toronto": ("build-toronto.jpg", 1800),
+    "article-placeholder": ("article-placeholder.jpg", 1200),
+}
+
+
+def sync_photos():
+    """Copy photographs from the photos/ drop folder into assets/img, resized, replacing placeholders."""
+    import subprocess
+    pdir = HERE / "photos"
+    if not pdir.exists():
+        return
+    exts = (".jpg", ".jpeg", ".png", ".heic", ".tif", ".tiff", ".webp")
+    def convert(src, dest, maxdim):
+        subprocess.run(["sips", "-s", "format", "jpeg", "-s", "formatOptions", "85", "-Z", str(maxdim), str(src), "--out", str(dest)], capture_output=True)
+    for stem, (target, maxdim) in PHOTO_SLOTS.items():
+        for ext in exts:
+            src = pdir / (stem + ext)
+            if src.exists():
+                convert(src, ASSETS / "img" / target, maxdim)
+                print("  photo:", src.name, "->", target)
+                break
+    for ext in exts:
+        src = pdir / ("share" + ext)
+        if src.exists():
+            dest = ASSETS / "img" / "og-default.jpg"
+            convert(src, dest, 1200)
+            subprocess.run(["sips", "-c", "630", "1200", str(dest)], capture_output=True)
+            print("  photo: share ->", dest.name)
+            break
+    wdir = pdir / "writing"
+    if wdir.exists():
+        (ASSETS / "img" / "writing").mkdir(exist_ok=True)
+        for src in sorted(wdir.iterdir()):
+            if src.suffix.lower() in exts:
+                convert(src, ASSETS / "img" / "writing" / (src.stem + ".jpg"), 1200)
+                print("  photo: writing/" + src.name)
+
+
 def copy_assets():
     shutil.copytree(ASSETS, OUT / "assets", dirs_exist_ok=True)
 
@@ -1160,6 +1214,7 @@ def main():
     if OUT.exists():
         shutil.rmtree(OUT)
     OUT.mkdir()
+    sync_photos()
     copy_assets()
     posts, media, events = load_posts(), load_media(), load_events()
     policy = load_policy()

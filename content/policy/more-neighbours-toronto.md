@@ -5,7 +5,7 @@ title: More Neighbours Toronto
 role: Founder and president
 dates: 2021 to January 2026
 summary: Canada's largest grassroots housing-abundance organization: a non-partisan network of pro-housing voices that turns up to say yes to more homes, in every neighbourhood.
-image: /assets/img/topic-housing.jpg
+image: /assets/img/more-neighbours.jpg
 links: More Neighbours Toronto|https://www.moreneighbours.ca
 ---
 

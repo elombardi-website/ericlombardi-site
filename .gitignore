@@ -2,3 +2,5 @@ build/
 node_modules/
 .DS_Store
 fonts-staging/
+photos/*
+!photos/README.md

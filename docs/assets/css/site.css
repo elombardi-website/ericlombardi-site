@@ -233,6 +233,15 @@ a.area:hover .more{text-decoration:underline}
 @media(min-width:48rem){.entry.with-meta{grid-template-columns:10rem 1fr;gap:var(--space-8)}}
 .entry.compact{padding:var(--space-4) 0}
 .entry.compact p{font-size:var(--fs-small)}
+/* image roles: large for the featured piece, small thumbnails for the next three and for lists */
+.feature-post .feature-img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:var(--radius-subtle);margin:0 0 var(--space-4)}
+.entry.with-thumb{grid-template-columns:5.5rem 1fr;gap:var(--space-4);align-items:start}
+.entry.with-thumb .thumb{display:block;grid-row:1 / span 2}
+.entry.with-thumb .thumb img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--radius-subtle)}
+.entry.with-thumb .meta{grid-column:2}
+.entry.with-thumb>div{grid-column:2}
+@media(min-width:48rem){.entry.with-thumb{grid-template-columns:7.5rem 1fr;gap:var(--space-6)}}
+.entry.with-thumb.compact .meta{margin-bottom:.25rem}
 
 /* ---- Dated record (public policy) ---- */
 .record{list-style:none;padding:0;margin:0;border-top:1px solid var(--line)}
@@ -268,6 +277,7 @@ a.area:hover .more{text-decoration:underline}
 .year-head:first-child{margin-top:0}
 .expander .expand{margin-top:var(--space-4)}
 .expander[data-expanded="1"] .expand{display:none}
+.section-head.row .chips{margin:0}
 
 /* ---- Columns ---- */
 .cols{display:grid;gap:var(--space-6)}

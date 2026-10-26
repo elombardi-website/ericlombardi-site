@@ -1,6 +1,5 @@
 /* site.js — small progressive enhancements. No frameworks, no tracking. */
 (function () {
-  // Mobile navigation
   var header = document.querySelector('.site-header');
   var burger = header && header.querySelector('.burger');
   if (burger) {
@@ -15,24 +14,39 @@
     });
   }
 
-  // Expanders: [data-expander] hides items marked data-extra until "Show all" is clicked
-  function expand(key) {
+  // Expanders: items marked data-extra are hidden; "Show more" reveals the next batch (or all).
+  function tidyYearHeads(box) {
+    box.querySelectorAll('[data-year-head]').forEach(function (h) {
+      var list = h.nextElementSibling, any = false;
+      if (list) list.querySelectorAll('li').forEach(function (li) { if (!li.hidden) any = true; });
+      h.hidden = !any;
+    });
+  }
+  function reveal(key, count) {
     var box = document.querySelector('[data-expander="' + key + '"]');
     if (!box) return;
-    box.querySelectorAll('[data-extra]').forEach(function (el) { el.hidden = false; });
-    box.setAttribute('data-expanded', '1');
+    var hidden = Array.prototype.slice.call(box.querySelectorAll('[data-extra]')).filter(function (el) { return el.hidden && el.tagName === 'LI'; });
+    (count ? hidden.slice(0, count) : hidden).forEach(function (el) { el.hidden = false; });
+    tidyYearHeads(box);
+    var remaining = box.querySelectorAll('li[data-extra][hidden]').length;
+    var btn = box.querySelector('[data-expand-for]');
+    if (btn) {
+      if (remaining === 0) { box.setAttribute('data-expanded', '1'); }
+      else btn.textContent = 'Show more (' + remaining + ' more)';
+    }
   }
+  function expandAll(key) { reveal(key, 0); }
   document.querySelectorAll('[data-expand-for]').forEach(function (btn) {
-    btn.addEventListener('click', function () { expand(btn.getAttribute('data-expand-for')); });
+    btn.addEventListener('click', function () { reveal(btn.getAttribute('data-expand-for'), parseInt(btn.getAttribute('data-batch') || '0', 10)); });
   });
 
-  // Filter chips
+  // Filter chips refine one list; filtering reveals everything first so nothing is hidden twice.
   document.querySelectorAll('[data-filter-group]').forEach(function (group) {
     var key = group.getAttribute('data-filter-group');
     var items = document.querySelectorAll('[data-filter-item="' + key + '"]');
     group.querySelectorAll('.chip').forEach(function (chip) {
       chip.addEventListener('click', function () {
-        expand(key);
+        expandAll(key);
         group.querySelectorAll('.chip').forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
         chip.setAttribute('aria-pressed', 'true');
         var want = chip.getAttribute('data-value');
@@ -40,22 +54,19 @@
           var vals = (it.getAttribute('data-values') || '').split(' ');
           it.hidden = !(want === 'all' || vals.indexOf(want) !== -1);
         });
-        document.querySelectorAll('[data-year-head="' + key + '"]').forEach(function (h) {
-          var sib = h.nextElementSibling, any = false;
-          if (sib) sib.querySelectorAll('[data-filter-item]').forEach(function (it) { if (!it.hidden) any = true; });
-          h.hidden = !any;
-        });
+        var box = document.querySelector('[data-expander="' + key + '"]');
+        if (box) tidyYearHeads(box);
       });
     });
   });
 
-  // Sign-up form. With no list endpoint configured, the form is NOT a working subscription:
-  // it opens an email draft so Eric can add the person by hand, and says so plainly.
+  // Sign-up form: with no list endpoint configured this is NOT a working subscription; it opens an
+  // email draft so Eric can add the person by hand, and says so plainly.
   document.querySelectorAll('form.signup').forEach(function (form) {
     form.addEventListener('submit', function (e) {
       var hp = form.querySelector('.hp input');
       if (hp && hp.value) { e.preventDefault(); return; }
-      if (form.getAttribute('data-endpoint')) return;            // native POST to the list tool
+      if (form.getAttribute('data-endpoint')) return;
       e.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }
       var fd = new FormData(form), lines = [], name = [];
@@ -69,7 +80,6 @@
     });
   });
 
-  // Copy-to-clipboard (calendar feed URL)
   document.querySelectorAll('[data-copy]').forEach(function (btn) {
     btn.addEventListener('click', function () {
       if (!navigator.clipboard) return;

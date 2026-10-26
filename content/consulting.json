@@ -1,45 +1,27 @@
 {
   "kicker": "Consulting",
   "headline": "Consulting in financial services and technology.",
-  "lede": "I advise companies and investors on strategy, acquisitions, product development, and technology delivery. My work has included payments modernization, the sale of a digital banking business, and helping a San Francisco startup raise capital and build its product.",
-  "intro": [
-    "Most engagements start with a question that has money, time or reputation attached to it. Should we bring this platform in-house or re-contract? Is this business worth more to us or to someone else? What would it take to ship this, and who do we need? I do the analysis, build the case, and stay through delivery."
-  ],
+  "lede": "I advise companies and investors in financial services and technology on strategy, acquisitions, product development and delivery. The work runs from the first question to a working result, with the people and partners each stage needs.",
+  "intro": [],
   "services": [
     {
-      "title": "Strategy and investment decisions",
+      "title": "Strategy & Investment Decisions",
       "summary": "Business cases, build-versus-buy and vendor decisions, operating models, and the materials an executive team or board needs to decide.",
-      "example": {
-        "label": "A global bank's real-time payments decision",
-        "anchor": "a-major-global-bank"
-      },
       "symbol": "grid"
     },
     {
-      "title": "Mergers, acquisitions and divestitures",
+      "title": "Mergers & Acquisitions",
       "summary": "Options assessments, commercial and product due diligence, carve-outs and transition planning, and post-merger integration.",
-      "example": {
-        "label": "The sale of Central 1's digital banking business",
-        "anchor": "central-1-credit-union"
-      },
       "symbol": "lines"
     },
     {
-      "title": "Ventures, startups and advisory",
+      "title": "Ventures, Startups & Advisory",
       "summary": "Fundraising materials and models, product strategy and go-to-market, and advisory roles for founders and investors.",
-      "example": {
-        "label": "Cut+Dry's fundraising and product",
-        "anchor": "cut-dry"
-      },
       "symbol": "portal"
     },
     {
-      "title": "Program delivery",
+      "title": "Program Management & Governance",
       "summary": "Program design and governance, delivery models and team design, estimation and resourcing, and vendor management.",
-      "example": {
-        "label": "A pod-based delivery model for a payments program",
-        "anchor": "a-major-global-bank"
-      },
       "symbol": "steps"
     }
   ],
@@ -133,5 +115,6 @@
     "headline": "Get in touch.",
     "text": "Email a few details about what you have in mind."
   },
-  "work_title": "Selected projects"
+  "work_title": "Selected projects",
+  "_projects_note": "The 'work' list is kept for reference but is not rendered: Eric asked (26 Oct 2026) to keep the consulting page about what he does, not his resume or previous clients."
 }

@@ -5,7 +5,7 @@ title: Build Toronto
 role: Chair and co-founder
 dates: September 2025 to January 2026
 summary: The Toronto chapter of Build Canada: founders, operators and civic leaders publishing concrete, ambitious proposals for the city on housing, infrastructure, governance and growth.
-image: /assets/img/topic-economy.jpg
+image: /assets/img/build-toronto.jpg
 links: Build Toronto|https://www.buildcanada.com/toronto; Memos|https://www.buildcanada.com/toronto/memos
 ---
 

@@ -73,7 +73,7 @@ const AUDIT = (TOL) => {
 
   // 4. sibling grid rows: headings, descriptions and actions of areas/columns in the same row must share tops
   const rowFindings = [];
-  for (const grid of document.querySelectorAll('.area-grid,.cols,.feature-grid,.footer-grid,.two-col.equal,.list-cols')) {
+  for (const grid of document.querySelectorAll('.area-grid,.cols,.footer-grid,.two-col.equal,.list-cols')) {   // .feature-grid is designed to differ (featured item carries a large image)
     if (!vis(grid)) continue;
     const items = [...grid.children].filter(vis);
     const rows = new Map();
