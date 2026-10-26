@@ -1,5 +1,87 @@
 # Change log
 
+## Revision 3 (26 October 2026)
+
+Applies "Eric Lombardi — revision 3: alignment audit, unified writing, and a more consistent
+identity". Captures were taken with `review.js` (real Chrome, real font files, fonts awaited,
+failed requests logged) before and after the work, at 1440 × 1000 and 390 × 844 for Home,
+Consulting, About, Writing, Media, Public policy, Contact and one article, plus 768 × 1024 and
+320 × 900 for Home, Consulting, Writing and Contact, and the open mobile menu as a separate state.
+Before: `build/review-before/`. After: `build/review-after/`. Each folder has clean and
+guide-overlay screenshots, per-page metrics and a contact sheet (`index.html`).
+
+### Confirmed defects and fixes (numbered)
+
+1. **Consulting page overflowed the viewport at 390, 768 and 320 px** (document width 470 px
+   at 390 px, 905 at 768, 463 at 320). Measured, not inferred. Cause: the "Example" links in the
+   service columns were set `white-space: nowrap`, which forced each grid column past its track.
+   Fix: `.more` wraps normally and grid children carry `min-width: 0`. After: document width
+   equals the viewport at every width.
+2. **Article page overflowed at 390 px** (document width 407 px). Cause: embedded Datawrapper
+   charts carry inline `margin-right: 20px` on a 100 %-wide iframe. Fix: embeds are forced to
+   `max-width: 100%` with no inline margin. After: 390 px.
+3. **Three-area band headings were Manrope, and the three areas did not share rows.** Each
+   column's description and action started at its own height. Fix: the band is a component whose
+   areas are grid items on four shared rows (symbol, heading, description, action) using
+   `grid-template-rows: subgrid`, with a flex fallback where subgrid is unsupported. Measured
+   after at 1440 px: the three headings top at the same y, the three descriptions start together,
+   and the three actions sit on one bottom row.
+4. **Section titles with right-hand links** ("Latest writing / All writing", "In the media",
+   "Public policy") now sit in a baseline-aligned row with the heading's bottom margin reset, so
+   the link reads against the heading baseline. Measured text-box bottoms differ by the expected
+   descender difference only (6 px at 43 px against 15 px type; 3 px at 32 px).
+5. **Principal titles that had drifted to Manrope** (band headings, consulting service headings,
+   project names, organization names in the record, the sign-up headings) are Canela again at
+   the role sizes in the brief: inner-page titles 36–64 px, section headings 28–42 px, pillar and
+   service headings 24–30 px, article-card titles 23–32 px. Utility headings (event titles,
+   aside panels, media kit, form labels, navigation) stay Manrope.
+6. **External authored pieces showed their source twice** in the metadata row after the merge
+   (introduced during this revision, caught in the after-capture). Fix: the source appears once,
+   as the label, followed by the date.
+7. **Public-policy page left an empty column** beside the platform panel once the priorities
+   moved into the band (introduced during this revision). Fix: the panel renders full width when
+   there is no accompanying prose.
+
+Shared text axis: on every captured page, all `.wrap` containers resolve to one text axis
+(x = 140 at 1440 px), and the hero copy aligns to it while the hero image extends further right by
+design. No double padding was found.
+
+### Authorship reclassification
+
+- **Writing** is now one collection: 6 local posts plus 31 externally published columns, all
+  by Eric, sorted by original publication date, in one card family. External titles link to the
+  canonical piece and the action reads "Read at The Hub" (or the outlet). The local note "Alto
+  should be just the beginning" is a companion to the Toronto Star op-ed of the same day, so the
+  Star piece is listed once with a "Companion note and map on this site" link, and the note is not
+  listed twice. Filters are "All / On this site / Elsewhere" and refine the one feed.
+- **In the media** (22 interviews and 20 coverage items, about Eric) is a secondary archive at
+  `/media/`, reached from Writing, the footer and llms.txt. It left the primary navigation.
+  The campaign-era archive stays on the leadership page.
+- The home "Latest writing" feature is the newest authored item (currently a Hub column) unless
+  a local post carries `featured: true`. The RSS and JSON feeds, `llms.txt` and a new
+  `api/writing.json` use the same classification.
+- **Needs editorial verification** (listed as authored on the campaign news page, byline not
+  independently confirmed): The Bridge, "Ontario needs a new deal with its cities" (April 4,
+  2026); Toronto Sun, "Premier Doug Ford's eighth budget another step in Ontario's decline"
+  (March 28, 2026); Canada Real, "The housing crisis did not stay in housing" (July 28, 2026,
+  article link not located). They carry a `verify` note in `media.json`.
+
+### Band component
+
+`band_areas()` renders the dark ink band with ivory text, bronze symbols or short rules, Canela
+headings and shared rows. Used on Home (three work areas, unchanged categories), Consulting
+(the four actual service areas, two columns at 1024, four at 1280 and up) and Public policy (the
+five existing "What I argue for" priorities, three plus two columns). The writing archive and
+article pages end with a compact dark sign-up band. About and Contact were left light.
+
+### Inspected and not inspected
+
+Inspected: the captures listed above, in-browser measurements of band rows and title/link
+baselines at 1440 px, document widths at every captured size, Canela delivery
+(`document.fonts.check` true and computed family Canela on every page), zero failed requests,
+the open mobile menu. Not inspected: 1024 px and 600 px in this pass (covered in revision 2),
+enlarged-text (200 %) reflow, and real submission of the sign-up form, which has no endpoint yet.
+
 ## Revision 2 (26 October 2026)
 
 Applies "Eric Lombardi website — revision brief, version 2". Routes, content model, feeds,
