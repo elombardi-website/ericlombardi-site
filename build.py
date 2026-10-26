@@ -55,7 +55,12 @@ def slugify(s): return re.sub(r"[^a-z0-9]+", "-", str(s).lower()).strip("-")
 def truthy(v): return str(v).strip().lower() in ("1", "true", "yes")
 def strip_tags(s): return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", s)).strip()
 def reading_time(h): return max(1, round(len(strip_tags(h).split()) / 230))
-def localize(h): return re.sub(r'(src|href)="/(?!/)', lambda m: f'{m.group(1)}="{BASE}/', h) if BASE else h
+def localize(h):
+    """Prefix site-relative src/href with BASE, skipping ones u() already prefixed."""
+    if not BASE:
+        return h
+    pat = r'(src|href)="/(?!/)(?!' + re.escape(BASE.lstrip("/")) + r'/)'
+    return re.sub(pat, lambda m: f'{m.group(1)}="{BASE}/', h)
 def absolutize(h): return re.sub(r'(src|href)="/(?!/)', lambda m: f'{m.group(1)}="{DOMAIN}/', h)
 
 

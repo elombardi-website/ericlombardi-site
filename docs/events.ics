@@ -7,7 +7,7 @@ X-WR-CALNAME:Eric Lombardi: events
 X-WR-TIMEZONE:America/Toronto
 BEGIN:VEVENT
 UID:2026-06-09-ontario-liberal-leadership-campaign-launch@elombardi-website.github.io/ericlombardi-site
-DTSTAMP:20261026T125024Z
+DTSTAMP:20261026T125247Z
 DTSTART;VALUE=DATE:20260609
 DTEND;VALUE=DATE:20260610
 SUMMARY:Ontario Liberal leadership campaign launch
@@ -17,7 +17,7 @@ DESCRIPTION:Formally entered the 2026 Ontario Liberal leadership race.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-19-example-panel-on-ontario-s-growth-problem@elombardi-website.github.io/ericlombardi-site
-DTSTAMP:20261026T125024Z
+DTSTAMP:20261026T125247Z
 DTSTART;TZID=America/Toronto:20261119T183000
 DTEND;TZID=America/Toronto:20261119T200000
 SUMMARY:Example: Panel on Ontario's growth problem
@@ -27,7 +27,7 @@ DESCRIPTION:A placeholder so you can see how an upcoming event looks. Replace or
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-12-03-example-community-meetup-ottawa@elombardi-website.github.io/ericlombardi-site
-DTSTAMP:20261026T125024Z
+DTSTAMP:20261026T125247Z
 DTSTART;VALUE=DATE:20261203
 DTEND;VALUE=DATE:20261204
 SUMMARY:Example: Community meetup\, Ottawa
