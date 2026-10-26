@@ -1,5 +1,30 @@
 # Change log
 
+## Revision 3.2 (26 October 2026): image roles, three-item lists, Writing and media, consulting copy
+
+- **Image roles.** The featured piece carries a large 16:10 image above its title; the next three
+  and every list entry carry a small 4:3 thumbnail beside the metadata. Until photographs are
+  supplied, every piece uses one neutral placeholder (`assets/img/article-placeholder.jpg`). A
+  per-piece image is picked up automatically from `photos/writing/<slug>.jpg`.
+- **Photos drop folder.** `photos/README.md` lists one filename per location on the site (hero,
+  consulting, about, headshot, share image, support, the three public-policy pages, the article
+  placeholder, and per-article images). The build resizes anything placed there into
+  `assets/img/`, replacing the placeholder with the same name. Originals are not committed.
+- **Lists show three.** Home "In the media", the writing archive, the media page's interviews and
+  coverage, and the campaign archive show three items with a "Show more" control that reveals
+  ten at a time (filters reveal everything first, then refine).
+- **Writing and media.** The navigation item, page title and footer link now read "Writing and
+  media"; the page is the featured piece, three more, the capped archive, and three "In the
+  media" rows with a link to the full secondary archive.
+- **Consulting.** Service areas are now "Strategy & Investment Decisions", "Mergers &
+  Acquisitions", "Ventures, Startups & Advisory" and "Program Management & Governance" (the
+  two Eric named, with the other two matched in style). The introduction is general; the
+  paragraph beneath the header, the per-service examples and the "Selected projects" history
+  (clients, dates, roles) are gone from the page. The project data stays in `consulting.json`
+  unrendered. The About page no longer names employers or client engagements.
+- **Linter.** The featured layout is exempt from the shared-row check by design; 0 findings on
+  every page at 1440, 1728 and 390 (`build/audit-5/`).
+
 ## Revision 3.1 (26 October 2026): alignment linter and site-wide consistency
 
 Eric marked alignment failures on the live site. The fastest way to evaluate this site-wide is

@@ -60,6 +60,14 @@ GitHub Pages redeploys within a minute or two.
    (no CNAME is written). For the custom domain, build plainly with `python3 build.py` and
    commit that instead. The local preview always wants the plain build.
 
+## Photographs
+
+Drop photographs into `photos/` using the filenames in `photos/README.md` (one per location:
+`hero.jpg`, `consulting.jpg`, `about.jpg`, `headshot.jpg`, `share.jpg`, `support.jpg`,
+`campaign.jpg`, `more-neighbours.jpg`, `build-toronto.jpg`, `article-placeholder.jpg`, and
+`writing/<slug>.jpg` for individual pieces). `python3 build.py` resizes them into `assets/img/`
+and uses them in place of the placeholders. Originals stay out of git.
+
 ## Adding content
 
 **A post.** `python3 tools/new_post.py "Title" category` creates `content/posts/<slug>.md` with
