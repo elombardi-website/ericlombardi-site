@@ -36,10 +36,6 @@
    "url": "https://elombardi-website.github.io/ericlombardi-site/writing/"
   },
   {
-   "label": "Media",
-   "url": "https://elombardi-website.github.io/ericlombardi-site/media/"
-  },
-  {
    "label": "Public policy",
    "url": "https://elombardi-website.github.io/ericlombardi-site/policy/"
   },
@@ -57,5 +53,5 @@
   "json": "https://elombardi-website.github.io/ericlombardi-site/feed.json",
   "ics": "https://elombardi-website.github.io/ericlombardi-site/events.ics"
  },
- "generated": "2026-10-26T13:35:32.656342+00:00"
+ "generated": "2026-10-26T16:47:57.127137+00:00"
 }

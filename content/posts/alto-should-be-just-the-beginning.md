@@ -5,6 +5,7 @@ category: infrastructure
 summary: And I built a tool to show what this could mean.
 tags: In my own words
 origin: campaign
+canonical_external: https://www.thestar.com/opinion/contributors/alto-should-be-just-the-beginning-of-ontarios-high-speed-rail-network/article_8abf67cf-4b1b-46c3-b4e9-05d0ee8602a0.html
 ---
 
 This past week, I put out an article in The Star on Alto. Recent opposition against high-speed rail has been sad. The mistake we're making isn't pursuing this infrastructure, but failing to think long term about building out a network. And for the price of Ford's Highway 401 Tunnel vision, we can! You can read [The Star article here](https://www.thestar.com/opinion/contributors/alto-should-be-just-the-beginning-of-ontarios-high-speed-rail-network/article_8abf67cf-4b1b-46c3-b4e9-05d0ee8602a0.html).

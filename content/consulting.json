@@ -12,7 +12,8 @@
       "example": {
         "label": "A global bank's real-time payments decision",
         "anchor": "a-major-global-bank"
-      }
+      },
+      "symbol": "grid"
     },
     {
       "title": "Mergers, acquisitions and divestitures",
@@ -20,7 +21,8 @@
       "example": {
         "label": "The sale of Central 1's digital banking business",
         "anchor": "central-1-credit-union"
-      }
+      },
+      "symbol": "lines"
     },
     {
       "title": "Ventures, startups and advisory",
@@ -28,7 +30,8 @@
       "example": {
         "label": "Cut+Dry's fundraising and product",
         "anchor": "cut-dry"
-      }
+      },
+      "symbol": "portal"
     },
     {
       "title": "Program delivery",
@@ -36,7 +39,8 @@
       "example": {
         "label": "A pod-based delivery model for a payments program",
         "anchor": "a-major-global-bank"
-      }
+      },
+      "symbol": "steps"
     }
   ],
   "sectors": [

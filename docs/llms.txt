@@ -8,11 +8,12 @@ Email: eric@ericlombardi.ca. Location: Toronto, Ontario, Canada. Socials: Linked
 
 - [Consulting](https://elombardi-website.github.io/ericlombardi-site/consulting/)
 - [Writing](https://elombardi-website.github.io/ericlombardi-site/writing/)
-- [Media](https://elombardi-website.github.io/ericlombardi-site/media/)
 - [Public policy](https://elombardi-website.github.io/ericlombardi-site/policy/)
 - [Events](https://elombardi-website.github.io/ericlombardi-site/events/)
 - [Contact](https://elombardi-website.github.io/ericlombardi-site/contact/)
+- [In the media](https://elombardi-website.github.io/ericlombardi-site/media/)
 - [About](https://elombardi-website.github.io/ericlombardi-site/about/)
+- [Support and sign-up](https://elombardi-website.github.io/ericlombardi-site/support/)
 - [Privacy](https://elombardi-website.github.io/ericlombardi-site/privacy/)
 
 ## Machine-readable
@@ -21,7 +22,7 @@ Email: eric@ericlombardi.ca. Location: Toronto, Ontario, Canada. Socials: Linked
 - JSON Feed: https://elombardi-website.github.io/ericlombardi-site/feed.json
 - Calendar (iCalendar): https://elombardi-website.github.io/ericlombardi-site/events.ics
 - Sitemap: https://elombardi-website.github.io/ericlombardi-site/sitemap.xml
-- JSON API: https://elombardi-website.github.io/ericlombardi-site/api/site.json, /api/posts.json, /api/media.json, /api/events.json
+- JSON API: https://elombardi-website.github.io/ericlombardi-site/api/site.json, /api/writing.json, /api/posts.json, /api/media.json, /api/events.json
 
 ## Public policy work
 
@@ -29,71 +30,87 @@ Email: eric@ericlombardi.ca. Location: Toronto, Ontario, Canada. Socials: Linked
 - [More Neighbours Toronto](https://elombardi-website.github.io/ericlombardi-site/policy/more-neighbours-toronto/): Founder and president. Canada's largest grassroots housing-abundance organization: a non-partisan network of pro-housing voices that turns up to say yes to more homes, in every neighbourhood.
 - [Build Toronto](https://elombardi-website.github.io/ericlombardi-site/policy/build-toronto/): Chair and co-founder. The Toronto chapter of Build Canada: founders, operators and civic leaders publishing concrete, ambitious proposals for the city on housing, infrastructure, governance and growth.
 
-## Writing (own site)
+## Writing (by Eric, wherever published)
 
-- [What My Policy Survey Says About Ontario Right Now](https://elombardi-website.github.io/ericlombardi-site/writing/what-my-policy-survey-says-about-ontario-right-now/) (2026-05-28, Campaign notes): People are frustrated by the status quo, worried about affordability, and impatient with institutional failure.
-- [Alto should be just the beginning of Ontario's high-speed rail network](https://elombardi-website.github.io/ericlombardi-site/writing/alto-should-be-just-the-beginning/) (2026-04-29, Infrastructure and transit): And I built a tool to show what this could mean.
-- [An Ontario Budget For Decline & War In Iran](https://elombardi-website.github.io/ericlombardi-site/writing/an-ontario-budget-for-decline-war-in-iran/) (2026-03-23, Economy and growth): Ontario's budget arrives this week. Before it does, it's worth being clear about the province it lands in…
-- [A Billion Here, A Billion There](https://elombardi-website.github.io/ericlombardi-site/writing/a-billion-here-a-billion-there/) (2026-03-08, Economy and growth): What creates the most value for Ontarians? Plus, what we can do about shootings targeting Jewish-Canadians, and learnings on tax competitiveness.
-- [“Poorer Than Alabama?” — What the GDP Per Capita Debate Is Really About](https://elombardi-website.github.io/ericlombardi-site/writing/poorer-than-alabama-gdp-per-capita-debate/) (2026-02-27, Economy and growth): Regardless of metric, Canada, and specifically Ontario, is not growing as fast as we should.
-- [Hamilton Speech, University Funding Changes, And Other Thoughts](https://elombardi-website.github.io/ericlombardi-site/writing/hamilton-speech-university-funding-changes-and-other-thoughts/) (2026-02-17, Campaign notes): An idea for Ontario's university funding, thoughts on Canada's fertility crisis, and what it means to truly build a province where young people can thrive.
-- [Liberal Leadership Timelines are Out](https://elombardi-website.github.io/ericlombardi-site/writing/liberal-leadership-timelines-are-out/) (2026-02-07, Campaign notes): Thoughts on the new election rules, and why my visit to the long-delayed Eglinton LRT only deepened my commitment to fixing Ontario's infrastructure cost problem.
+- [Democracy requires political renewal, not just political experience](https://thehub.ca/2026/10/13/democracy-requires-political-renewal-not-just-political-experience/) (2026-10-13, The Hub)
+- [Ordinary hard work no longer buys the Canadian dream. It's time to restore that promise](https://thehub.ca/2026/08/11/ordinary-hard-work-no-longer-buys-the-canadian-dream-its-time-to-restore-that-promise/) (2026-08-11, The Hub)
+- [The housing crisis did not stay in housing](https://canadareal.ca/) (2026-07-28, Canada Real)
+- [The most important provincial economic reforms are federal](https://thehub.ca/2026/07/20/the-most-important-provincial-economic-reforms-are-federal/) (2026-07-20, The Hub)
+- [What My Policy Survey Says About Ontario Right Now](https://elombardi-website.github.io/ericlombardi-site/writing/what-my-policy-survey-says-about-ontario-right-now/) (2026-05-28, This site): People are frustrated by the status quo, worried about affordability, and impatient with institutional failure.
+- [Alto should be just the beginning of Ontario's high-speed rail network](https://www.thestar.com/opinion/contributors/alto-should-be-just-the-beginning-of-ontarios-high-speed-rail-network/article_8abf67cf-4b1b-46c3-b4e9-05d0ee8602a0.html) (2026-04-29, Toronto Star)
+- [Ontario needs a new deal with its cities](https://thebridgenews.ca/ontario-needs-a-new-deal-with-its-cities/) (2026-04-04, The Bridge)
+- [Premier Doug Ford's eighth budget another step in Ontario's decline](https://torontosun.com/opinion/columnists/premier-doug-ford-budget-ontario-decline) (2026-03-28, Toronto Sun)
+- [A milestone recession is stealing young Canadians' future](https://thehub.ca/2026/03/24/a-milestone-recession-is-stealing-the-future-from-young-canadians/) (2026-03-24, The Hub)
+- [An Ontario Budget For Decline & War In Iran](https://elombardi-website.github.io/ericlombardi-site/writing/an-ontario-budget-for-decline-war-in-iran/) (2026-03-23, This site): Ontario's budget arrives this week. Before it does, it's worth being clear about the province it lands in…
+- [A Billion Here, A Billion There](https://elombardi-website.github.io/ericlombardi-site/writing/a-billion-here-a-billion-there/) (2026-03-08, This site): What creates the most value for Ontarians? Plus, what we can do about shootings targeting Jewish-Canadians, and learnings on tax competitiveness.
+- [“Poorer Than Alabama?” — What the GDP Per Capita Debate Is Really About](https://elombardi-website.github.io/ericlombardi-site/writing/poorer-than-alabama-gdp-per-capita-debate/) (2026-02-27, This site): Regardless of metric, Canada, and specifically Ontario, is not growing as fast as we should.
+- [Hamilton Speech, University Funding Changes, And Other Thoughts](https://elombardi-website.github.io/ericlombardi-site/writing/hamilton-speech-university-funding-changes-and-other-thoughts/) (2026-02-17, This site): An idea for Ontario's university funding, thoughts on Canada's fertility crisis, and what it means to truly build a province where young people can thrive.
+- [Liberal Leadership Timelines are Out](https://elombardi-website.github.io/ericlombardi-site/writing/liberal-leadership-timelines-are-out/) (2026-02-07, This site): Thoughts on the new election rules, and why my visit to the long-delayed Eglinton LRT only deepened my commitment to fixing Ontario's infrastructure cost problem.
+- [Everyone's managing decline. I'm exploring a run for Ontario Liberal leader to fight for growth](https://thehub.ca/2026/01/29/everyones-managing-decline-im-exploring-a-run-for-ontario-liberal-leader-to-fight-for-growth/) (2026-01-29, The Hub)
+- [Dare to build, again: 10 big ideas for a better Canada in 2026](https://thehub.ca/2026/01/09/dare-to-build-again-10-big-ideas-for-a-better-canada-in-2026/) (2026-01-09, The Hub)
+- [Canadians must open their eyes to our growing culture of corruption](https://thehub.ca/2025/12/06/canadians-must-open-their-eyes-to-our-growing-culture-of-corruption/) (2025-12-06, The Hub)
+- [Old Toronto must grow to relieve the suburbs](https://www.buildcanada.com/toronto/memos) (2025-10-06, Build Canada)
+- [Canada has made real progress on housing. Now comes the hardest part](https://thehub.ca/2025/10/03/eric-lombardi-canada-has-made-real-progress-on-housing-now-comes-the-hardest-part/) (2025-10-03, The Hub)
+- [The 2030s could be Canada's catch-up decade](https://thehub.ca/2025/08/29/eric-lombardi-the-2030s-could-be-canadas-catch-up-decade/) (2025-08-29, The Hub)
+- [It's time to make property rights our defining liberal cause](https://thehub.ca/2025/08/05/eric-lombardi-its-time-to-make-property-rights-our-defining-liberal-cause/) (2025-08-05, The Hub)
+- [Our politicians want you to forget about Canada's biggest socioeconomic challenge. Yes, it's still housing](https://thehub.ca/2025/07/18/eric-lombardi-our-politicians-want-you-to-forget-about-canadas-biggest-socioeconomic-challenge-yes-its-still-housing/) (2025-07-18, The Hub)
+- [Ontario has become Canada's sick province. Its failures drag down the country](https://thehub.ca/2025/06/16/eric-lombardi-ontario-has-become-canadas-sick-province-its-failures-drag-down-the-country/) (2025-06-16, The Hub)
+- [Canada can no longer afford to be governed by luxury beliefs](https://thehub.ca/2025/05/28/eric-lombardi-canada-can-no-longer-afford-to-be-governed-by-luxury-beliefs/) (2025-05-28, The Hub)
+- [Canadians are ready to build. What about our leaders?](https://thehub.ca/2025/03/31/eric-lombardi-canadians-are-ready-to-build-what-about-our-leaders/) (2025-03-31, The Hub)
+- [Why the rise of Mark Carney is good for Pierre Poilievre, and for Canada](https://thehub.ca/2025/02/19/eric-lombardi-why-the-rise-of-mark-carney-is-good-for-pierre-poilievre-and-for-canada/) (2025-02-19, The Hub)
+- [It's time to make the Liberal Party liberal again](https://thehub.ca/2025/01/23/eric-lombardi-its-time-to-make-the-liberal-party-liberal-again/) (2025-01-23, The Hub)
+- [Dare to be great: ten radical ideas to reinvent Canada in 2025](https://thehub.ca/2024/12/19/eric-lombardi-dare-to-be-great-ten-radical-ideas-to-reinvent-canada-in-2025/) (2024-12-19, The Hub)
+- [Your bribe is in the mail: Trudeau and Ford's populist gimmicks play Canadians for fools](https://thehub.ca/2024/11/26/eric-lombardi-your-bribe-is-in-the-mail-trudeau-and-fords-populist-gimmicks-play-canadians-for-fools/) (2024-11-26, The Hub)
+- [Canada can no longer afford to ignore its soft corruption problem](https://thehub.ca/2024/10/03/eric-lombardi-canada-can-no-longer-afford-to-ignore-its-soft-corruption-problem/) (2024-10-03, The Hub)
+- [Don't give up on Canada just yet, young people](https://thehub.ca/2024/08/01/eric-lombardi-dont-give-up-on-canada-just-yet-young-people/) (2024-08-01, The Hub)
+- [How established interests hijack government to crush Canada's middle class](https://thehub.ca/2024/06/21/eric-lombardi-how-established-interests-hijack-government-to-crush-canadas-middle-class/) (2024-06-21, The Hub)
+- [Canadians are witnessing the slow and relentless erosion of economic freedoms](https://thehub.ca/2024/05/17/eric-lombardi-canadians-are-witnessing-the-slow-and-relentless-erosion-of-economic-freedoms/) (2024-05-17, The Hub)
+- [Baby boomers have won the generational war. Was it worth young Canadians' future?](https://thehub.ca/2024/04/16/eric-lombardi-baby-boomers-have-won-the-generational-war-was-it-worth-young-canadians-future/) (2024-04-16, The Hub)
+- [Canada's zero-sum economy](https://thehub.ca/2024/03/15/eric-lombardi-canadas-zero-sum-economy/) (2024-03-15, The Hub)
+- [Will Pierre Poilievre stand up to Doug Ford, Canada's biggest gatekeeper?](https://thehub.ca/2024/02/13/eric-lombardi-will-pierre-poilievre-stand-up-to-doug-ford-canadas-biggest-gatekeeper/) (2024-02-13, The Hub)
+- [The death of merit, the birth of aristocracy, and Canada's quiet descent into neofeudalism](https://thehub.ca/2024/02/02/eric-lombardi-the-death-of-merit-the-birth-of-aristocracy-and-canadas-quiet-descent-into-neofeudalism/) (2024-02-02, The Hub)
 
-## Columns elsewhere
+## In the media (about Eric)
 
-- The Hub: [Democracy requires political renewal, not just political experience](https://thehub.ca/2026/10/13/democracy-requires-political-renewal-not-just-political-experience/) (2026-10-13)
-- The Hub: [Ordinary hard work no longer buys the Canadian dream. It's time to restore that promise](https://thehub.ca/2026/08/11/ordinary-hard-work-no-longer-buys-the-canadian-dream-its-time-to-restore-that-promise/) (2026-08-11)
-- Canada Real: [The housing crisis did not stay in housing](https://canadareal.ca/) (2026-07-28)
-- The Hub: [The most important provincial economic reforms are federal](https://thehub.ca/2026/07/20/the-most-important-provincial-economic-reforms-are-federal/) (2026-07-20)
-- Toronto Star: [Alto should be just the beginning of Ontario's high-speed rail network](https://www.thestar.com/opinion/contributors/alto-should-be-just-the-beginning-of-ontarios-high-speed-rail-network/article_8abf67cf-4b1b-46c3-b4e9-05d0ee8602a0.html) (2026-04-29)
-- The Bridge: [Ontario needs a new deal with its cities](https://thebridgenews.ca/ontario-needs-a-new-deal-with-its-cities/) (2026-04-04)
-- Toronto Sun: [Premier Doug Ford's eighth budget another step in Ontario's decline](https://torontosun.com/opinion/columnists/premier-doug-ford-budget-ontario-decline) (2026-03-28)
-- The Hub: [A milestone recession is stealing young Canadians' future](https://thehub.ca/2026/03/24/a-milestone-recession-is-stealing-the-future-from-young-canadians/) (2026-03-24)
-- The Hub: [Everyone's managing decline. I'm exploring a run for Ontario Liberal leader to fight for growth](https://thehub.ca/2026/01/29/everyones-managing-decline-im-exploring-a-run-for-ontario-liberal-leader-to-fight-for-growth/) (2026-01-29)
-- The Hub: [Dare to build, again: 10 big ideas for a better Canada in 2026](https://thehub.ca/2026/01/09/dare-to-build-again-10-big-ideas-for-a-better-canada-in-2026/) (2026-01-09)
-- The Hub: [Canadians must open their eyes to our growing culture of corruption](https://thehub.ca/2025/12/06/canadians-must-open-their-eyes-to-our-growing-culture-of-corruption/) (2025-12-06)
-- Build Canada: [Old Toronto must grow to relieve the suburbs](https://www.buildcanada.com/toronto/memos) (2025-10-06)
-- The Hub: [Canada has made real progress on housing. Now comes the hardest part](https://thehub.ca/2025/10/03/eric-lombardi-canada-has-made-real-progress-on-housing-now-comes-the-hardest-part/) (2025-10-03)
-- The Hub: [The 2030s could be Canada's catch-up decade](https://thehub.ca/2025/08/29/eric-lombardi-the-2030s-could-be-canadas-catch-up-decade/) (2025-08-29)
-- The Hub: [It's time to make property rights our defining liberal cause](https://thehub.ca/2025/08/05/eric-lombardi-its-time-to-make-property-rights-our-defining-liberal-cause/) (2025-08-05)
-- The Hub: [Our politicians want you to forget about Canada's biggest socioeconomic challenge. Yes, it's still housing](https://thehub.ca/2025/07/18/eric-lombardi-our-politicians-want-you-to-forget-about-canadas-biggest-socioeconomic-challenge-yes-its-still-housing/) (2025-07-18)
-- The Hub: [Ontario has become Canada's sick province. Its failures drag down the country](https://thehub.ca/2025/06/16/eric-lombardi-ontario-has-become-canadas-sick-province-its-failures-drag-down-the-country/) (2025-06-16)
-- The Hub: [Canada can no longer afford to be governed by luxury beliefs](https://thehub.ca/2025/05/28/eric-lombardi-canada-can-no-longer-afford-to-be-governed-by-luxury-beliefs/) (2025-05-28)
-- The Hub: [Canadians are ready to build. What about our leaders?](https://thehub.ca/2025/03/31/eric-lombardi-canadians-are-ready-to-build-what-about-our-leaders/) (2025-03-31)
-- The Hub: [Why the rise of Mark Carney is good for Pierre Poilievre, and for Canada](https://thehub.ca/2025/02/19/eric-lombardi-why-the-rise-of-mark-carney-is-good-for-pierre-poilievre-and-for-canada/) (2025-02-19)
-- The Hub: [It's time to make the Liberal Party liberal again](https://thehub.ca/2025/01/23/eric-lombardi-its-time-to-make-the-liberal-party-liberal-again/) (2025-01-23)
-- The Hub: [Dare to be great: ten radical ideas to reinvent Canada in 2025](https://thehub.ca/2024/12/19/eric-lombardi-dare-to-be-great-ten-radical-ideas-to-reinvent-canada-in-2025/) (2024-12-19)
-- The Hub: [Your bribe is in the mail: Trudeau and Ford's populist gimmicks play Canadians for fools](https://thehub.ca/2024/11/26/eric-lombardi-your-bribe-is-in-the-mail-trudeau-and-fords-populist-gimmicks-play-canadians-for-fools/) (2024-11-26)
-- The Hub: [Canada can no longer afford to ignore its soft corruption problem](https://thehub.ca/2024/10/03/eric-lombardi-canada-can-no-longer-afford-to-ignore-its-soft-corruption-problem/) (2024-10-03)
-- The Hub: [Don't give up on Canada just yet, young people](https://thehub.ca/2024/08/01/eric-lombardi-dont-give-up-on-canada-just-yet-young-people/) (2024-08-01)
-- The Hub: [How established interests hijack government to crush Canada's middle class](https://thehub.ca/2024/06/21/eric-lombardi-how-established-interests-hijack-government-to-crush-canadas-middle-class/) (2024-06-21)
-- The Hub: [Canadians are witnessing the slow and relentless erosion of economic freedoms](https://thehub.ca/2024/05/17/eric-lombardi-canadians-are-witnessing-the-slow-and-relentless-erosion-of-economic-freedoms/) (2024-05-17)
-- The Hub: [Baby boomers have won the generational war. Was it worth young Canadians' future?](https://thehub.ca/2024/04/16/eric-lombardi-baby-boomers-have-won-the-generational-war-was-it-worth-young-canadians-future/) (2024-04-16)
-- The Hub: [Canada's zero-sum economy](https://thehub.ca/2024/03/15/eric-lombardi-canadas-zero-sum-economy/) (2024-03-15)
-- The Hub: [Will Pierre Poilievre stand up to Doug Ford, Canada's biggest gatekeeper?](https://thehub.ca/2024/02/13/eric-lombardi-will-pierre-poilievre-stand-up-to-doug-ford-canadas-biggest-gatekeeper/) (2024-02-13)
-- The Hub: [The death of merit, the birth of aristocracy, and Canada's quiet descent into neofeudalism](https://thehub.ca/2024/02/02/eric-lombardi-the-death-of-merit-the-birth-of-aristocracy-and-canadas-quiet-descent-into-neofeudalism/) (2024-02-02)
-
-## Interviews and appearances
-
-- The Herle Burly: [Ontario Liberal leadership debate](https://www.youtube.com/watch?v=5X8kohWWUJ4) (2026-09-17, video)
-- The Trillium: [Ideas, tweets and the vapidity of modern media: Q&A with Eric Lombardi](https://www.thetrillium.ca/news/politics/ideas-tweets-and-the-vapidity-of-modern-media-qa-with-ontario-liberal-leadership-candidate-eric-lombardi-12709122) (2026-08-26, print)
-- The Hub: ['We've been squandering our potential': Eric Lombardi on his plan to save his province](https://thehub.ca/podcast/video/weve-been-squandering-our-potential-ontario-liberal-leader-contender-eric-lombardi-on-his-plan-to-save-his-province/) (2026-08-18, video)
-- Ontario Liberal Party: [Leadership debate](https://www.youtube.com/watch?v=tXUlg6o5ZZs) (2026-08-10, video)
-- Toronto Today: [Why Eric Lombardi wants to lead the Ontario Liberals](https://open.spotify.com/episode/2058YWoFMVR5pgcHH2RsWW) (2026-07-31, podcast)
-- CBC Morning North: [Eric Lombardi talks vision for the future of the province he seeks to lead](https://www.cbc.ca/listen/live-radio/1-41-morning-north/clip/16227337-eric-lombardi-talks-vision-future-province-seeks-lead) (2026-07-21, radio)
-- CJAD 800 Montreal: [What liberalism actually means](https://www.youtube.com/watch?v=JRdgfj2aINw) (2026-07-01, radio)
-- Culture Lab: [Who the hell is Eric Lombardi?](https://www.youtube.com/watch?v=XDDMgQzUYP4) (2026-06-18, video)
-- Toronto Today: [More flights, more growth, more problems?](https://open.spotify.com/episode/4D6DWmP5R4qQynmBsrTu9Q) (2026-05-22, podcast)
-- Progress Canada: [Eric Lombardi: the next Ontario Liberal Party leader](https://www.youtube.com/watch?v=4Bpd1WhUq-U) (2026-05-20, video)
-- Civic Square Podcast: [Eric Lombardi on his plan to fix Ontario](https://open.spotify.com/episode/6RajNvqWePMR73A7D5n00B) (2026-04-29, podcast)
-- Zed Has Thoughts: [Why he's running for Ontario Liberal leader, and the inheritance economy](https://www.youtube.com/watch?v=UToGHbQCCjY) (2026-04-29, video)
-- The Brian Crombie Hour: [Eric Lombardi on The Brian Crombie Hour](https://www.youtube.com/watch?v=APTtyUidBc0) (2026-04-01, video)
-- Under Construction: [Toronto Under Construction with Eric Lombardi, Liberal Party candidate](https://podcasts.apple.com/ca/podcast/episode-101-toronto-under-construction-with-matt-from/id1489742977?i=1000755091909) (2026-03-13, podcast)
-- Toronto Today: [OSAP cuts spark student protests and arrests](https://open.spotify.com/episode/04eGsrHh1IPtZMBDpt36m2) (2026-03-05, podcast)
-- Hogtown Podcast: [The Liberal leadership race and Ontario's future with Eric Lombardi](https://open.spotify.com/episode/6h4q3vtxTlNKSleDnWJQNZ) (2026-02-23, podcast)
-- Storeys: [Eric Lombardi 'more than likely' to cement run for Ontario Liberal Party leader: Q&A](https://storeys.com/eric-lombardi-ontario-liberal-qa/) (2026-02-12, print)
-- Canadian Affairs: [A conversation with the 31-year-old hoping to lead Ontario](https://www.canadianaffairs.news/2026/01/30/a-conversation-with-the-31-year-old-hoping-to-lead-ontario/) (2026-01-30, print)
-- Toronto Today: [From idea to action: a new Liberal vision for Ontario](https://open.spotify.com/episode/7duR0E4EaY74Y42pNkAys3) (2026-01-29, podcast)
-- The Hub: ['A failure of this country': Eric Lombardi on how the Liberal Party became illiberal](https://thehub.ca/podcast/video/a-failure-of-this-country-eric-lombardi-on-how-the-liberal-party-became-illiberal/) (2025-01-24, video)
-- Munk Debates: [The baby boomers debate](https://munkdebates.com/podcasts/baby-boomers-debate/) (2024-09-17, podcast)
-- The Missing Middle Podcast: [Why we need missing middle homes: Eric Lombardi at the Missing Middle Summit 2024](https://missingmiddle.buzzsprout.com/2249373/15400380) (2024-07-12, podcast)
+- The Hub: [Liberals are finally rediscovering capitalism. Conservatives should welcome it (Sean Speer)](https://thehub.ca/2026/10/02/liberals-are-finally-rediscovering-capitalism-conservatives-should-welcome-it/) (2026-10-02, coverage, online)
+- CP24: [OLP leadership candidate Eric Lombardi withdraws from race](https://www.cp24.com/politics/queens-park/2026/10/01/olp-leadership-candidate-eric-lombardi-withdraws-from-race/) (2026-10-01, coverage, online)
+- CBC News: [Eric Lombardi drops out of Ontario Liberal Party leadership race](https://www.cbc.ca/news/canada/toronto/eric-lombardi-drops-out-ontario-liberal-party-leadership-race-9.7364850) (2026-09-30, coverage, online)
+- The Globe and Mail: [Ontario Liberal leadership candidate Eric Lombardi drops out](https://www.theglobeandmail.com/politics/article-ontario-liberal-leadership-candidate-eric-lombardi-drops-out/) (2026-09-30, coverage, print)
+- The Herle Burly: [Ontario Liberal leadership debate](https://www.youtube.com/watch?v=5X8kohWWUJ4) (2026-09-17, interview, video)
+- TBNewswatch: [Ontario Liberal leadership candidate Eric Lombardi in Thunder Bay](https://www.tbnewswatch.com/local-news/ont-liberal-leadership-candidate-eric-lombardi-12770188) (2026-09-14, coverage, online)
+- iPolitics: [Conservative MP Matt Strauss joins Ontario Liberals to back Eric Lombardi](https://www.ipolitics.ca/2026/09/02/conservative-mp-matt-strauss-joins-ontario-liberals-to-back-eric-lombardi/) (2026-09-02, coverage, online)
+- The Trillium: [Ideas, tweets and the vapidity of modern media: Q&A with Eric Lombardi](https://www.thetrillium.ca/news/politics/ideas-tweets-and-the-vapidity-of-modern-media-qa-with-ontario-liberal-leadership-candidate-eric-lombardi-12709122) (2026-08-26, interview, print)
+- The Hub: ['We've been squandering our potential': Eric Lombardi on his plan to save his province](https://thehub.ca/podcast/video/weve-been-squandering-our-potential-ontario-liberal-leader-contender-eric-lombardi-on-his-plan-to-save-his-province/) (2026-08-18, interview, video)
+- Ontario Liberal Party: [Leadership debate](https://www.youtube.com/watch?v=tXUlg6o5ZZs) (2026-08-10, interview, video)
+- National Post: [Meet the outsider Ontario Liberal candidate who says the party has lost its way](https://nationalpost.com/opinion/eric-lombardi-ontario-liberal-leadership) (2026-08-07, coverage, print)
+- Toronto Today: [Why Eric Lombardi wants to lead the Ontario Liberals](https://open.spotify.com/episode/2058YWoFMVR5pgcHH2RsWW) (2026-07-31, interview, podcast)
+- CTV News London: [Candidates vie for Ontario Liberal leadership with stop in London](https://www.ctvnews.ca/london/video/2026/07/24/candidates-vie-for-ontario-liberal-leadership-with-stop-in-london/) (2026-07-23, coverage, video)
+- The Sudbury Star: [Housing crisis prompted Eric Lombardi to run to become Liberal leader](https://www.thesudburystar.com/news/housing-crisis-prompted-eric-lombardi-to-run-to-become-liberal-leader) (2026-07-22, coverage, print)
+- CBC Morning North: [Eric Lombardi talks vision for the future of the province he seeks to lead](https://www.cbc.ca/listen/live-radio/1-41-morning-north/clip/16227337-eric-lombardi-talks-vision-future-province-seeks-lead) (2026-07-21, interview, radio)
+- Toronto Star: [Billy Bishop expansion plan prompts mixed responses from Liberal leadership candidates](https://www.thestar.com/politics/provincial/billy-bishop-expansion-plan-prompts-mixed-responses-from-liberal-leadership-candidates/article_4743d9dc-ff48-43e5-a31f-f46cd73c11f2.html) (2026-07-02, coverage, print)
+- CJAD 800 Montreal: [What liberalism actually means](https://www.youtube.com/watch?v=JRdgfj2aINw) (2026-07-01, interview, radio)
+- York Region: [Ontario Liberal leadership candidates slam 'undemocratic' plan to appoint 'strong' chairs for 8 regional governments this fall](https://www.yorkregion.com/news/ontario-liberal-leadership-hopefuls-dislike-plan-for-regions/article_2b266611-8a25-5339-9da9-08a05ee81ed3.html) (2026-06-22, coverage, print)
+- Culture Lab: [Who the hell is Eric Lombardi?](https://www.youtube.com/watch?v=XDDMgQzUYP4) (2026-06-18, interview, video)
+- Global News: [Ontario Liberal leadership candidate vows to make health care more competitive](https://globalnews.ca/news/11904275/ontario-liberal-leadership-candidate-vows-to-make-health-care-more-competitive/) (2026-06-15, coverage, online)
+- Changing Lanes: [Eric Lombardi's abundance agenda](https://www.changinglanesnewsletter.com/p/eric-lombardis-abundance-agenda) (2026-06-11, coverage, online)
+- CP24: [Housing advocate Eric Lombardi joins Ontario Liberal leadership race](https://www.cp24.com/politics/queens-park/2026/06/09/housing-advocate-eric-lombardi-joins-ontario-liberal-leadership-race/) (2026-06-09, coverage, online)
+- The Canadian Press: [Housing advocate Eric Lombardi enters Ontario Liberal leadership race](https://nationalnewswatch.com/2026/06/09/housing-advocate-eric-lombardi-enters-ontario-liberal-leadership-race) (2026-06-09, coverage, online)
+- Toronto Today: [More flights, more growth, more problems?](https://open.spotify.com/episode/4D6DWmP5R4qQynmBsrTu9Q) (2026-05-22, interview, podcast)
+- Progress Canada: [Eric Lombardi: the next Ontario Liberal Party leader](https://www.youtube.com/watch?v=4Bpd1WhUq-U) (2026-05-20, interview, video)
+- Civic Square Podcast: [Eric Lombardi on his plan to fix Ontario](https://open.spotify.com/episode/6RajNvqWePMR73A7D5n00B) (2026-04-29, interview, podcast)
+- Zed Has Thoughts: [Why he's running for Ontario Liberal leader, and the inheritance economy](https://www.youtube.com/watch?v=UToGHbQCCjY) (2026-04-29, interview, video)
+- The Brock Press: [OLP candidate Eric Lombardi promises an affordable life through growth](https://brockpress.com/olp-candidate-eric-lombardi-promises-an-affordable-life-through-growth/) (2026-04-12, coverage, print)
+- The Brian Crombie Hour: [Eric Lombardi on The Brian Crombie Hour](https://www.youtube.com/watch?v=APTtyUidBc0) (2026-04-01, interview, video)
+- Under Construction: [Toronto Under Construction with Eric Lombardi, Liberal Party candidate](https://podcasts.apple.com/ca/podcast/episode-101-toronto-under-construction-with-matt-from/id1489742977?i=1000755091909) (2026-03-13, interview, podcast)
+- Toronto Today: [OSAP cuts spark student protests and arrests](https://open.spotify.com/episode/04eGsrHh1IPtZMBDpt36m2) (2026-03-05, interview, podcast)
+- Hogtown Podcast: [The Liberal leadership race and Ontario's future with Eric Lombardi](https://open.spotify.com/episode/6h4q3vtxTlNKSleDnWJQNZ) (2026-02-23, interview, podcast)
+- Storeys: [Eric Lombardi 'more than likely' to cement run for Ontario Liberal Party leader: Q&A](https://storeys.com/eric-lombardi-ontario-liberal-qa/) (2026-02-12, interview, print)
+- Canadian Affairs: [A conversation with the 31-year-old hoping to lead Ontario](https://www.canadianaffairs.news/2026/01/30/a-conversation-with-the-31-year-old-hoping-to-lead-ontario/) (2026-01-30, interview, print)
+- Toronto Today: [From idea to action: a new Liberal vision for Ontario](https://open.spotify.com/episode/7duR0E4EaY74Y42pNkAys3) (2026-01-29, interview, podcast)
+- Policorner: [Scoop: is this the dark horse in the race for Liberal leader?](https://www.policorner.ca/p/scoop-is-this-the-dark-horse-in-the-race-for-liberal-leader) (2026-01-12, coverage, online)
+- TVO: [Is the Ontario Liberal leadership race poised for an upset?](https://www.tvo.org/article/analysis-is-the-ontario-liberal-leadership-race-poised-for-an-upset) (2026-01-08, coverage, online)
+- The Hub: ['A failure of this country': Eric Lombardi on how the Liberal Party became illiberal](https://thehub.ca/podcast/video/a-failure-of-this-country-eric-lombardi-on-how-the-liberal-party-became-illiberal/) (2025-01-24, interview, video)
+- Munk Debates: [The baby boomers debate](https://munkdebates.com/podcasts/baby-boomers-debate/) (2024-09-17, interview, podcast)
+- The Missing Middle Podcast: [Why we need missing middle homes: Eric Lombardi at the Missing Middle Summit 2024](https://missingmiddle.buzzsprout.com/2249373/15400380) (2024-07-12, interview, podcast)
+- The Christian Science Monitor: [Toronto has a housing crisis. Activists are trying empathy to ease it](https://proof.csmonitor.com/World/Americas/2022/1025/Toronto-has-a-housing-crisis.-Activists-are-trying-empathy-to-ease-it) (2022-10-25, coverage, print)
+- Toronto Star: [In a city of NIMBYs, this community group has made it a mission to say yes in my backyard](https://www.thestar.com/news/gta/2022/02/14/in-a-city-of-nimbys-this-community-group-has-made-it-a-mission-to-say-yes-in-my-backyard.html) (2022-02-14, coverage, print)

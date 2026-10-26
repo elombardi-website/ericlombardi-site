@@ -258,7 +258,7 @@ def load_posts():
             "category": cat, "category_label": SITE["categories"].get(cat, meta.get("category", "Notes")),
             "summary": meta.get("summary", ""), "image": meta.get("image", ""),
             "tags": [t.strip() for t in meta.get("tags", "").split(",") if t.strip()],
-            "origin": meta.get("origin", ""), "canonical": meta.get("canonical", ""), "featured": truthy(meta.get("featured", "")),
+            "origin": meta.get("origin", ""), "canonical": meta.get("canonical", ""), "featured": truthy(meta.get("featured", "")), "canonical_external": meta.get("canonical_external", ""),
             "html": html_body, "url": f"/writing/{p.stem}/", "words": len(strip_tags(html_body).split()),
         })
     posts.sort(key=lambda x: x["date"], reverse=True)
@@ -318,6 +318,7 @@ SYMBOLS = {
     "grid": '<svg class="symbol" viewBox="0 0 44 44" aria-hidden="true" focusable="false"><path d="M6 6H38V38H6ZM6 17H38M6 27H38M17 6V38M27 6V38"/></svg>',
     "lines": '<svg class="symbol" viewBox="0 0 44 44" aria-hidden="true" focusable="false"><path d="M6 10H38M6 18H30M6 26H38M6 34H22"/></svg>',
     "portal": '<svg class="symbol" viewBox="0 0 44 44" aria-hidden="true" focusable="false"><path d="M8 38V22A14 14 0 0 1 36 22V38M14 38V26M30 38V26"/></svg>',
+    "steps": '<svg class="symbol" viewBox="0 0 44 44" aria-hidden="true" focusable="false"><path d="M6 38V27H17V16H28V6H38M6 38H38"/></svg>',
 }
 
 
@@ -402,7 +403,7 @@ def header_html(current=""):
 def footer_html():
     socials = "".join(f'<a href="{esc(s["url"])}" rel="me noopener" target="_blank">{esc(s["name"])}</a>'
                       for s in SITE["socials"] if s.get("show", True))
-    explore = nav_links() + f'<a href="{u("/about/")}">About</a>'
+    explore = nav_links() + f'<a href="{u("/media/")}">In the media</a><a href="{u("/about/")}">About</a>'
     return f"""<footer class="site-footer"><div class="wrap">
   <div class="footer-grid">
     <div><a class="wordmark" href="{u('/')}">{esc(NAME)}</a><p class="about">{esc(SITE['short_description'])}</p></div>
@@ -567,9 +568,10 @@ def signup_form(variant="full"):
             f'<div class="actions" style="margin-top:.25rem"><button class="btn primary" type="submit">Sign up</button></div><p class="form-msg" hidden></p></form>')
 
 
-def signup_section(section_id="signup"):
+def signup_section(section_id="signup", dark=False):
     s = SITE["signup"]
-    return (f'<section class="signup" id="{section_id}"><div class="wrap signup-grid"><div><h2 class="title-ui">{esc(s["title"])}</h2><p>{esc(s["text"])}</p></div>'
+    cls = "signup band dark" if dark else "signup"
+    return (f'<section class="{cls}" id="{section_id}"><div class="wrap signup-grid"><div><h2>{esc(s["title"])}</h2><p>{esc(s["text"])}</p></div>'
             f'{signup_form("inline")}</div></section>')
 
 
@@ -612,6 +614,63 @@ def record_rows(items):
     return f'<ol class="record">{rows}</ol>'
 
 
+def authored_items(posts, media):
+    """One collection of Eric's written work, classified by authorship, sorted by publication date.
+    Local posts that are companions to an external canonical piece are linked from that piece, not listed twice."""
+    items = []
+    for p in posts:
+        if p.get("canonical_external"):
+            continue
+        items.append({"title": p["title"], "d": p["date"], "url": u(p["url"]), "external": False, "source": "This site",
+                      "summary": p["summary"], "cat": cat_link(p), "action": "Read the essay", "featured": p.get("featured", False), "companion": None})
+    for m in media:
+        if m.get("kind") != "column":
+            continue
+        comp = None
+        if m.get("companion"):
+            comp = (m.get("companion_label", "Companion note on this site"), u(m["companion"]))
+        items.append({"title": m["title"], "d": m["d"], "url": m["url"], "external": True, "source": m["outlet"],
+                      "summary": m.get("summary", ""), "cat": "", "action": f"Read at {m['outlet']}", "featured": False, "companion": comp,
+                      "verify": m.get("verify", "")})
+    items.sort(key=lambda x: x["d"], reverse=True)
+    return items
+
+
+def article_entry(a, compact=False):
+    """One card family for local and external authored work. Source is metadata, not a different category."""
+    cls = "entry compact" if compact else "entry with-meta"
+    ext = ' target="_blank" rel="noopener"' if a["external"] else ""
+    src = a["cat"] if a["cat"] else f'<span class="cat">{esc(a["source"])}</span>'
+    meta = f'<div class="meta">{src}<span>{fmt_date(a["d"])}</span></div>'
+    summ = f'<p>{esc(a["summary"])}</p>' if a.get("summary") else ""
+    comp = f' <a class="more" href="{a["companion"][1]}">{esc(a["companion"][0])} &rarr;</a>' if a.get("companion") else ""
+    body = f'<div><h3 class="title-editorial"><a href="{esc(a["url"])}"{ext}>{esc(a["title"])}</a></h3>{summ}<a class="more" href="{esc(a["url"])}"{ext}>{esc(a["action"])}{" &#8599;" if a["external"] else " &rarr;"}</a>{comp}</div>'
+    return f'<li data-filter-item="writing" data-values="{"external" if a["external"] else "local"}"><article class="{cls}">{meta}{body}</article></li>'
+
+
+def feature_article(a):
+    ext = ' target="_blank" rel="noopener"' if a["external"] else ""
+    src = a["cat"] if a["cat"] else f'<span class="cat">{esc(a["source"])}</span>'
+    summ = f'<p class="summary">{esc(a["summary"])}</p>' if a.get("summary") else ""
+    comp = f'<a class="more" href="{a["companion"][1]}" style="margin-left:1rem">{esc(a["companion"][0])} &rarr;</a>' if a.get("companion") else ""
+    return (f'<article class="feature-post"><div class="meta">{src}<span>{fmt_date(a["d"])}</span></div>'
+            f'<h3 class="title-feature"><a href="{esc(a["url"])}"{ext}>{esc(a["title"])}</a></h3>{summ}'
+            f'<div class="actions" style="margin-top:0"><a class="btn secondary small" href="{esc(a["url"])}"{ext}>{esc(a["action"])}{" &#8599;" if a["external"] else ""}</a>{comp}</div></article>')
+
+
+def band_areas(label_text, areas, cols=None):
+    """Reusable dark band: label + equal areas (symbol or short rule, Canela heading, text, action) on shared rows."""
+    n = cols or len(areas)
+    out = ""
+    for a in areas:
+        sym = SYMBOLS.get(a["symbol"]) if a.get("symbol") else '<span class="symbol rule-only" aria-hidden="true"></span>'
+        tag = "a" if a.get("href") else "div"
+        href = f' href="{u(a["href"])}"' if a.get("href") else ""
+        action = f'<span class="more">{esc(a["cta"])} &rarr;</span>' if a.get("cta") else "<span></span>"
+        out += f'<{tag} class="area"{href}>{sym}<h2>{esc(a["title"])}</h2><p>{esc(a["text"])}</p>{action}</{tag}>'
+    return f'<section class="band dark band-areas"><div class="wrap">{label(esc(label_text))}<div class="area-grid cols-{n}">{out}</div></div></section>'
+
+
 # --------------------------------------------------------------------------- pages
 def build_home(posts, media, events, policy_items):
     hero = SITE["hero"]
@@ -622,13 +681,14 @@ def build_home(posts, media, events, policy_items):
             first, rest = "A future", headline[len("A future "):]
         headline = f'{esc(first)} <span class="brk">{esc(rest)}</span>'
     record = "".join(f"<span>{esc(r)}</span>" for r in hero.get("record", []))
-    work = "".join(f'<a class="work-item" href="{u(p["href"])}">{SYMBOLS.get(p.get("symbol", "grid"))}<h2 class="title-ui">{esc(p["title"])}</h2><p>{esc(p["text"])}</p><span class="more">{esc(p.get("cta", "Explore"))} &rarr;</span></a>' for p in SITE["pillars"])
-    featured = next((p for p in posts if p.get("featured")), posts[0] if posts else None)
-    others = [p for p in posts if p is not featured][:2]
+    work = band_areas("What I do", SITE["pillars"], cols=3)
+    authored = authored_items(posts, media)
+    featured = next((a for a in authored if a.get("featured")), authored[0] if authored else None)
+    others = [a for a in authored if a is not featured][:2]
     writing = ""
     if featured:
-        writing = f'<div class="feature-grid">{feature_post(featured)}<div class="secondary"><ul class="rule-list">{"".join(post_entry(p, compact=True) for p in others)}</ul></div></div>'
-    recent_media = [m for m in media if m["kind"] in ("column", "interview")][:6]
+        writing = f'<div class="feature-grid">{feature_article(featured)}<div class="secondary"><ul class="rule-list">{"".join(article_entry(a, compact=True) for a in others)}</ul></div></div>'
+    recent_media = [m for m in media if m["kind"] in ("interview", "coverage")][:6]
     half = (len(recent_media) + 1) // 2
     media_cols = (f'<div class="list-cols"><ul class="list compact">{"".join(media_row(m, "home") for m in recent_media[:half])}</ul>'
                   f'<ul class="list compact">{"".join(media_row(m, "home") for m in recent_media[half:])}</ul></div>')
@@ -652,7 +712,7 @@ def build_home(posts, media, events, policy_items):
 
 {signup_section()}
 
-<section class="band dark work-band"><div class="wrap">{label("What I do")}<div class="work-grid">{work}</div></div></section>
+{work}
 
 <section class="section"><div class="wrap">
   <div class="section-head row"><h2>Latest writing</h2><a class="more" href="{u('/writing/')}">All writing &rarr;</a></div>
@@ -660,7 +720,7 @@ def build_home(posts, media, events, policy_items):
 </div></section>
 
 <section class="section tight"><div class="wrap">
-  <div class="section-head row"><h2 class="title-ui">Recent media</h2><a class="more" href="{u('/media/')}">All media &rarr;</a></div>
+  <div class="section-head row"><h2 class="title-editorial">In the media</h2><a class="more" href="{u('/media/')}">Interviews and coverage &rarr;</a></div>
   {media_cols}
 </div></section>
 
@@ -683,11 +743,10 @@ def build_home(posts, media, events, policy_items):
 def build_consulting():
     c = load_json("consulting.json")
     intro = "".join(f"<p>{inline(p)}</p>" for p in c["intro"])
-    services = ""
-    for s in c["services"]:
-        ex = s.get("example")
-        exl = f'<a class="more" href="#{esc(ex["anchor"])}">Example: {esc(ex["label"])} &rarr;</a>' if ex else ""
-        services += f'<article><h3>{esc(s["title"])}</h3><p>{esc(s["summary"])}</p>{exl}</article>'
+
+    services = band_areas("Services", [{"symbol": sv.get("symbol"), "title": sv["title"], "text": sv["summary"],
+                                        "href": f"/consulting/#{sv['example']['anchor']}" if sv.get("example") else None,
+                                        "cta": f"Example: {sv['example']['label']}" if sv.get("example") else None} for sv in c["services"]], cols=4)
     steps = "".join(f'<div><div class="num">{i}</div><h3>{esc(st["title"])}</h3><p>{esc(st["text"])}</p></div>'
                     for i, st in enumerate(c["how"]["steps"], start=1))
     partner = c["partner"]
@@ -698,11 +757,8 @@ def build_consulting():
     sectors = "".join(f'<span class="tag">{esc(s)}</span>' for s in c["sectors"])
     body = f"""{page_hero(c['kicker'], esc(c['headline']), esc(c['lede']), cta_actions('Consulting enquiry'), image='/assets/img/eric-consulting.jpg', alt=NAME)}
 <section class="section tight"><div class="wrap"><div class="prose">{intro}</div></div></section>
-<section class="section"><div class="wrap">
-  <div class="section-head">{label("Services", rule=True)}<h2>What I work on.</h2></div>
-  <div class="cols cols-2">{services}</div>
-  <div style="margin-top:2.5rem">{label("Sectors")}<div class="tags">{sectors}</div></div>
-</div></section>
+{services}
+<section class="section tight"><div class="wrap">{label("Sectors")}<div class="tags">{sectors}</div></div></section>
 <section class="section"><div class="wrap">
   <div class="section-head">{label("How I work", rule=True)}<h2>{esc(c['how']['headline'])}</h2><p class="lede">{esc(c['how']['text'])}</p></div>
   <div class="cols cols-3 divided">{steps}</div>
@@ -727,27 +783,33 @@ def build_consulting():
     render(T("Consulting in financial services and technology"), desc, body, path="/consulting/", current="/consulting/", image="/assets/img/eric-consulting.jpg", jsonld=ld)
 
 
-def build_writing(posts):
-    chips = '<div class="chips" data-filter-group="posts"><button class="chip" data-value="all" aria-pressed="true">All</button>'
-    cats_used = []
-    for cat, lab in SITE["categories"].items():
-        if any(p["category"] == cat for p in posts):
-            cats_used.append(cat)
-            chips += f'<button class="chip" data-value="{cat}" aria-pressed="false">{esc(lab)}</button>'
-    chips += "</div>"
-    entries = '<ul class="rule-list">' + "".join(post_entry(p) for p in posts) + "</ul>"
-    lede = f"Essays and notes on Ontario's economy, housing, infrastructure and public institutions. Columns I write elsewhere are listed on the <a href=\"{u('/media/')}\">media page</a>."
-    actions = f'<div class="actions"><a class="btn secondary small" href="{u("/feed.xml")}">RSS feed</a><a class="btn secondary small" href="{u("/support/#signup")}">New posts by email</a></div>'
+def build_writing(posts, media):
+    authored = authored_items(posts, media)
+    chips = ('<div class="chips" data-filter-group="writing"><button class="chip" data-value="all" aria-pressed="true">All</button>'
+             '<button class="chip" data-value="local" aria-pressed="false">On this site</button>'
+             '<button class="chip" data-value="external" aria-pressed="false">Elsewhere</button></div>')
+    entries = '<ul class="rule-list">' + "".join(article_entry(a) for a in authored) + "</ul>"
+    about_me = [m for m in media if m["kind"] in ("interview", "coverage")][:6]
+    media_sub = ('<ul class="list compact">' + "".join(media_row(m, "writing-media") for m in about_me) + "</ul>")
+    lede = "Essays, columns and notes on politics, prosperity and technology, with a focus on Ontario. Everything I have written is here in one list, whether it was published on this site, in The Hub, in the Toronto Star or elsewhere."
+    actions = f'<div class="actions"><a class="btn secondary small" href="{u("/feed.xml")}">RSS feed</a><a class="btn secondary small" href="#signup">New writing by email</a></div>'
     body = f"""{page_hero('Writing', 'Writing on politics, prosperity and technology.', lede, actions)}
-<section class="section tight"><div class="wrap">{chips}{entries}</div></section>"""
-    render(T("Writing"), "Essays and notes by Eric Lombardi on politics, prosperity and technology, with a focus on Ontario.", body, path="/writing/", current="/writing/",
+<section class="section tight"><div class="wrap">{chips}{entries}</div></section>
+<section class="section tight"><div class="wrap">
+  <div class="section-head row"><div>{label("About the work")}<h2 class="title-editorial">In the media</h2></div><a class="more" href="{u('/media/')}">Interviews, coverage and media kit &rarr;</a></div>
+  <div class="list-cols">{media_sub}</div>
+</div></section>
+{signup_section('signup', dark=True)}"""
+    render(T("Writing"), "Essays and columns by Eric Lombardi on politics, prosperity and technology, published on this site, in The Hub, the Toronto Star and elsewhere.", body, path="/writing/", current="/writing/",
            jsonld=[{"@type": "Blog", "@id": DOMAIN + "/writing/#blog", "name": f"{NAME}: writing", "url": absu("/writing/"), "author": {"@id": PERSON_ID},
-                    "blogPost": [{"@type": "BlogPosting", "headline": p["title"], "url": absu(p["url"]), "datePublished": p["date"].isoformat()} for p in posts[:20]]}],
-           lastmod=posts[0]["date"] if posts else TODAY)
+                    "blogPost": [{"@type": "BlogPosting", "headline": a["title"], "url": a["url"] if a["external"] else absu(a["url"].replace(BASE, "", 1)), "datePublished": a["d"].isoformat(),
+                                  **({"publisher": {"@type": "Organization", "name": a["source"]}} if a["external"] else {})} for a in authored[:30]]}],
+           lastmod=authored[0]["d"] if authored else TODAY)
+    cats_used = [cat for cat in SITE["categories"] if any(p["category"] == cat for p in posts)]
     for cat in cats_used:
         sub = [p for p in posts if p["category"] == cat]
         lab = SITE["categories"][cat]
-        body = f"""{page_hero('Writing', esc(lab), f'{len(sub)} post{"s" if len(sub) != 1 else ""} in this category. <a href="{u("/writing/")}">All writing</a>.')}
+        body = f"""{page_hero('Writing', esc(lab), f'{len(sub)} post{"s" if len(sub) != 1 else ""} on this site in this category. <a href="{u("/writing/")}">All writing</a>.')}
 <section class="section tight"><div class="wrap"><ul class="rule-list">{''.join(post_entry(p) for p in sub)}</ul></div></section>"""
         render(T(f"{lab}: writing"), f"Posts by {NAME} on {lab.lower()}.", body, path=f"/writing/category/{cat}/", current="/writing/", lastmod=sub[0]["date"])
     for i, p in enumerate(posts):
@@ -760,6 +822,8 @@ def build_writing(posts):
         notice = ""
         if p["origin"] == "campaign":
             notice = f'<div class="notice"><p>Originally published on ericforolp.ca during the <a href="{u("/policy/ontario-liberal-leadership-2026/")}">2026 Ontario Liberal leadership campaign</a>. Some links and asks are of their time.</p></div>'
+        if p.get("canonical_external"):
+            notice += f'<div class="notice"><p>This is a companion note to a piece published elsewhere: <a href="{esc(p["canonical_external"])}" target="_blank" rel="noopener">read the original &#8599;</a>.</p></div>'
         hero_img = f'<img class="ratio-16x9" src="{u(p["image"])}" alt="" style="max-width:54rem;margin-bottom:2rem" width="1600" height="900">' if p.get("image") else ""
         share_url = absu(p["url"])
         share = (f'<div class="share"><span class="muted">Share</span>'
@@ -767,15 +831,18 @@ def build_writing(posts):
                  f'<a href="https://www.linkedin.com/sharing/share-offsite/?url={share_url}" target="_blank" rel="noopener">LinkedIn</a>'
                  f'<a href="https://bsky.app/intent/compose?text={esc(p["title"])}%20{share_url}" target="_blank" rel="noopener">Bluesky</a>'
                  f'<a href="mailto:?subject={esc(p["title"])}&body={share_url}">Email</a></div>')
+        more = [a for a in authored if a["url"] != u(p["url"])][:3]
+        related = ('<section class="section tight"><div class="wrap"><div class="section-head row"><h2 class="title-editorial">More writing</h2><a class="more" href="' + u("/writing/") + '">All writing &rarr;</a></div><ul class="rule-list">' + "".join(article_entry(a, compact=True) for a in more) + "</ul></div></section>") if more else ""
         body = f"""<section class="wrap"><header class="article-head">
   {label(cat_link(p), rule=True)}
   <h1>{esc(p['title'])}</h1>
-  <p class="article-meta"><span>{fmt_date(p['date'])}</span><span>&middot;</span><span>{reading_time(p['html'])} min read</span><span>&middot;</span><span>By <a href="{u('/about/')}">{esc(NAME)}</a></span></p>
+  <p class="article-meta"><span>By <a href="{u('/about/')}">{esc(NAME)}</a></span><span>&middot;</span><span>{fmt_date(p['date'])}</span><span>&middot;</span><span>{reading_time(p['html'])} min read</span></p>
 </header>
 {hero_img}{notice}
 <article class="prose">{p['html']}</article>
 {share}{pager}</section>
-<div style="margin-top:var(--section)">{signup_section('signup')}</div>"""
+{related}
+{signup_section('signup', dark=True)}"""
         ld = [{"@type": "BlogPosting", "@id": absu(p["url"]) + "#article", "headline": p["title"], "description": p["summary"], "url": absu(p["url"]),
                "datePublished": p["date"].isoformat(), "dateModified": (p["updated"] or p["date"]).isoformat(),
                "author": {"@id": PERSON_ID}, "publisher": {"@id": PERSON_ID}, "mainEntityOfPage": absu(p["url"]),
@@ -786,28 +853,21 @@ def build_writing(posts):
 
 
 def build_media(media):
-    columns = [m for m in media if m["kind"] == "column"]
     interviews = [m for m in media if m["kind"] == "interview"]
     coverage = [m for m in media if m["kind"] == "coverage" and not m.get("campaign")]
     formats = sorted({m.get("format", "") for m in interviews if m.get("format")})
     chips = '<div class="chips" data-filter-group="media"><button class="chip" data-value="all" aria-pressed="true">All</button>' + "".join(
         f'<button class="chip" data-value="{esc(f)}" aria-pressed="false">{esc(f.title())}</button>' for f in formats) + "</div>"
-    lede = f"Columns in The Hub, the Toronto Star and elsewhere, and interviews on podcasts, radio and television. Coverage of the 2026 leadership campaign is archived <a href=\"{u('/policy/ontario-liberal-leadership-2026/#coverage')}\">on the campaign page</a>."
+    lede = f"Interviews, profiles and coverage about the work. My own columns and essays are in <a href=\"{u('/writing/')}\">Writing</a>, and coverage of the 2026 leadership campaign is archived <a href=\"{u('/policy/ontario-liberal-leadership-2026/#coverage')}\">on the campaign page</a>."
     actions = f'<div class="actions"><a class="btn primary small" href="mailto:{EMAIL}?subject=Media%20request">Media and speaking requests</a><a class="btn secondary small" href="#media-kit">Media kit</a></div>'
     news = ""
     if coverage:
         news = f"""<section class="section tight"><div class="wrap"><div class="section-head"><h2 class="title-editorial">Coverage of the work</h2></div>{media_by_year(coverage, 'news', limit=6, wide=True)}</div></section>"""
-    body = f"""{page_hero('Media', 'Columns, interviews and appearances.', lede, actions)}
-<section class="section tight"><div class="wrap two-col equal">
-  <div>
-    <div class="section-head">{label("Columns and essays", rule=True)}<h2 class="title-editorial">Published elsewhere</h2></div>
-    {media_by_year(columns, 'columns', limit=8)}
-  </div>
-  <div>
-    <div class="section-head">{label("Interviews and appearances", rule=True)}<h2 class="title-editorial">In the media</h2></div>
-    {chips}
-    {media_by_year(interviews, 'media', limit=8)}
-  </div>
+    body = f"""{page_hero('In the media', 'Interviews, coverage and appearances.', lede, actions)}
+<section class="section tight"><div class="wrap">
+  <div class="section-head">{label("Interviews and appearances", rule=True)}<h2 class="title-editorial">Podcasts, broadcast and print</h2></div>
+  {chips}
+  {media_by_year(interviews, 'media', limit=10, wide=True)}
 </div></section>
 <section class="section band limestone" id="media-kit"><div class="wrap">
   <div class="section-head">{label("Media kit")}<h2 class="title-editorial">For producers, editors and organizers.</h2></div>
@@ -818,15 +878,23 @@ def build_media(media):
   </div>
 </div></section>
 {news}"""
-    render(T("Media: columns, interviews and appearances"), f"Columns by {NAME} in The Hub, the Toronto Star and others, plus podcast, radio and television interviews.", body, path="/media/", current="/media/",
+    render(T("In the media: interviews and coverage"), f"Interviews, profiles and coverage of {NAME}'s work on podcasts, radio, television and in print.", body, path="/media/", current="/writing/",
            lastmod=media[0]["d"] if media else TODAY)
 
 
 def build_policy(policy, media):
     idx_meta, idx_html, items = policy
+    # priorities: the existing "What I argue for" list, rendered as the band component
+    pri = [{"title": re.sub(r"\.$", "", strip_tags(m.group(1))), "text": strip_tags(m.group(2)).strip()} for m in re.finditer(r"<li><strong>(.*?)</strong>(.*?)</li>", idx_html, re.S)]
+    band = band_areas("What I argue for", pri, cols=len(pri)) if pri else ""
+    rest_html = re.sub(r"<h2>What I argue for</h2>\s*<ul>.*?</ul>", "", idx_html, flags=re.S).strip()
+    panel = f'<div class="panel accent">{label("The platform")}<h3 class="title-pillar">Ontario Can Still Win</h3><p>The fully costed 2026 platform: thirteen policy areas, more than 190 commitments, reconciled to the provincial budget baseline. It remains online chapter by chapter, with the full PDF, and others are welcome to borrow from it.</p><div class="actions"><a class="btn primary small" href="{esc(SITE["platform_url"])}" target="_blank" rel="noopener">Read the platform &#8599;</a><a class="btn secondary small" href="{u("/policy/ontario-liberal-leadership-2026/")}">About the campaign</a></div></div>'
+    platform_block = (f'<section class="section tight"><div class="wrap two-col"><div class="prose">{rest_html}</div><aside>{panel}</aside></div></section>' if rest_html
+                      else f'<section class="section tight"><div class="wrap">{panel}</div></section>')
     body = f"""{page_hero(idx_meta.get('kicker', 'Public policy'), esc(idx_meta.get('headline', 'Public policy')), esc(idx_meta.get('lede', '')))}
-<section class="section tight"><div class="wrap">{record_rows(items)}</div></section>
-<section class="section"><div class="wrap two-col"><div class="prose">{idx_html}</div><aside><div class="panel accent">{label("The platform")}<h3>Ontario Can Still Win</h3><p class="small">The fully costed 2026 platform: thirteen policy areas, more than 190 commitments, reconciled to the provincial budget baseline.</p><div class="actions"><a class="btn primary small" href="{esc(SITE['platform_url'])}" target="_blank" rel="noopener">Read the platform &#8599;</a></div></div></aside></div></section>
+{band}
+<section class="section"><div class="wrap"><div class="section-head row"><h2>The record</h2></div>{record_rows(items)}</div></section>
+{platform_block}
 {x_feed_html()}"""
     render(T("Public policy and civic work"), f"{NAME}'s public policy work: More Neighbours Toronto, Build Toronto and the 2026 Ontario Liberal leadership campaign and platform.", body, path="/policy/", current="/policy/")
     campaign_items = [m for m in media if m.get("campaign")]
@@ -989,18 +1057,28 @@ def build_404():
 
 
 # --------------------------------------------------------------------------- feeds and machine-readable
-def build_feeds(posts):
-    items = []
-    for p in posts[:30]:
+def build_feeds(posts, media):
+    authored = authored_items(posts, media)
+    by_url = {u(p["url"]): p for p in posts}
+    items, jitems = [], []
+    for a in authored[:40]:
+        if a["external"]:
+            link, desc, content = a["url"], a["summary"] or f"Published in {a['source']}.", f"<p>Published in {esc(a['source'])}. <a href=\"{esc(a['url'])}\">Read at {esc(a['source'])}</a>.</p>"
+        else:
+            p_ = by_url[a["url"]]
+            link, desc, content = absu(p_["url"]), p_["summary"], absolutize(p_["html"])
         items.append(f"""<item>
-<title>{esc(p['title'])}</title>
-<link>{absu(p['url'])}</link>
-<guid isPermaLink="true">{absu(p['url'])}</guid>
-<pubDate>{rfc822(p['date'])}</pubDate>
-<category>{esc(p['category_label'])}</category>
-<description>{esc(p['summary'])}</description>
-<content:encoded><![CDATA[{absolutize(p['html'])}]]></content:encoded>
+<title>{esc(a['title'])}</title>
+<link>{esc(link)}</link>
+<guid isPermaLink="true">{esc(link)}</guid>
+<pubDate>{rfc822(a['d'])}</pubDate>
+<category>{esc(a['source'])}</category>
+<description>{esc(desc)}</description>
+<content:encoded><![CDATA[{content}]]></content:encoded>
 </item>""")
+        jitems.append({"id": link, "url": link, "title": a["title"], "summary": desc, "content_html": content,
+                       "date_published": a["d"].isoformat() + "T12:00:00Z", "tags": [a["source"]],
+                       **({"external_url": a["url"]} if a["external"] else {})})
     rss = f"""<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
@@ -1017,10 +1095,7 @@ def build_feeds(posts):
     write("feed.xml", rss)
     jf = {"version": "https://jsonfeed.org/version/1.1", "title": f"{NAME}: writing", "home_page_url": DOMAIN + "/writing/",
           "feed_url": DOMAIN + "/feed.json", "description": SITE["short_description"], "language": "en-CA",
-          "authors": [{"name": NAME, "url": DOMAIN + "/"}],
-          "items": [{"id": absu(p["url"]), "url": absu(p["url"]), "title": p["title"], "summary": p["summary"],
-                     "content_html": absolutize(p["html"]), "date_published": p["date"].isoformat() + "T12:00:00Z",
-                     "tags": [p["category_label"]] + p["tags"], **({"image": absu(p["image"])} if p.get("image") else {})} for p in posts[:30]]}
+          "authors": [{"name": NAME, "url": DOMAIN + "/"}], "items": jitems}
     write("feed.json", json.dumps(jf, ensure_ascii=False, indent=1))
 
 
@@ -1031,28 +1106,26 @@ def build_sitemap_robots():
 
 
 def build_llms(posts, media, events, policy_items):
-    cols = [m for m in media if m["kind"] == "column"]
-    ints = [m for m in media if m["kind"] == "interview"]
+    authored = authored_items(posts, media)
+    about = [m for m in media if m["kind"] in ("interview", "coverage")]
     up = [e for e in events if not e["past"]]
     lines = [f"# {NAME}", "", f"> {SITE['description']}", "",
              f"Email: {EMAIL}. Location: {SITE['location']['label']}. Socials: " + ", ".join(f"{s['name']} {s['url']}" for s in SITE["socials"] if s.get("show", True)), "",
              "## Pages", ""]
-    for n in SITE["nav"] + [{"label": "About", "href": "/about/"}, {"label": "Privacy", "href": "/privacy/"}]:
+    for n in SITE["nav"] + [{"label": "In the media", "href": "/media/"}, {"label": "About", "href": "/about/"}, {"label": "Support and sign-up", "href": "/support/"}, {"label": "Privacy", "href": "/privacy/"}]:
         lines.append(f"- [{n['label']}]({absu(n['href'])})")
     lines += ["", "## Machine-readable", "", f"- RSS: {DOMAIN}/feed.xml", f"- JSON Feed: {DOMAIN}/feed.json", f"- Calendar (iCalendar): {DOMAIN}/events.ics",
-              f"- Sitemap: {DOMAIN}/sitemap.xml", f"- JSON API: {DOMAIN}/api/site.json, /api/posts.json, /api/media.json, /api/events.json", "",
+              f"- Sitemap: {DOMAIN}/sitemap.xml", f"- JSON API: {DOMAIN}/api/site.json, /api/writing.json, /api/posts.json, /api/media.json, /api/events.json", "",
               "## Public policy work", ""]
     for it in policy_items:
         lines.append(f"- [{it['title']}]({absu(it['url'])}): {it.get('role', '')}. {it.get('summary', '')}")
-    lines += ["", "## Writing (own site)", ""]
-    for p in posts:
-        lines.append(f"- [{p['title']}]({absu(p['url'])}) ({p['date'].isoformat()}, {p['category_label']}): {p['summary']}")
-    lines += ["", "## Columns elsewhere", ""]
-    for m in cols:
-        lines.append(f"- {m['outlet']}: [{m['title']}]({m['url']}) ({m['date']})")
-    lines += ["", "## Interviews and appearances", ""]
-    for m in ints:
-        lines.append(f"- {m['outlet']}: [{m['title']}]({m['url']}) ({m['date']}, {m.get('format', '')})")
+    lines += ["", "## Writing (by Eric, wherever published)", ""]
+    for a in authored:
+        link = a["url"] if a["external"] else absu(a["url"].replace(BASE, "", 1))
+        lines.append(f"- [{a['title']}]({link}) ({a['d'].isoformat()}, {a['source']}){(': ' + a['summary']) if a.get('summary') else ''}")
+    lines += ["", "## In the media (about Eric)", ""]
+    for m in about:
+        lines.append(f"- {m['outlet']}: [{m['title']}]({m['url']}) ({m['date']}, {m['kind']}, {m.get('format', '')})")
     if up:
         lines += ["", "## Upcoming events", ""]
         for e in up:
@@ -1071,6 +1144,10 @@ def build_api(posts, media, events):
     write("api/posts.json", json.dumps([{"title": p["title"], "url": absu(p["url"]), "date": p["date"].isoformat(), "category": p["category_label"],
                                          "summary": p["summary"], "tags": p["tags"], "word_count": p["words"], "image": absu(p["image"]) if p.get("image") else None} for p in posts], ensure_ascii=False, indent=1))
     write("api/media.json", json.dumps([clean(m) for m in media], ensure_ascii=False, indent=1))
+    write("api/writing.json", json.dumps([{"title": a["title"], "date": a["d"].isoformat(), "url": a["url"] if a["external"] else absu(a["url"].replace(BASE, "", 1)),
+                                           "source": a["source"], "external": a["external"], "author": NAME, "summary": a.get("summary", ""),
+                                           **({"companion": absu(a["companion"][1].replace(BASE, "", 1))} if a.get("companion") else {})}
+                                          for a in authored_items(posts, media)], ensure_ascii=False, indent=1))
     write("api/events.json", json.dumps([clean(e) for e in events], ensure_ascii=False, indent=1))
 
 
@@ -1088,7 +1165,7 @@ def main():
     policy = load_policy()
     build_home(posts, media, events, policy[2])
     build_consulting()
-    build_writing(posts)
+    build_writing(posts, media)
     build_media(media)
     build_policy(policy, media)
     build_events(events)
@@ -1097,7 +1174,7 @@ def main():
     build_contact()
     build_privacy()
     build_404()
-    build_feeds(posts)
+    build_feeds(posts, media)
     build_sitemap_robots()
     build_llms(posts, media, events, policy[2])
     build_api(posts, media, events)

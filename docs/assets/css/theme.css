@@ -55,10 +55,11 @@
 
   /* Type scale (fluid, rem). Targets from the briefs at default settings. */
   --fs-display:clamp(2.75rem,1.5rem + 5.4vw,6.25rem);   /* 44 → 100 */
-  --fs-h1:clamp(2.25rem,1.4rem + 3vw,4.5rem);           /* 36 → 72 */
-  --fs-h2:clamp(1.75rem,1.35rem + 1.5vw,3rem);          /* 28 → 48 */
+  --fs-h1:clamp(2.25rem,1.6rem + 2.6vw,4rem);            /* 36 → 64: inner-page title */
+  --fs-h2:clamp(1.75rem,1.45rem + 1.2vw,2.625rem);      /* 28 → 42: significant section heading */
   --fs-feature:clamp(2.25rem,1.75rem + 1.6vw,2.75rem);  /* 36 → 44: featured essay */
-  --fs-editorial:clamp(1.625rem,1.4rem + .8vw,2rem);    /* 26 → 32: secondary editorial */
+  --fs-editorial:clamp(1.4375rem,1.3rem + .6vw,2rem);   /* 23 → 32: authored article title */
+  --fs-pillar:clamp(1.5rem,1.4rem + .45vw,1.875rem);     /* 24 → 30: pillar / service heading */
   --fs-ui:clamp(1.25rem,1.15rem + .4vw,1.5rem);         /* 20 → 24: work, event, project headings */
   --fs-compact:clamp(1.0625rem,1rem + .25vw,1.1875rem); /* 17 → 19: compact list titles */
   --fs-lede:clamp(1.125rem,1.05rem + .35vw,1.375rem);   /* 18 → 22 */
