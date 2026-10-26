@@ -1,59 +1,42 @@
 {
   "kicker": "Consulting",
-  "headline": "Strategy and delivery for the tough decisions.",
-  "lede": "I help executives, boards, founders and investors in financial services and technology decide what to build, buy or sell, and then get it delivered. Working with Electric Mind lets me take a problem from concept to strategy to delivery, with mature partners who know how to do it.",
+  "headline": "Consulting in financial services and technology.",
+  "lede": "I advise companies and investors on strategy, acquisitions, product development, and technology delivery. My work has included payments modernization, the sale of a digital banking business, and helping a San Francisco startup raise capital and build its product.",
   "intro": [
-    "Most of my work starts with a question that has a lot of money, time or reputation attached to it. Should we bring this platform in-house or re-contract? Is this business worth more to us or to someone else? What would it actually take to ship this, and who do we need? I do the thinking, build the case, and stay to make it real.",
-    "I've spent nine years in payments, digital banking, embedded finance and venture-backed fintech, on both the operating and advisory sides. That gives me the forensic detail to get the numbers right and the judgment to know which numbers matter. And because I work with Electric Mind, a Toronto consulting and engineering firm, I can bring a full team of strategists, designers, engineers and data specialists to the table when the work calls for it."
+    "Most engagements start with a question that has money, time or reputation attached to it. Should we bring this platform in-house or re-contract? Is this business worth more to us or to someone else? What would it take to ship this, and who do we need? I do the analysis, build the case, and stay through delivery."
   ],
   "services": [
     {
-      "title": "Strategy and big problems",
-      "summary": "The thinking before the money moves.",
-      "bullets": [
-        "Business cases and build-versus-buy decisions",
-        "Vendor, platform and partnership strategy",
-        "Operating models and organization design",
-        "Market entry, product strategy and roadmaps",
-        "Executive and board decision materials"
-      ],
-      "proof": "Built the economic case for a global bank to move real-time peer-to-peer payments in-house, framing the modernize, re-contract and build options for executive decision."
+      "title": "Strategy and investment decisions",
+      "summary": "Business cases, build-versus-buy and vendor decisions, operating models, and the materials an executive team or board needs to decide.",
+      "example": {
+        "label": "A global bank's real-time payments decision",
+        "anchor": "a-major-global-bank"
+      }
     },
     {
       "title": "Mergers, acquisitions and divestitures",
-      "summary": "Buying, selling and integrating businesses and products.",
-      "bullets": [
-        "Options assessments: grow, partner or sell",
-        "Commercial and product due diligence",
-        "Carve-outs and transition planning",
-        "Post-merger integration and cut-over",
-        "Management presentations and data rooms"
-      ],
-      "proof": "Led the due-diligence workstream and oversaw the carve-out and sale of Central 1's Forge digital-banking business to Intellect Design. Earlier, led a nine-person team through the zero-defect post-merger integration of an acquired fintech product."
+      "summary": "Options assessments, commercial and product due diligence, carve-outs and transition planning, and post-merger integration.",
+      "example": {
+        "label": "The sale of Central 1's digital banking business",
+        "anchor": "central-1-credit-union"
+      }
     },
     {
       "title": "Ventures, startups and advisory",
-      "summary": "For founders and investors building something new.",
-      "bullets": [
-        "Fundraising materials and financial models",
-        "Product strategy, MVP scope and go-to-market",
-        "Strategic advisor and board-adjacent roles",
-        "Diligence support for investors",
-        "Chief-of-staff style operating support"
-      ],
-      "proof": "Partnered with the CEO of Cut+Dry, a San Francisco B2B fintech, to raise more than US$25 million across two rounds, and returned in 2025 to advise on its Series B. Laid the product foundation for Atelio, FIS's embedded-finance platform."
+      "summary": "Fundraising materials and models, product strategy and go-to-market, and advisory roles for founders and investors.",
+      "example": {
+        "label": "Cut+Dry's fundraising and product",
+        "anchor": "cut-dry"
+      }
     },
     {
-      "title": "Delivery",
-      "summary": "I stay through delivery, not just the deck.",
-      "bullets": [
-        "Program design and governance",
-        "Pod-based delivery models and team design",
-        "Estimation, resourcing and multi-year plans",
-        "Vendor and partner management",
-        "KPIs, OKRs and executive reporting"
-      ],
-      "proof": "Designed the four-pod delivery model, bottom-up resourcing plan and governance for a global bank's payments program, and managed a 14-person team launching a Canadian bank's digital platform on time and on budget."
+      "title": "Program delivery",
+      "summary": "Program design and governance, delivery models and team design, estimation and resourcing, and vendor management.",
+      "example": {
+        "label": "A pod-based delivery model for a payments program",
+        "anchor": "a-major-global-bank"
+      }
     }
   ],
   "sectors": [
@@ -67,7 +50,7 @@
   ],
   "how": {
     "headline": "From a conversation to a full program.",
-    "text": "Engagements scale to the problem. Some need one person for two weeks, and some need a team for a year. I can do both.",
+    "text": "Engagements scale to the problem. Some need one person for two weeks, and some need a team for a year.",
     "steps": [
       {
         "title": "A conversation",
@@ -110,35 +93,41 @@
       "client": "A major global bank",
       "role": "Payments strategy lead",
       "dates": "2025 – 2026",
-      "text": "Business case, target solution and program design to move Zelle real-time peer-to-peer payments from a vendor-hosted service in-house: economics against 10%+ annual transaction growth, gap analysis between requirements and solution design, a four-pod delivery model, and the governance and commercial scenarios behind the executive decision."
+      "text": "Business case, target solution and program design to move real-time peer-to-peer payments from a vendor-hosted service in-house: the economics against 10%+ annual growth, the gap analysis between requirements and solution design, a four-pod delivery model, and the governance behind the executive decision.",
+      "id": "a-major-global-bank"
     },
     {
       "client": "Central 1 Credit Union",
       "role": "Strategy consultant",
       "dates": "2023 – 2025",
-      "text": "Payments-platform modernization business case and multi-year roadmap across e-Transfer, wires, AFTs, bill payments, cheques, fraud and AML. Earlier, assessed modernization, partnership and sale options for the Forge digital-banking business, built the roadmaps and management presentations, led due diligence and oversaw the carve-out and sale to Intellect Design."
+      "text": "Business case and multi-year roadmap to modernize payment-rail access across e-Transfer, wires, AFTs, bill payments, cheques, fraud and AML. Earlier, assessed modernization, partnership and sale options for the Forge digital-banking business, led due diligence, and oversaw the carve-out and sale to Intellect Design.",
+      "id": "central-1-credit-union"
     },
     {
       "client": "FIS",
       "role": "Senior product manager, embedded finance",
       "dates": "2022 – 2023",
-      "text": "Product foundation for Atelio, FIS's embedded-finance platform: client personas, prioritized fintech experiences, product vision, competitive analysis, MVP scope and go-to-market plans with Sales, Marketing and Support."
+      "text": "Product foundation for Atelio, FIS's embedded-finance platform: client personas, prioritized fintech experiences, product vision, competitive analysis, MVP scope and go-to-market plans with Sales, Marketing and Support.",
+      "id": "fis"
     },
     {
       "client": "Cut+Dry",
       "role": "Chief of staff; product manager; strategic advisor",
       "dates": "2019 – 2022, 2025",
-      "text": "Joined a San Francisco B2B fintech pre-seed and scaled it through Series A: investor materials and models behind US$25M+ raised, on- and offshore engineering teams shipping a logistics and marketing platform moving US$1B+ in monthly GMV, org-wide KPIs and roadmap. Returned in 2025 to advise the CEO on the Series B."
+      "text": "Joined a San Francisco B2B fintech pre-seed and helped scale it through Series A: investor materials and models behind more than US$25 million raised, on- and offshore engineering teams shipping a logistics and marketing platform, and the company's KPIs and roadmap. Returned in 2025 to advise the CEO on the Series B.",
+      "id": "cut-dry"
     },
     {
       "client": "Capco",
       "role": "Consultant",
       "dates": "2017 – 2019",
-      "text": "Post-merger integration of an acquired fintech product for a tier-one technology provider with a zero-defect cut-over. API and microservice design for a new consumer-banking platform. a 14-person team launching a Canadian bank's digital platform on time and on budget."
+      "text": "Post-merger integration of an acquired fintech product for a tier-one technology provider, delivered with a zero-defect cut-over. API and microservice design for a new consumer-banking platform. Led a 14-person team launching a Canadian bank's digital platform on time and on budget.",
+      "id": "capco"
     }
   ],
   "cta": {
-    "headline": "Start with a conversation.",
-    "text": "Email me with a sentence or two about the problem. I read everything and reply within a couple of days."
-  }
+    "headline": "Get in touch.",
+    "text": "Email a few details about what you have in mind."
+  },
+  "work_title": "Selected projects"
 }

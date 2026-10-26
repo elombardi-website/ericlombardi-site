@@ -105,29 +105,36 @@
     }
   ],
   "hero": {
-    "kicker": "Strategy, writing and public life",
+    "kicker": "Finance, technology and public life",
     "headline": "A future worth building.",
-    "lede": "I'm a strategy consultant in financial services and technology, and I write and organize for the reforms that help people build secure lives: homes they can afford, useful work, services that function, and more room for the next generation to succeed.",
-    "note": "Finance and technology entrepreneur turned civic builder. Founder of More Neighbours Toronto. Candidate for Ontario Liberal leader in 2026. Columns in The Hub and the Toronto Star."
+    "lede": "I'm a Toronto-based consultant in financial services and technology. I also write about politics, economic growth, and why building a home, a career, or a family has become harder than it should be.",
+    "record": [
+      "Founder of More Neighbours Toronto",
+      "Former Ontario Liberal leadership candidate",
+      "Writing in The Hub and the Toronto Star"
+    ]
   },
   "pillars": [
     {
       "title": "Consulting",
       "href": "/consulting/",
       "cta": "Explore the consulting",
-      "text": "Strategy, mergers and acquisitions, ventures and delivery for financial services and technology companies, from a two-week decision to a multi-year program."
+      "symbol": "grid",
+      "text": "Strategy, acquisitions, product and delivery for financial services and technology companies."
     },
     {
       "title": "Writing and media",
       "href": "/writing/",
       "cta": "Read the writing",
-      "text": "Essays on growth, housing, infrastructure and government capability, plus columns, interviews and appearances elsewhere."
+      "symbol": "lines",
+      "text": "Essays on politics, prosperity and technology, plus columns and interviews elsewhere."
     },
     {
       "title": "Public policy",
       "href": "/policy/",
       "cta": "See the civic work",
-      "text": "The 2026 Ontario Liberal leadership campaign and its platform, More Neighbours Toronto, and Build Toronto."
+      "symbol": "portal",
+      "text": "More Neighbours Toronto, Build Toronto, and the 2026 Ontario Liberal leadership campaign."
     }
   ],
   "categories": {
@@ -173,8 +180,12 @@
   "legacy_site": "https://ericforolp.ca",
   "x_bio": "Proud Canadian | Wonk Cowboy (@BuildCanada) | Tech & Finance | Housing Abundance (@MoreNeighbours) | Prev @OntLiberal Leadership",
   "signup": {
-    "title": "Stay up to date",
-    "text": "New writing, invitations to events near you, and the occasional ask for help. Free, and you can unsubscribe at any time.",
+    "title": "New writing and upcoming events.",
+    "text": "Get my latest writing and invitations to upcoming events. Add your location to receive invitations to events near you.",
     "statement": "By signing up you agree to receive emails from Eric Lombardi about his writing, events and public policy work. Unsubscribe any time."
+  },
+  "contact": {
+    "headline": "Get in touch.",
+    "text": "For consulting, interviews, or speaking invitations, email eric@ericlombardi.ca with a few details about what you have in mind."
   }
 }

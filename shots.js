@@ -8,7 +8,7 @@ const ORIGIN = process.argv[2] || 'http://localhost:8788';
 const PAGES = ['/', '/consulting/', '/writing/', '/writing/what-my-policy-survey-says-about-ontario-right-now/', '/media/',
   '/policy/', '/policy/ontario-liberal-leadership-2026/', '/policy/more-neighbours-toronto/', '/events/', '/support/',
   '/about/', '/contact/', '/privacy/', '/404.html'];
-const VIEWS = [['desktop', 1440, 900], ['laptop', 1024, 800], ['tablet', 768, 1024], ['mobile', 390, 844], ['small', 375, 812], ['tiny', 320, 568]];
+const VIEWS = [['desktop', 1440, 900], ['wide', 1200, 800], ['laptop', 1024, 800], ['mid', 900, 800], ['tablet', 768, 1024], ['narrow', 600, 900], ['mobile', 390, 844], ['tiny', 320, 568]];
 (async () => {
   const out = path.resolve(__dirname, 'build', 'shots'); fs.mkdirSync(out, { recursive: true });
   const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new', args: ['--no-sandbox', '--font-render-hinting=none'] });

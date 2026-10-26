@@ -53,38 +53,48 @@
   --display-weight:400;
   --display-tracking:-.01em;
 
-  /* Type scale (fluid, rem). Targets from the brief at default settings. */
-  --fs-display:clamp(2.5rem,1.4rem + 4.6vw,6rem);      /* 40 → 96 */
+  /* Type scale (fluid, rem). Targets from the briefs at default settings. */
+  --fs-display:clamp(2.75rem,1.5rem + 5.4vw,6.25rem);   /* 44 → 100 */
   --fs-h1:clamp(2.25rem,1.4rem + 3vw,4.5rem);           /* 36 → 72 */
   --fs-h2:clamp(1.75rem,1.35rem + 1.5vw,3rem);          /* 28 → 48 */
-  --fs-h3:clamp(1.25rem,1.15rem + .4vw,1.5rem);         /* 20 → 24 */
+  --fs-feature:clamp(2.25rem,1.75rem + 1.6vw,2.75rem);  /* 36 → 44: featured essay */
+  --fs-editorial:clamp(1.625rem,1.4rem + .8vw,2rem);    /* 26 → 32: secondary editorial */
+  --fs-ui:clamp(1.25rem,1.15rem + .4vw,1.5rem);         /* 20 → 24: work, event, project headings */
+  --fs-compact:clamp(1.0625rem,1rem + .25vw,1.1875rem); /* 17 → 19: compact list titles */
   --fs-lede:clamp(1.125rem,1.05rem + .35vw,1.375rem);   /* 18 → 22 */
   --fs-body:clamp(1.0625rem,1rem + .2vw,1.125rem);      /* 17 → 18 */
-  --fs-reading:clamp(1.125rem,1.05rem + .45vw,1.375rem);/* 18 → 22 */
+  --fs-reading:clamp(1.1875rem,1.1rem + .4vw,1.3125rem);/* 19 → 21 */
   --fs-meta:.8125rem;                                   /* 13 */
   --fs-small:.9375rem;                                  /* 15 */
-  --lh-display:1.08;
+  --fs-nav:.875rem;                                     /* 14 */
+  --fs-wordmark:clamp(1.375rem,1.1rem + 1vw,1.875rem);  /* 22 → 30 */
+  --lh-display:1.06;
   --lh-heading:1.18;
   --lh-lede:1.5;
   --lh-body:1.6;
   --lh-reading:1.68;
   --label-tracking:.1em;
-  --name-tracking:.06em;
+  --name-tracking:.01em;
 
   /* Spacing scale */
   --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-6:1.5rem;
   --space-8:2rem;--space-12:3rem;--space-16:4rem;--space-24:6rem;--space-32:8rem;
-  --section:clamp(3rem,2rem + 4vw,7rem);                /* 48 → 112 */
-  --section-tight:clamp(2.5rem,1.5rem + 3vw,5rem);
+  --section:clamp(4rem,2.6rem + 3vw,5.5rem);            /* 64 → 88: editorial sections */
+  --section-tight:clamp(2.5rem,2rem + 1.5vw,3.5rem);    /* 40 → 56: compact lists */
+  --hero-pad:clamp(3rem,2rem + 2.5vw,4.5rem);           /* 48 → 72 */
+  --band-pad:clamp(2rem,1.5rem + 1.5vw,3rem);           /* 32 → 48: dark work band */
 
   /* Layout */
   --content-max:80rem;
+  --hero-max:90rem;                                     /* the opening may run wider */
   --reading-max:65ch;
   --gutter:clamp(1.25rem,.6rem + 3.5vw,5rem);           /* 20 → 80 */
+  --header-h:clamp(4.25rem,4rem + 1vw,5.25rem);         /* 68 → 84 */
   --radius-subtle:.125rem;
   --radius-control:.125rem;
-  --rule-length:2.75rem;                                 /* short bronze rule */
-  --control-height:2.75rem;                              /* 44px targets */
+  --rule-length:2.75rem;
+  --control-height:2.75rem;
+  --dark-line:rgba(245,241,232,.18);
   --transition:180ms ease;
 }
-@media(max-width:22.5em){:root{--gutter:1rem}}          /* 16px at 320 */
+@media(max-width:22.5em){:root{--gutter:1rem;--fs-wordmark:1.25rem}}          /* 16px at 320 */

@@ -8,6 +8,11 @@
       var open = header.classList.toggle('open');
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && header.classList.contains('open')) {
+        header.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); burger.focus();
+      }
+    });
   }
 
   // Expanders: [data-expander] hides items marked data-extra until "Show all" is clicked
@@ -21,7 +26,7 @@
     btn.addEventListener('click', function () { expand(btn.getAttribute('data-expand-for')); });
   });
 
-  // Filter chips: [data-filter-group] buttons toggle [data-filter-item] visibility
+  // Filter chips
   document.querySelectorAll('[data-filter-group]').forEach(function (group) {
     var key = group.getAttribute('data-filter-group');
     var items = document.querySelectorAll('[data-filter-item="' + key + '"]');
@@ -44,13 +49,15 @@
     });
   });
 
-  // Sign-up form: until a list endpoint is configured, fall back to an email to Eric
+  // Sign-up form. With no list endpoint configured, the form is NOT a working subscription:
+  // it opens an email draft so Eric can add the person by hand, and says so plainly.
   document.querySelectorAll('form.signup').forEach(function (form) {
     form.addEventListener('submit', function (e) {
       var hp = form.querySelector('.hp input');
       if (hp && hp.value) { e.preventDefault(); return; }
       if (form.getAttribute('data-endpoint')) return;            // native POST to the list tool
       e.preventDefault();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
       var fd = new FormData(form), lines = [], name = [];
       fd.forEach(function (v, k) { if (k !== 'website' && v) lines.push(k + ': ' + v); });
       ['first_name', 'name', 'last_name'].forEach(function (k) { if (fd.get(k)) name.push(fd.get(k)); });
@@ -58,7 +65,7 @@
       var body = encodeURIComponent(lines.join('\n') + '\n\n(Sent from the ericlombardi.ca sign-up form)');
       window.location.href = 'mailto:' + form.getAttribute('data-mailto') + '?subject=' + subject + '&body=' + body;
       var msg = form.querySelector('.form-msg');
-      if (msg) { msg.textContent = 'Thanks. Your email app should open with your details ready to send.'; msg.hidden = false; }
+      if (msg) { msg.textContent = 'The sign-up list is not connected yet. Your email app should open with your details so I can add you by hand. If it did not open, email ' + form.getAttribute('data-mailto') + '.'; msg.hidden = false; }
     });
   });
 

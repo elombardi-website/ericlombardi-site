@@ -31,7 +31,7 @@
   "faq": [
     {
       "q": "Is this a political donation?",
-      "a": "No. This supports my independent public policy and advocacy work. It is not a contribution to any party, candidate or campaign, and it is not governed by election-finance rules. If I ever seek office again, this program will be wound down or clearly separated before that happens."
+      "a": "No. This supports my independent public policy and advocacy work. It is not a contribution to any party, candidate or campaign."
     },
     {
       "q": "Do I get a tax receipt?",
@@ -43,7 +43,7 @@
     },
     {
       "q": "How do I change or cancel a monthly contribution?",
-      "a": "Any time, from the confirmation email or your account on the payment platform. No questions asked."
+      "a": "Any time, from the confirmation email or your account on the payment platform."
     },
     {
       "q": "Where does the money go?",
@@ -54,10 +54,10 @@
       "a": "No. Signing up for updates is free and always will be."
     }
   ],
-  "_review": "Have the 'not a political contribution' wording reviewed before launch. Pick the payment platform (a Stripe Payment Link with 'customer chooses amount' supports both monthly and one-time).",
+  "_review": "Review before launch: the pledge's reporting commitment, the 'not a political contribution' wording, and the payment platform choice. Legal assurances were removed from the FAQ pending review.",
   "contribute": {
     "title": "Contribute what you want",
-    "text": "There are no levels and no minimum. Pick any amount, monthly or once. Monthly contributions make the work plannable, but a single gift is just as welcome.",
+    "text": "There are no levels and no minimum. Pick any amount, monthly or once.",
     "note": "Payments are handled by a third-party platform. I never see your card details. You can change or cancel a monthly contribution at any time."
   }
 }

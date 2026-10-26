@@ -11,7 +11,7 @@ This policy explains how personal information is collected, used and protected t
 
 **Information you give me.** If you subscribe, contact me, register for an event or support the work, you may provide your name, email address, postal code or city, and the content of any message. Postal codes are used only to understand where readers and supporters are, so I can plan events and travel.
 
-**Information collected automatically.** The Site uses privacy-friendly analytics that do not use cookies and do not identify individuals. It records aggregate page views, referrers and device types. No advertising trackers are used.
+**Information collected automatically.** If analytics are enabled, the Site uses a privacy-friendly service that does not use cookies and does not identify individuals, recording aggregate page views, referrers and device types. No advertising trackers are used.
 
 **Third-party platforms.** Payments for supporters are handled by a third-party platform (such as Patreon), which has its own privacy policy. I never see your card details. Embedded content from X, YouTube or Spotify may set its own cookies when you interact with it.
 

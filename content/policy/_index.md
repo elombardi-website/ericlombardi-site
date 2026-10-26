@@ -1,7 +1,7 @@
 ---
 kicker: Public policy and advocacy
-headline: Ideas for a province that builds again.
-lede: Outside client work I write, organize and argue for an Ontario that grows: more homes, faster infrastructure, a government that can deliver, and a fair shot for the generation coming up behind us.
+headline: Public policy and civic work.
+lede: Through More Neighbours Toronto, Build Toronto, and my campaign for the Ontario Liberal leadership, I have worked on housing, economic growth, public services, and a better deal for younger Ontarians.
 ---
 
 ## What I argue for
