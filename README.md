@@ -61,7 +61,9 @@ GitHub Pages redeploys within a minute or two.
 ## Adding content
 
 **A post.** `python3 tools/new_post.py "Title" category` creates `content/posts/<slug>.md` with
-the frontmatter filled in. Categories: `economy`, `housing-and-cities`, `infrastructure`,
+the frontmatter filled in. Add `featured: true` to pin a post as the home-page feature; otherwise
+the latest post is featured. The home page's "Latest writing" comes from these posts and
+"Recent media" from `media.json`; they are separate feeds with their own dates. Categories: `economy`, `housing-and-cities`, `infrastructure`,
 `government`, `finance-and-technology`, `campaign-notes` (edit the list in `site.json`). Put
 images in `assets/img/posts/` and reference them as `/assets/img/posts/name.jpg`. Remove
 `draft: true` to publish. Markdown supports headings, lists, links, bold/italic, blockquotes,
@@ -84,8 +86,8 @@ line in the frontmatter is for pieces published first elsewhere.
  "city": "Toronto", "venue": "…", "kind": "Panel", "url": "https://luma.com/…", "summary": "…"}
 ```
 
-Leave `time` empty for an all-day entry. `url` can be a third-party registration page. Delete
-the two entries marked `"placeholder": true` before launch (or build with `--no-placeholders`).
+Leave `time` empty for an all-day entry. `url` can be a third-party registration page. Entries marked `"placeholder": true` are samples and are left out of every build unless you pass
+`--placeholders`; delete them when you have real events.
 The events page, `events.ics` and `api/events.json` all come from this file.
 
 **Public-policy pages.** Edit the Markdown files in `content/policy/`. `links:` takes
@@ -171,3 +173,6 @@ site copy. "A future worth building." is the working home headline.
   the home page), `eric-consulting.jpg`, `eric-headshot.jpg` (square), and `og-default.jpg`
   (1200 × 630 share image).
 - Set `mailing_address`, hook up `form.endpoint`, and turn on analytics.
+
+
+See `CHANGELOG.md` for the revision history and the list of items awaiting approval.
