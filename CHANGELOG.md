@@ -10,6 +10,16 @@
 - The featured piece is a horizontal card: picture in the first seven columns, source, title and
   action in the last five, vertically centred. The next three pieces sit in a row beneath it with
   dividers, titles on one row and actions on a common bottom row (checked by the linter).
+- Two layouts, both on the 12-column grid: `two-col` (columns 1 to 7 and 8 to 12) for paired
+  content, and `main-rail` (columns 1 to 8 and 10 to 12) for a main column with a side rail that
+  lines up with the header's decal zone. Events and Contact use the rail; their side blocks
+  lost their boxes so the text sits on the column axis. The empty events state is a line of text
+  under a rule rather than a dashed box.
+- Page-specific header marks, each drawn to fill the decal zone from the same vocabulary of
+  rules, arcs, steps and columns: a page of rules with a drop cap (writing), arcs radiating
+  from a corner (media), a timeline with one marked date (events), a colonnade under an
+  entablature (public policy), a stepped base (support), a doorway with a transom (contact), a
+  screen (privacy). The archway remains the default.
 - Text fills its container. The shared measure no longer caps paragraphs that sit inside a
   defined column (public-work rows, writing entries, the dark band areas, the sign-up block,
   events, the hero introduction and record line). It remains only on containers that would

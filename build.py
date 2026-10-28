@@ -494,14 +494,14 @@ def label(text, rule=False):
     return f'<p class="label{" rule" if rule else ""}">{text}</p>'
 
 
-def page_hero(kicker, headline, lede="", actions="", image=None, alt=""):
+def page_hero(kicker, headline, lede="", actions="", image=None, alt="", mark="default"):
     """Page header on the 12-column grid: text in columns 1-8 (1-7 with an image), then either a decal zone or the image."""
     lede_html = f'<p class="lede">{lede}</p>' if lede else ""
     text = f'<div class="text">{label(esc(kicker), rule=True)}<h1>{headline}</h1>{lede_html}{actions}</div>'
     if image:
         media_html = portrait(image, alt) if is_cutout(image) else f'<img src="{u(image)}" alt="{esc(alt)}" width="1600" height="1200">'
         return f'<section class="page-hero"><div class="wrap"><div class="inner with-image">{text}<div class="media">{media_html}</div></div></div></section>'
-    return f'<section class="page-hero"><div class="wrap"><div class="inner">{text}<div class="side">{HEADER_MARK}</div></div></div></section>'
+    return f'<section class="page-hero"><div class="wrap"><div class="inner">{text}<div class="side">{header_mark(mark)}</div></div></div></section>'
 
 
 def cat_link(p):
@@ -843,7 +843,7 @@ def build_writing(posts, media):
     media_sub = f'<ul class="list compact">{"".join(media_row(m, "writing-media") for m in about_me)}</ul>'
     lede = S("writing.lede")
     actions = f'<div class="actions"><a class="btn secondary small" href="{u("/feed.xml")}">{S("writing.rss_button")}</a><a class="btn secondary small" href="#signup">{S("writing.email_button")}</a></div>'
-    body = f"""{page_hero(R('writing.kicker'), S('writing.headline'), lede, actions)}
+    body = f"""{page_hero(R('writing.kicker'), S('writing.headline'), lede, actions, mark='writing')}
 <section class="section tight"><div class="wrap">{feature}</div></section>
 <section class="section tight"><div class="wrap two-col">
   <div>
@@ -867,7 +867,7 @@ def build_writing(posts, media):
         sub = [p for p in posts if p["category"] == cat]
         lab = SITE["categories"][cat]
         count = f"{len(sub)} {R('writing.post_singular' if len(sub) == 1 else 'writing.post_plural')}"
-        body = f"""{page_hero(R('writing.kicker'), esc(lab), S('writing.category_lede', n=count, link=f'<a href="{u("/writing/")}">{S("writing.category_link")}</a>'))}
+        body = f"""{page_hero(R('writing.kicker'), esc(lab), S('writing.category_lede', n=count, link=f'<a href="{u("/writing/")}">{S("writing.category_link")}</a>'), mark='writing')}
 <section class="section tight"><div class="wrap"><ul class="rule-list">{''.join(post_entry(p) for p in sub)}</ul></div></section>"""
         render(T(f"{lab}: writing"), f"Posts by {NAME} on {lab.lower()}.", body, path=f"/writing/category/{cat}/", current="/writing/", lastmod=sub[0]["date"])
     for i, p in enumerate(posts):
@@ -922,7 +922,7 @@ def build_media(media):
     news = ""
     if coverage:
         news = f"""<section class="section tight"><div class="wrap"><div class="section-head"><h2 class="title-editorial">{S("media.coverage_heading")}</h2></div>{media_by_year(coverage, 'news', limit=3, wide=True)}</div></section>"""
-    body = f"""{page_hero(R('media.kicker'), S('media.headline'), lede, actions)}
+    body = f"""{page_hero(R('media.kicker'), S('media.headline'), lede, actions, mark='media')}
 <section class="section tight"><div class="wrap">
   <div class="section-head">{label(S("media.interviews_label"), rule=True)}<h2 class="title-editorial">{S("media.interviews_heading")}</h2></div>
   {chips}
@@ -952,7 +952,7 @@ def build_policy(policy, media):
     panel = f'<div class="panel accent">{label(S("policy.platform_label"))}<h3 class="title-pillar">{S("policy.platform_heading")}</h3><p>{S("policy.platform_text")}</p><div class="actions"><a class="btn primary small" href="{esc(SITE["platform_url"])}" target="_blank" rel="noopener">{S("policy.platform_button")} &#8599;</a><a class="btn secondary small" href="{u("/policy/ontario-liberal-leadership-2026/")}">{S("policy.platform_campaign_button")}</a></div></div>'
     platform_block = (f'<section class="section tight"><div class="wrap two-col"><div class="prose">{rest_html}</div><aside>{panel}</aside></div></section>' if rest_html
                       else f'<section class="section tight"><div class="wrap">{panel}</div></section>')
-    body = f"""{page_hero(idx_meta.get('kicker', 'Public policy'), esc(idx_meta.get('headline', 'Public policy')), esc(idx_meta.get('lede', '')))}
+    body = f"""{page_hero(idx_meta.get('kicker', 'Public policy'), esc(idx_meta.get('headline', 'Public policy')), esc(idx_meta.get('lede', '')), mark='policy')}
 {band}
 <section class="section"><div class="wrap"><div class="section-head row"><h2>{S("policy.record_heading")}</h2></div>{record_rows(items)}</div></section>
 {platform_block}
@@ -1012,17 +1012,17 @@ def build_events(events):
         past_html = f'<details class="past" style="margin-top:2.5rem"><summary>{S("events.past_summary", n=len(past))}</summary>{"".join(event_block(e) for e in past)}</details>'
     ics = absu("/events.ics")
     webcal = ics.replace("https://", "webcal://").replace("http://", "webcal://")
-    body = f"""{page_hero(R('events.kicker'), S('events.headline'), S('events.lede'))}
-<section class="section tight"><div class="wrap two-col">
+    body = f"""{page_hero(R('events.kicker'), S('events.headline'), S('events.lede'), mark='events')}
+<section class="section tight"><div class="wrap main-rail">
   <div>
     <div class="section-head">{label(S("events.upcoming_label"), rule=True)}<h2 class="title-editorial">{S("events.upcoming_heading")}</h2></div>
     {up_html}
     {past_html}
   </div>
-  <aside class="stack">
-    <div class="panel quiet">{label(S("events.calendar_label"))}<h3>{S("events.calendar_heading")}</h3><p class="small">{S("events.calendar_text")}</p><div class="actions"><a class="btn primary small" href="{webcal}">{S("events.calendar_add")}</a><button class="btn secondary small" type="button" data-copy="{ics}">{S("events.calendar_copy")}</button></div><p class="fine" style="margin-top:.75rem">{S("events.calendar_download", link=f'<a href="{u("/events.ics")}">{S("events.calendar_download_link")}</a>')}</p></div>
-    <div class="panel quiet">{label(S("events.invite_label"))}<h3>{S("events.invite_heading")}</h3><p class="small">{S("events.invite_text")}</p><div class="actions"><a class="btn secondary small" href="{contact_href('speaking')}">{S("events.invite_button")}</a></div></div>
-    <div class="panel quiet">{label(S("events.updates_label"))}<h3>{S("events.updates_heading")}</h3><p class="small">{S("events.updates_text")}</p><div class="actions"><a class="btn secondary small" href="{u('/support/#signup')}">{S("events.updates_button")}</a></div></div>
+  <aside class="rail">
+    <div class="rail-block">{label(S("events.calendar_label"))}<h3>{S("events.calendar_heading")}</h3><p>{S("events.calendar_text")}</p><div class="actions"><a class="btn primary small" href="{webcal}">{S("events.calendar_add")}</a><button class="btn secondary small" type="button" data-copy="{ics}">{S("events.calendar_copy")}</button></div><p class="fine">{S("events.calendar_download", link=f'<a href="{u("/events.ics")}">{S("events.calendar_download_link")}</a>')}</p></div>
+    <div class="rail-block">{label(S("events.invite_label"))}<h3>{S("events.invite_heading")}</h3><p>{S("events.invite_text")}</p><div class="actions"><a class="btn secondary small" href="{contact_href('speaking')}">{S("events.invite_button")}</a></div></div>
+    <div class="rail-block">{label(S("events.updates_label"))}<h3>{S("events.updates_heading")}</h3><p>{S("events.updates_text")}</p><div class="actions"><a class="btn secondary small" href="{u('/support/#signup')}">{S("events.updates_button")}</a></div></div>
   </aside>
 </div></section>"""
     ld = []
@@ -1082,7 +1082,7 @@ def build_support():
     c = s["contribute"]
     note = esc(c["note"]).replace("a third-party platform", platform)
     sg = SITE["signup"]
-    body = f"""{page_hero(s['kicker'], esc(s['headline']), esc(s['lede']), hero_actions)}
+    body = f"""{page_hero(s['kicker'], esc(s['headline']), esc(s['lede']), hero_actions, mark='support')}
 <section class="section tight" id="contribute"><div class="wrap two-col">
   <div class="panel quiet">{label(S("support.pledge_label"))}<h2>{esc(s['pledge']['title'])}</h2>{pledge}</div>
   <div class="panel accent">{label(S("support.contribute_label"))}<h2>{esc(c['title'])}</h2><p>{esc(c['text'])}</p><div class="actions">{monthly}{once}</div><p class="fine" style="margin-top:1rem">{note}</p></div>
@@ -1117,13 +1117,13 @@ def build_contact():
     socials = "".join(f'<li><a href="{esc(sc["url"])}" rel="me noopener" target="_blank">{esc(sc["name"])}{(" " + esc(sc["handle"])) if sc.get("handle") else ""}</a></li>' for sc in SITE["socials"] if sc.get("show", True))
     booking = f'<div class="actions"><a class="btn secondary small" href="{esc(SITE["booking_url"])}" target="_blank" rel="noopener">{S("site.book_call")}</a></div>' if SITE.get("booking_url") else ""
     addr = f'<p class="small muted" style="margin-top:.75rem">{S("contact.mail_prefix")} {esc(SITE["mailing_address"])}</p>' if SITE.get("mailing_address") else ""
-    body = f"""{page_hero(R('contact.kicker'), esc(c['headline']), esc(c['text']))}
-<section class="section tight"><div class="wrap two-col">
+    body = f"""{page_hero(R('contact.kicker'), esc(c['headline']), esc(c['text']), mark='contact')}
+<section class="section tight"><div class="wrap main-rail">
   <div>{label(S("contact.form_label"), rule=True)}{contact_form()}{booking}</div>
-  <aside class="stack">
-    <div>{label(S("contact.consulting_label"))}<h3>{S("contact.consulting_heading")}</h3><p class="small">{S("contact.consulting_text")}</p></div>
-    <div>{label(S("contact.media_label"))}<h3>{S("contact.media_heading")}</h3><p class="small">{S("contact.media_text", link=f'<a href="{u("/media/#media-kit")}">{S("contact.media_link")}</a>')}</p></div>
-    <div>{label(S("contact.follow_label"))}<h3>{S("contact.follow_heading")}</h3><ul class="social-list">{socials}</ul>{addr}<p class="small" style="margin-top:.75rem"><a href="{u('/support/#signup')}">{S("contact.signup_link")}</a>.</p></div>
+  <aside class="rail">
+    <div class="rail-block">{label(S("contact.consulting_label"))}<h3>{S("contact.consulting_heading")}</h3><p>{S("contact.consulting_text")}</p></div>
+    <div class="rail-block">{label(S("contact.media_label"))}<h3>{S("contact.media_heading")}</h3><p>{S("contact.media_text", link=f'<a href="{u("/media/#media-kit")}">{S("contact.media_link")}</a>')}</p></div>
+    <div class="rail-block">{label(S("contact.follow_label"))}<h3>{S("contact.follow_heading")}</h3><ul class="social-list">{socials}</ul>{addr}<p class="small" style="margin-top:.75rem"><a href="{u('/support/#signup')}">{S("contact.signup_link")}</a>.</p></div>
   </aside>
 </div></section>"""
     render(T(R("contact.meta_title")), R("contact.meta_description"), body, path="/contact/", current="/contact/")
@@ -1132,7 +1132,7 @@ def build_contact():
 def build_privacy():
     meta, md = read_md(CONTENT / "pages" / "privacy.md")
     upd = fmt_date(parse_date(meta["updated"])) if meta.get("updated") else fmt_date(TODAY)
-    body = f"""{page_hero(R('privacy.kicker'), esc(meta.get('headline', 'Privacy policy')), esc(meta.get('lede', '')))}
+    body = f"""{page_hero(R('privacy.kicker'), esc(meta.get('headline', 'Privacy policy')), esc(meta.get('lede', '')), mark='privacy')}
 <section class="section tight"><div class="wrap"><p class="fine">{S("privacy.updated", date=upd)}</p><div class="prose">{md_to_html(md)}</div></div></section>"""
     render(T(R("privacy.meta_title")), R("privacy.meta_description"), body, path="/privacy/", current="", reading=True)
 
@@ -1328,6 +1328,32 @@ DECAL_STAGE = ('<svg class="decal decal-stage" viewBox="0 0 400 500" preserveAsp
 
 PLINTH = ('<svg class="plinth" viewBox="0 0 1200 20" preserveAspectRatio="none" aria-hidden="true" focusable="false">'
           '<path class="heavy" d="M0 4H1200"/><path d="M24 16H1176"/></svg>')
+HEADER_MARKS = {
+    # writing: a page of rules with a drop-cap square
+    "writing": '<path class="heavy" d="M0 20H300"/><path d="M0 50H60V110H0Z"/><path d="M80 70H300M80 100H240M0 140H300M0 170H200M0 200H300M0 230H260M0 260H160"/><path class="heavy" d="M0 300H300"/>',
+    # media: arcs radiating from the corner, a broadcast
+    "media": '<path class="heavy" d="M0 300H300"/><path class="heavy" d="M0 220A80 80 0 0 1 80 300"/><path d="M0 160A140 140 0 0 1 140 300"/><path d="M0 100A200 200 0 0 1 200 300"/><path d="M0 40A260 260 0 0 1 260 300"/><path d="M0 0V300"/>',
+    # events: a timeline with ticks and one marked date
+    "events": '<path class="heavy" d="M0 160H300"/><path d="M0 176H300"/><path d="M25 140V160M75 140V160M125 140V160M225 140V160M275 140V160"/><path class="heavy" d="M175 110V160"/><path class="heavy" d="M160 80H190V110H160Z"/><path class="niche" d="M160 80H190V110H160Z"/><path class="heavy" d="M0 300H300"/><path d="M20 314H280"/>',
+    # policy: a colonnade under an entablature
+    "policy": '<path class="heavy" d="M0 30H300"/><path d="M0 44H300"/><path d="M30 44H80V52H30ZM125 44H175V52H125ZM220 44H270V52H220Z"/><path d="M40 52V270M70 52V270M135 52V270M165 52V270M230 52V270M260 52V270"/><path class="heavy" d="M0 272H300"/><path d="M0 286H300"/>',
+    # support: a stepped base, something to stand on
+    "support": '<path class="heavy" d="M0 300V240H60V180H120V120H180V60H240V0H300"/><path d="M14 300V254H74V194H134V134H194V74H254V14H300"/><path class="heavy" d="M0 300H300"/>',
+    # contact: a doorway with a transom
+    "contact": '<path class="niche" d="M74 300V124A76 76 0 0 1 226 124V300Z"/><path class="heavy" d="M60 300V110A90 90 0 0 1 240 110V300"/><path d="M74 300V124A76 76 0 0 1 226 124V300"/><path d="M60 124H240"/><path d="M0 110H60M240 110H300"/><path class="heavy" d="M0 300H300"/><path d="M20 314H280"/>',
+    # privacy: a screen
+    "privacy": '<path class="heavy" d="M0 0H300V300H0Z"/><path d="M60 0V300M120 0V300M180 0V300M240 0V300M0 60H300M0 120H300M0 180H300M0 240H300"/>',
+    # default: the archway
+    "default": '<path class="niche" d="M70 150V96A60 60 0 0 1 190 96V150Z"/><path class="heavy" d="M48 150V90A82 82 0 0 1 212 90V150"/><path d="M70 150V96A60 60 0 0 1 190 96V150"/><path d="M0 90H48M212 90H300"/><path class="heavy" d="M0 150H300"/><path d="M20 162H280"/>',
+}
+
+
+def header_mark(name):
+    paths = HEADER_MARKS.get(name) or HEADER_MARKS["default"]
+    vb = "0 0 300 150" if name in ("default", None) else "0 0 300 300"
+    return f'<svg class="header-mark" viewBox="{vb}" preserveAspectRatio="xMaxYMax meet" aria-hidden="true" focusable="false">{paths}</svg>'
+
+
 HEADER_MARK = ('<svg class="header-mark" viewBox="0 0 300 150" aria-hidden="true" focusable="false">'
                '<path class="niche" d="M70 150V96A60 60 0 0 1 190 96V150Z"/>'
                '<path class="heavy" d="M48 150V90A82 82 0 0 1 212 90V150"/><path d="M70 150V96A60 60 0 0 1 190 96V150"/>'
