@@ -10,6 +10,10 @@
 - The featured piece is a horizontal card: picture in the first seven columns, source, title and
   action in the last five, vertically centred. The next three pieces sit in a row beneath it with
   dividers, titles on one row and actions on a common bottom row (checked by the linter).
+- Text fills its container. The shared measure no longer caps paragraphs that sit inside a
+  defined column (public-work rows, writing entries, the dark band areas, the sign-up block,
+  events, the hero introduction and record line). It remains only on containers that would
+  otherwise span the whole page: the reading column, section introductions and the FAQ.
 - Writing and media: beneath the featured piece and the next three, two columns: the writing
   archive on the left (four shown, then Show more) and the news feed on the right.
 - The media page no longer has a separate "Coverage of the work" section; the two pre-campaign
