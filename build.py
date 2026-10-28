@@ -1262,8 +1262,20 @@ def is_cutout(path):
 
 
 DECAL_STAGE = ('<svg class="decal decal-stage" viewBox="0 0 400 500" preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">'
-               '<path d="M30 499V210A170 170 0 0 1 370 210V499"/><path d="M0 210H30M370 210H400"/><path d="M0 499H400"/>'
-               '<path d="M370 120H396V92"/></svg>')
+               # niche: a flat limestone recess inside the inner arch
+               '<path class="niche" d="M44 500V214A156 156 0 0 1 356 214V500Z"/>'
+               # outer arch, heavier
+               '<path class="heavy" d="M14 500V204A186 186 0 0 1 386 204V500"/>'
+               # inner arch
+               '<path d="M44 500V214A156 156 0 0 1 356 214V500"/>'
+               # spring-line rules running out past the stage
+               '<path d="M-36 204H14M386 204H436"/><path d="M-12 214H44M356 214H412"/>'
+               # keystone tick
+               '<path class="heavy" d="M200 18V34"/>'
+               # baseline and plinth
+               '<path class="heavy" d="M-24 500H424"/><path d="M-6 514H406"/><path class="heavy" d="M14 500V514M386 500V514"/>'
+               # stepped corner mark
+               '<path d="M340 112H392V60M352 124H404V72"/></svg>')
 
 
 def portrait(path, alt, cls="portrait-stage", attrs=""):

@@ -1,5 +1,20 @@
 # Change log
 
+## 28 October 2026: portraits, archway decal, copy workbook, offline preview
+
+- Eric's cut-out portraits (transparent PNG) are kept transparent by the photo sync and shown
+  on an architectural stage: a nested double arch (heavier outer line), a flat limestone niche
+  inside the inner arch, spring-line rules running out past the stage, a plinth under the
+  baseline, a keystone tick and the stepped corner mark. Strengthened at Eric's request after a
+  first, lighter version. A rectangular photograph in the same slot still renders plain.
+- Every piece of interface copy moved from the generator into `content/strings.json`;
+  `copy_sheet.py export` writes the copy workbook (one tab per page, Published copy / New copy)
+  and `copy_sheet.py import` writes edits back. Rendered output was diffed before and after the
+  move: identical apart from a new `data-template` attribute and URL-encoded mailto subjects.
+- `serve.py` serves the built site offline on port 8790 and understands both build variants.
+  A permanent launch agent was not permitted, so it runs as a background process.
+- Linter: 0 findings at 1440, 1728 and 390.
+
 ## Revision 3.2 (26 October 2026): image roles, three-item lists, Writing and media, consulting copy
 
 - **Image roles.** The featured piece carries a large 16:10 image above its title; the next three
