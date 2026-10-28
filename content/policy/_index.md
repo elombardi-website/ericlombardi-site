@@ -11,3 +11,4 @@ lede: Through More Neighbours Toronto, Build Toronto, and my campaign for the On
 - **Build faster and cheaper.** Ontario's infrastructure cost disease is a choice. Procurement, approvals and delivery can be fixed.
 - **A government that can deliver.** Capability inside the public service, honest budgets, and institutions that work for the people who use them.
 - **A fair deal for young people.** Education, careers, family formation and home ownership should be reachable again for people in their twenties and thirties.
+- **Health care you can depend on.** A family doctor, an emergency room that doesn't take twelve hours, and the doctor-training capacity to keep up with the people who live here.

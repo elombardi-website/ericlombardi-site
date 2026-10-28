@@ -8,14 +8,8 @@ summary: A province-wide leadership campaign built on economic growth and govern
 image: /assets/img/eric-campaign.jpg
 card_image: /assets/img/eric-campaign.jpg
 links: Explore the platform|https://platform.ericforolp.ca|primary; Platform PDF|https://platform.ericforolp.ca/platform.pdf
-gallery: /assets/img/eric-campaign.jpg, /assets/img/campaign-illustration.jpg, /assets/img/platform-pdf-cover.jpg
-feature_kicker: The platform
-feature_title: Ontario Can Still Win
-feature_text: The fully costed plan the campaign published in June 2026, reconciled to the provincial budget baseline, is still online chapter by chapter, with the full PDF. Borrow from it freely.
-feature_url: https://platform.ericforolp.ca
-feature_cta: Explore the platform
-feature_image: /assets/img/platform-cover.jpg
 coverage: true
+capsule: true
 ---
 
 In January 2026 I wrote in The Hub that everyone in Ontario politics seemed to be managing decline, and that I was exploring a run for the leadership of the Ontario Liberal Party to fight for growth instead. In June, after conversations with more than 1,500 people in 35 ridings, I formally entered the race under the banner "Own the Future." On September 30, 2026 I withdrew and returned to practice.

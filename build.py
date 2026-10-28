@@ -364,10 +364,10 @@ def tracking_line():
     return S("site.tracking_some") + " " + " and ".join(parts) + "."
 
 
-def head_meta(title, description, path, image=None, kind="website", reading=False):
+def head_meta(title, description, path, image=None, kind="website", reading=False, campaign=False):
     canonical = absu(path)
     img = absu(image or SITE["og_image"])
-    reading_css = f'\n<link rel="stylesheet" href="{u("/assets/css/reading.css")}">' if reading else ""
+    reading_css = (f'\n<link rel="stylesheet" href="{u("/assets/css/reading.css")}">' if reading else "") + (f'\n<link rel="stylesheet" href="{u("/assets/css/campaign.css")}">' if campaign else "")
     return f"""<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
@@ -423,11 +423,12 @@ def footer_html():
                       for s in SITE["socials"] if s.get("show", True))
     explore = nav_links() + f'<a href="{u("/media/")}">{S("site.footer_media_link")}</a><a href="{u("/about/")}">{S("site.footer_about_link")}</a>'
     return f"""<footer class="site-footer"><div class="wrap">
+  {PLINTH}
   <div class="footer-grid">
     <div><a class="wordmark" href="{u('/')}">{esc(NAME)}</a><p class="about">{esc(SITE['short_description'])}</p></div>
     <div><h4>{S("site.footer_explore")}</h4><nav>{explore}</nav></div>
     <div><h4>{S("site.footer_follow")}</h4><div class="links">{socials}<a href="{u('/feed.xml')}">{S("site.footer_rss")}</a></div></div>
-    <div><h4>{S("site.footer_stay")}</h4><div class="links"><a href="mailto:{EMAIL}">{EMAIL}</a><a href="{u('/support/#signup')}">{S("site.footer_signup")}</a><a href="{u('/support/')}">{S("site.footer_support")}</a><a href="{u('/events/')}">{S("site.footer_events")}</a></div></div>
+    <div><h4>{S("site.footer_stay")}</h4><div class="links"><a href="{u('/contact/')}">{S("site.contact_link")}</a><a href="{u('/support/#signup')}">{S("site.footer_signup")}</a><a href="{u('/support/')}">{S("site.footer_support")}</a><a href="{u('/events/')}">{S("site.footer_events")}</a></div></div>
   </div>
   <p class="fine">&copy; {TODAY.year} {esc(NAME)}. {esc(SITE['location']['label'])}. <a href="{u('/privacy/')}">{S("site.footer_privacy")}</a> &middot; <a href="{u('/llms.txt')}">llms.txt</a> &middot; <a href="{u('/sitemap.xml')}">{S("site.footer_sitemap")}</a>. {tracking_line()}</p>
 </div></footer>"""
@@ -446,7 +447,7 @@ def breadcrumb_ld(path):
 def person_ld():
     return {"@type": "Person", "@id": PERSON_ID, "name": NAME, "url": DOMAIN + "/",
             "image": absu("/assets/img/eric-headshot.jpg"), "jobTitle": SITE["job_title"],
-            "description": SITE["short_description"], "email": "mailto:" + EMAIL,
+            "description": SITE["short_description"],
             "address": {"@type": "PostalAddress", "addressLocality": SITE["location"]["city"],
                         "addressRegion": SITE["location"]["region"], "addressCountry": SITE["location"]["country"]},
             "alumniOf": {"@type": "CollegeOrUniversity", "name": "University of Waterloo"},
@@ -454,7 +455,7 @@ def person_ld():
             "knowsAbout": SITE["knows_about"]}
 
 
-def render(title, description, body, *, path, current="", image=None, kind="website", jsonld=None, lastmod=None, body_class="", sitemap=True, reading=False):
+def render(title, description, body, *, path, current="", image=None, kind="website", jsonld=None, lastmod=None, body_class="", sitemap=True, reading=False, campaign=False):
     graph = [person_ld(),
              {"@type": "WebSite", "@id": SITE_ID, "url": DOMAIN + "/", "name": NAME, "publisher": {"@id": PERSON_ID}, "inLanguage": "en-CA"},
              {"@type": "WebPage", "@id": absu(path), "url": absu(path), "name": title, "description": description,
@@ -465,10 +466,10 @@ def render(title, description, body, *, path, current="", image=None, kind="webs
     doc = f"""<!DOCTYPE html>
 <html lang="en-CA">
 <head>
-{head_meta(title, description, path, image, kind, reading)}
+{head_meta(title, description, path, image, kind, reading, campaign)}
 <script type="application/ld+json">{ld}</script>
 </head>
-<body class="{body_class}">
+<body class="{body_class}" data-m="{EMAIL[::-1]}">
 <a class="skip" href="#main">{S("site.skip_link")}</a>
 {header_html(current)}
 <main id="main">
@@ -584,7 +585,7 @@ def signup_form(variant="full"):
     consent = (f'<label class="consent"><input type="checkbox" name="consent" value="yes" required> {statement}</label>'
                if f.get("consent") == "checkbox" else f'<p class="consent-note">{statement}</p>')
     hp = '<div class="hp" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off"></div>'
-    common = f'action="{action}" method="{esc(f.get("method", "POST"))}" data-endpoint="{esc(f["endpoint"])}" data-mailto="{EMAIL}"'
+    common = f'action="{action}" method="{esc(f.get("method", "POST"))}" data-endpoint="{esc(f["endpoint"])}"'
     fields = (f'<label>{S("site.form_first_name")}<input type="text" name="{esc(fl["first_name"])}" required autocomplete="given-name"></label>'
               f'<label>{S("site.form_last_name")}<input type="text" name="{esc(fl["last_name"])}" required autocomplete="family-name"></label>'
               f'<label class="wide">{S("site.form_email")}<input type="email" name="{esc(fl["email"])}" required autocomplete="email"></label>'
@@ -603,6 +604,23 @@ def signup_section(section_id="signup", dark=False):
             f'{signup_form("inline")}</div></section>')
 
 
+def contact_form():
+    c = SITE["contact"]
+    hidden = "".join(f'<input type="hidden" name="{esc(k)}" value="{esc(v)}">' for k, v in c.get("hidden", {}).items())
+    action = esc(c["endpoint"]) if c.get("endpoint") else "#"
+    topics = "".join(f'<option value="{esc(t["id"])}">{esc(t["label"])}</option>' for t in c["topics"])
+    note = S("site.form_privacy_note", link=f'<a href="{u("/privacy/")}">{S("site.privacy_link")}</a>')
+    return (f'<form class="contact" action="{action}" method="{esc(c.get("method", "POST"))}" data-endpoint="{esc(c.get("endpoint", ""))}" '
+            f'data-sent="{esc(R("site.form_sent"))}" data-fallback="{esc(R("site.form_fallback"))}">'
+            f'<div class="fields"><label>{S("site.form_name")}<input type="text" name="name" required autocomplete="name"></label>'
+            f'<label>{S("site.form_reply")}<input type="email" name="email" required autocomplete="email"></label>'
+            f'<label class="wide">{S("site.form_topic")}<select name="topic">{topics}</select></label>'
+            f'<label class="wide">{S("site.form_message")}<textarea name="message" required rows="7"></textarea></label></div>'
+            f'<div class="hp" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off"></div>{hidden}'
+            f'<div class="actions"><button class="btn primary" type="submit">{S("site.form_send")}</button></div>'
+            f'<p class="form-msg" hidden></p><p class="fine">{note}</p></form>')
+
+
 def x_feed_html():
     x = SITE.get("x_feed", {})
     if not x.get("enabled"):
@@ -618,8 +636,12 @@ def x_feed_html():
 </div></section>"""
 
 
-def cta_actions(subject="Hello"):
-    out = f'<a class="btn primary" href="mailto:{EMAIL}?subject={urlq(subject)}">{S("site.email_me")}</a>'
+def contact_href(topic=""):
+    return u("/contact/") + (f"?topic={topic}" if topic else "")
+
+
+def cta_actions(topic="other"):
+    out = f'<a class="btn primary" href="{contact_href(topic)}">{S("site.email_me")}</a>'
     if SITE.get("booking_url"):
         out += f'<a class="btn secondary" href="{esc(SITE["booking_url"])}" target="_blank" rel="noopener">{S("site.book_call")}</a>'
     return f'<div class="actions">{out}</div>'
@@ -629,16 +651,17 @@ def contact_band():
     c = SITE["contact"]
     return f"""<section class="section band dark contact-band">{DECAL_ARC}<div class="wrap two-col">
   <div><h2>{esc(c['headline'])}</h2><p class="lede">{esc(c['text'])}</p></div>
-  <div class="actions" style="margin:0;align-self:center"><a class="btn primary" href="mailto:{EMAIL}">{EMAIL}</a><a class="btn secondary" href="{u('/contact/')}">{S("site.contact_band_button")}</a></div>
+  <div class="actions" style="margin:0;align-self:center"><a class="btn primary" href="{u('/contact/')}">{S("site.email_me")}</a></div>
 </div></section>"""
 
 
 def record_rows(items):
     rows = ""
     for it in items:
-        rows += (f'<li><div class="record-row"><div class="when">{esc(it.get("dates", ""))}</div><div>'
+        img = it.get("card_image") or it.get("image")
+        rows += (f'<li><div class="record-row"><a class="pic" href="{u(it["url"])}" tabindex="-1" aria-hidden="true"><img src="{u(img)}" alt="" loading="lazy" width="800" height="600"></a><div>'
                  f'<p class="role">{esc(it.get("role", ""))}</p><h3><a href="{u(it["url"])}">{esc(it["title"])}</a></h3>'
-                 f'<p>{esc(it.get("summary", ""))}</p><a class="more" href="{u(it["url"])}">Read more &rarr;</a></div></div></li>')
+                 f'<p>{esc(it.get("summary", ""))}</p><p class="when">{esc(it.get("dates", ""))}</p><a class="more" href="{u(it["url"])}">Read more &rarr;</a></div></div></li>')
     return f'<ol class="record">{rows}</ol>'
 
 
@@ -670,17 +693,16 @@ def authored_items(posts, media):
     return items
 
 
-def article_entry(a, compact=False, extra=False):
-    """One card family for local and external authored work, with a small thumbnail. Source is metadata."""
-    cls = "entry with-thumb compact" if compact else "entry with-thumb"
+def article_entry(a, compact=False, extra=False, thumb=False):
+    """One card family for local and external authored work. The source appears once, in the action."""
+    cls = ("entry compact" if compact else "entry with-meta") + (" with-thumb" if thumb else "")
     ext = ' target="_blank" rel="noopener"' if a["external"] else ""
-    src = a["cat"] if a["cat"] else f'<span class="cat">{esc(a["source"])}</span>'
-    meta = f'<div class="meta">{src}<span>{fmt_date(a["d"])}</span></div>'
+    meta = f'<div class="meta">{a["cat"]}<span>{fmt_date(a["d"])}</span></div>' if a["cat"] else f'<div class="meta"><span>{fmt_date(a["d"])}</span></div>'
     summ = "" if compact else (f'<p>{esc(a["summary"])}</p>' if a.get("summary") else "")
     comp = f'<a class="more" href="{a["companion"][1]}">{esc(a["companion"][0])} &rarr;</a>' if a.get("companion") else ""
-    thumb = f'<a class="thumb" href="{esc(a["url"])}"{ext} tabindex="-1" aria-hidden="true"><img src="{u(a["image"])}" alt="" loading="lazy" width="400" height="300"></a>'
-    body = f'<div><h3 class="title-editorial"><a href="{esc(a["url"])}"{ext}>{esc(a["title"])}</a></h3>{summ}<div class="entry-actions"><a class="more" href="{esc(a["url"])}"{ext}>{esc(a["action"])}{" &#8599;" if a["external"] else " &rarr;"}</a>{comp}</div></div>'
-    return f'<li data-filter-item="writing" data-values="{"external" if a["external"] else "local"}"{" data-extra hidden" if extra else ""}><article class="{cls}">{thumb}{meta}{body}</article></li>'
+    thumb_html = f'<a class="thumb" href="{esc(a["url"])}"{ext} tabindex="-1" aria-hidden="true"><img src="{u(a["image"])}" alt="" loading="lazy" width="400" height="300"></a>' if thumb else ""
+    body = f'<div><h3 class="title-list"><a href="{esc(a["url"])}"{ext}>{esc(a["title"])}</a></h3>{summ}<div class="entry-actions"><a class="more" href="{esc(a["url"])}"{ext}>{esc(a["action"])}{" &#8599;" if a["external"] else " &rarr;"}</a>{comp}</div></div>'
+    return f'<li data-filter-item="writing" data-values="{"external" if a["external"] else "local"}"{" data-extra hidden" if extra else ""}><article class="{cls}">{thumb_html}{meta}{body}</article></li>'
 
 
 def feature_article(a):
@@ -784,7 +806,7 @@ def build_consulting():
     ptext = "".join(f"<p>{inline(p)}</p>" for p in partner["text"])
     pserv = "".join(f'<span class="tag">{esc(s)}</span>' for s in partner["services"])
     sectors = "".join(f'<span class="tag">{esc(s)}</span>' for s in c["sectors"])
-    body = f"""{page_hero(c['kicker'], esc(c['headline']), esc(c['lede']), cta_actions(R('consulting.enquiry_subject')), image=img_path('eric-consulting'), alt=NAME)}
+    body = f"""{page_hero(c['kicker'], esc(c['headline']), esc(c['lede']), cta_actions('consulting'), image=img_path('eric-consulting'), alt=NAME)}
 {intro_html}
 {services}
 <section class="section tight"><div class="wrap">{label(S("consulting.sectors_label"))}<div class="tags">{sectors}</div></div></section>
@@ -798,7 +820,7 @@ def build_consulting():
 </div></section>
 <section class="section band dark"><div class="wrap two-col">
   <div><h2>{esc(c['cta']['headline'])}</h2><p class="lede">{esc(c['cta']['text'])}</p></div>
-  <div class="actions" style="margin:0;align-self:center"><a class="btn primary" href="mailto:{EMAIL}?subject={urlq(R('consulting.enquiry_subject'))}">{EMAIL}</a>{f'<a class="btn secondary" href="{esc(SITE["booking_url"])}" target="_blank" rel="noopener">{S("site.book_call")}</a>' if SITE.get('booking_url') else ''}</div>
+  <div class="actions" style="margin:0;align-self:center"><a class="btn primary" href="{contact_href('consulting')}">{S("site.email_me")}</a>{f'<a class="btn secondary" href="{esc(SITE["booking_url"])}" target="_blank" rel="noopener">{S("site.book_call")}</a>' if SITE.get('booking_url') else ''}</div>
 </div></section>"""
     desc = R("consulting.meta_description")
     ld = [{"@type": "ProfessionalService", "@id": DOMAIN + "/consulting/#service", "name": f"{NAME} Consulting", "url": absu("/consulting/"),
@@ -873,6 +895,7 @@ def build_writing(posts, media):
 </header>
 {hero_img}{notice}
 <article class="prose">{p['html']}</article>
+<div class="endmark-wrap">{ENDMARK}<span class="visually-hidden">{S("article.end_mark_label")}</span></div>
 {share}{pager}</section>
 {related}
 {signup_section('signup', dark=True)}"""
@@ -892,7 +915,7 @@ def build_media(media):
     chips = f'<div class="chips" data-filter-group="media"><button class="chip" data-value="all" aria-pressed="true">{S("media.filter_all")}</button>' + "".join(
         f'<button class="chip" data-value="{esc(f)}" aria-pressed="false">{esc(f.title())}</button>' for f in formats) + "</div>"
     lede = S("media.lede", writing=f'<a href="{u("/writing/")}">{S("media.lede_writing_link")}</a>', campaign=f'<a href="{u("/policy/ontario-liberal-leadership-2026/#coverage")}">{S("media.lede_campaign_link")}</a>')
-    actions = f'<div class="actions"><a class="btn primary small" href="mailto:{EMAIL}?subject={urlq(R("media.request_subject"))}">{S("media.requests_button")}</a><a class="btn secondary small" href="#media-kit">{S("media.kit_button")}</a></div>'
+    actions = f'<div class="actions"><a class="btn primary small" href="{contact_href('media')}">{S("media.requests_button")}</a><a class="btn secondary small" href="#media-kit">{S("media.kit_button")}</a></div>'
     news = ""
     if coverage:
         news = f"""<section class="section tight"><div class="wrap"><div class="section-head"><h2 class="title-editorial">{S("media.coverage_heading")}</h2></div>{media_by_year(coverage, 'news', limit=3, wide=True)}</div></section>"""
@@ -907,7 +930,7 @@ def build_media(media):
   <div class="cols cols-3 divided">
     <div><h3>{S("media.kit_bio_heading")}</h3><p>{esc(SITE['description'])}</p></div>
     <div><h3>{S("media.kit_headshot_heading")}</h3><p>{S("media.kit_headshot_text")}</p><div class="actions"><a class="btn secondary small" href="{u('/assets/img/eric-headshot.jpg')}" download>{S("media.kit_headshot_button")}</a></div></div>
-    <div><h3>{S("media.kit_requests_heading")}</h3><p>{S("media.kit_requests_text")}</p><div class="actions"><a class="btn primary small" href="mailto:{EMAIL}?subject={urlq(R("media.request_subject"))}">{EMAIL}</a></div></div>
+    <div><h3>{S("media.kit_requests_heading")}</h3><p>{S("media.kit_requests_text")}</p><div class="actions"><a class="btn primary small" href="{contact_href('media')}">{S("media.kit_requests_button")}</a></div></div>
   </div>
 </div></section>
 {news}"""
@@ -935,7 +958,7 @@ def build_policy(policy, media):
     campaign_items = [m for m in media if m.get("campaign")]
     for it in items:
         links = "".join(f'<a class="btn {"primary" if l["primary"] else "secondary"}" href="{esc(l["url"])}" target="_blank" rel="noopener">{esc(l["label"])} &#8599;</a>' for l in it["links"])
-        facts = "".join(f'<div><dt>{k}</dt><dd>{esc(it[key])}</dd></div>' for k, key in ((S("policy.fact_role"), "role"), (S("policy.fact_when"), "dates")) if it.get(key))
+        meta_line = f'<p class="pagemeta">{esc(it.get("role", ""))}{(" " + S("policy.subpage_meta_sep") + " " + esc(it["dates"])) if it.get("dates") else ""}</p>' if it.get("role") or it.get("dates") else ""
         gallery = f'<div class="gallery" style="margin-top:2rem">{"".join(f"<img src=\"{u(g)}\" alt=\"\" loading=\"lazy\">" for g in it["gallery"])}</div>' if it["gallery"] else ""
         coverage = ""
         if truthy(it.get("coverage", "")) and campaign_items:
@@ -945,15 +968,36 @@ def build_policy(policy, media):
   {media_by_year(campaign_items, 'coverage', limit=3, wide=True)}
 </div></section>"""
         feature = ""
-        if it.get("feature_title"):
+        if truthy(it.get("capsule", "")):
+            feature = campaign_capsule()
+        elif it.get("feature_title"):
             feature = f"""<section class="section band limestone"><div class="wrap feature"><img src="{u(it.get('feature_image', it.get('image')))}" alt="" loading="lazy" width="1600" height="1000"><div>{label(esc(it.get('feature_kicker', '')))}<h2 class="title-editorial">{esc(it['feature_title'])}</h2><p>{esc(it.get('feature_text', ''))}</p><div class="actions"><a class="btn primary" href="{esc(it.get('feature_url', '#'))}" target="_blank" rel="noopener">{esc(it.get('feature_cta', 'Open'))} &#8599;</a></div></div></div></section>"""
-        body = f"""{page_hero(R('policy.subpage_kicker'), esc(it['title']), esc(it.get('summary', '')), f'<div class="actions">{links}</div>' if links else '', image=it.get('image'), alt=it['title'])}
-<section class="section tight"><div class="wrap"><dl class="facts">{facts}</dl><div class="prose">{it['html']}</div>{gallery}</div></section>
+        body = f"""{page_hero(R('policy.subpage_kicker'), esc(it['title']), esc(it.get('summary', '')) + meta_line, f'<div class="actions">{links}</div>' if links else '', image=it.get('image'), alt=it['title'])}
+<section class="section tight"><div class="wrap"><div class="prose">{it['html']}</div>{gallery}</div></section>
 {feature}{coverage}"""
         ld = []
         if it["slug"] != "ontario-liberal-leadership-2026" and it["links"]:
             ld.append({"@type": "Organization", "name": it["title"], "url": it["links"][0]["url"], "founder": {"@id": PERSON_ID}})
-        render(T(it["title"]), it.get("summary", ""), body, path=it["url"], current="/policy/", image=it.get("card_image") or it.get("image"), jsonld=ld, reading=True)
+        render(T(it["title"]), it.get("summary", ""), body, path=it["url"], current="/policy/", image=it.get("card_image") or it.get("image"), jsonld=ld, reading=True, campaign=truthy(it.get("capsule", "")))
+
+
+def campaign_capsule():
+    """The 2026 campaign as a page within a page, in the campaign's own design language."""
+    cp = load_json("campaign.json")
+    cards = "".join(f'<a class="c-card" href="{esc(ch["url"])}" target="_blank" rel="noopener">{f"<img src=\"{u(ch["image"])}\" alt=\"\" loading=\"lazy\" width=\"900\" height=\"506\">" if ch.get("image") else ""}'
+                    f'<div class="c-body"><p class="c-kicker">Chapter {i + 1}</p><h4>{esc(ch["title"])}</h4><p>{esc(ch["tagline"])}</p><span class="c-more">Read the chapter &#8599;</span></div></a>'
+                    for i, ch in enumerate(cp["chapters"]))
+    return f"""<section class="section"><div class="wrap">
+  <div class="section-head">{label(S("policy.capsule_label"), rule=True)}<h2 class="title-editorial">{S("policy.capsule_heading")}</h2></div>
+  <div class="capsule">
+    <div class="c-head"><img class="c-logo" src="{u('/assets/img/campaign/logo.svg')}" alt="{esc(cp['wordmark_alt'])}" width="708" height="223"><p class="c-slogan">{esc(cp['slogan'])}</p></div>
+    <h3>{esc(cp['platform_title'])}</h3>
+    <p class="c-sub">{esc(cp['platform_sub'])}</p>
+    <div class="c-actions"><a class="c-btn" href="{esc(cp['platform_url'])}" target="_blank" rel="noopener">Explore the full platform &#8599;</a><a class="c-btn ghost" href="{esc(cp['pdf_url'])}" target="_blank" rel="noopener">Platform PDF</a></div>
+    <div class="c-grid">{cards}</div>
+    <p class="c-note">{esc(cp['note'])}</p>
+  </div>
+</div></section>"""
 
 
 def build_events(events):
@@ -974,7 +1018,7 @@ def build_events(events):
   </div>
   <aside class="stack">
     <div class="panel quiet">{label(S("events.calendar_label"))}<h3>{S("events.calendar_heading")}</h3><p class="small">{S("events.calendar_text")}</p><div class="actions"><a class="btn primary small" href="{webcal}">{S("events.calendar_add")}</a><button class="btn secondary small" type="button" data-copy="{ics}">{S("events.calendar_copy")}</button></div><p class="fine" style="margin-top:.75rem">{S("events.calendar_download", link=f'<a href="{u("/events.ics")}">{S("events.calendar_download_link")}</a>')}</p></div>
-    <div class="panel quiet">{label(S("events.invite_label"))}<h3>{S("events.invite_heading")}</h3><p class="small">{S("events.invite_text")}</p><div class="actions"><a class="btn secondary small" href="mailto:{EMAIL}?subject={urlq(R("events.invite_subject"))}">{S("events.invite_button")}</a></div></div>
+    <div class="panel quiet">{label(S("events.invite_label"))}<h3>{S("events.invite_heading")}</h3><p class="small">{S("events.invite_text")}</p><div class="actions"><a class="btn secondary small" href="{contact_href('speaking')}">{S("events.invite_button")}</a></div></div>
     <div class="panel quiet">{label(S("events.updates_label"))}<h3>{S("events.updates_heading")}</h3><p class="small">{S("events.updates_text")}</p><div class="actions"><a class="btn secondary small" href="{u('/support/#signup')}">{S("events.updates_button")}</a></div></div>
   </aside>
 </div></section>"""
@@ -1067,14 +1111,17 @@ def build_about():
 
 def build_contact():
     c = SITE["contact"]
-    socials = "".join(f'<li><a href="{esc(s["url"])}" rel="me noopener" target="_blank">{esc(s["name"])}{(" " + esc(s["handle"])) if s.get("handle") else ""}</a></li>' for s in SITE["socials"] if s.get("show", True))
-    booking = f'<a class="btn secondary small" href="{esc(SITE["booking_url"])}" target="_blank" rel="noopener">{S("site.book_call")}</a>' if SITE.get("booking_url") else ""
+    socials = "".join(f'<li><a href="{esc(sc["url"])}" rel="me noopener" target="_blank">{esc(sc["name"])}{(" " + esc(sc["handle"])) if sc.get("handle") else ""}</a></li>' for sc in SITE["socials"] if sc.get("show", True))
+    booking = f'<div class="actions"><a class="btn secondary small" href="{esc(SITE["booking_url"])}" target="_blank" rel="noopener">{S("site.book_call")}</a></div>' if SITE.get("booking_url") else ""
     addr = f'<p class="small muted" style="margin-top:.75rem">{S("contact.mail_prefix")} {esc(SITE["mailing_address"])}</p>' if SITE.get("mailing_address") else ""
-    body = f"""{page_hero(R('contact.kicker'), esc(c['headline']), esc(c['text']), f'<div class="actions"><a class="btn primary" href="mailto:{EMAIL}">{EMAIL}</a>{booking}</div>')}
-<section class="section tight"><div class="wrap cols cols-3 divided">
-  <div>{label(S("contact.consulting_label"))}<h3>{S("contact.consulting_heading")}</h3><p>{S("contact.consulting_text")}</p><div class="actions"><a class="btn primary small" href="mailto:{EMAIL}?subject={urlq(R("consulting.enquiry_subject"))}">{S("contact.consulting_button")}</a></div></div>
-  <div>{label(S("contact.media_label"))}<h3>{S("contact.media_heading")}</h3><p>{S("contact.media_text", link=f'<a href="{u("/media/#media-kit")}">{S("contact.media_link")}</a>')}</p><div class="actions"><a class="btn secondary small" href="mailto:{EMAIL}?subject={urlq(R("media.request_subject"))}">{S("contact.media_button")}</a></div></div>
-  <div>{label(S("contact.follow_label"))}<h3>{S("contact.follow_heading")}</h3><ul class="social-list">{socials}</ul>{addr}<p class="small" style="margin-top:.75rem"><a href="{u('/support/#signup')}">{S("contact.signup_link")}</a>.</p></div>
+    body = f"""{page_hero(R('contact.kicker'), esc(c['headline']), esc(c['text']))}
+<section class="section tight"><div class="wrap two-col">
+  <div>{label(S("contact.form_label"), rule=True)}{contact_form()}{booking}</div>
+  <aside class="stack">
+    <div>{label(S("contact.consulting_label"))}<h3>{S("contact.consulting_heading")}</h3><p class="small">{S("contact.consulting_text")}</p></div>
+    <div>{label(S("contact.media_label"))}<h3>{S("contact.media_heading")}</h3><p class="small">{S("contact.media_text", link=f'<a href="{u("/media/#media-kit")}">{S("contact.media_link")}</a>')}</p></div>
+    <div>{label(S("contact.follow_label"))}<h3>{S("contact.follow_heading")}</h3><ul class="social-list">{socials}</ul>{addr}<p class="small" style="margin-top:.75rem"><a href="{u('/support/#signup')}">{S("contact.signup_link")}</a>.</p></div>
+  </aside>
 </div></section>"""
     render(T(R("contact.meta_title")), R("contact.meta_description"), body, path="/contact/", current="/contact/")
 
@@ -1089,7 +1136,7 @@ def build_privacy():
 
 def build_404():
     body = f"""{page_hero(R('notfound.kicker'), S('notfound.headline'), S('notfound.lede'))}
-<section class="section tight"><div class="wrap"><div class="actions" style="margin:0"><a class="btn primary" href="{u('/')}">{S("notfound.home")}</a><a class="btn secondary" href="{u('/writing/')}">{S("notfound.writing")}</a><a class="btn secondary" href="{u('/consulting/')}">{S("notfound.consulting")}</a><a class="btn secondary" href="{u('/policy/')}">{S("notfound.policy")}</a></div></div></section>"""
+<section class="section tight"><div class="wrap"><div class="actions" style="margin:0"><a class="btn primary" href="{u('/')}">{S("notfound.home")}</a><a class="btn secondary" href="{u('/writing/')}">{S("notfound.writing")}</a><a class="btn secondary" href="{u('/consulting/')}">{S("notfound.consulting")}</a><a class="btn secondary" href="{u('/policy/')}">{S("notfound.policy")}</a></div><div class="empty-arch">{DECAL_STAGE}</div></div></section>"""
     render(T(R("notfound.meta_title")), R("notfound.meta_title") + ".", body, path="/404.html", current="", sitemap=False)
 
 
@@ -1147,7 +1194,7 @@ def build_llms(posts, media, events, policy_items):
     about = [m for m in media if m["kind"] in ("interview", "coverage")]
     up = [e for e in events if not e["past"]]
     lines = [f"# {NAME}", "", f"> {SITE['description']}", "",
-             f"Email: {EMAIL}. Location: {SITE['location']['label']}. Socials: " + ", ".join(f"{s['name']} {s['url']}" for s in SITE["socials"] if s.get("show", True)), "",
+             f"Contact: {DOMAIN}/contact/ (form). Location: {SITE['location']['label']}. Socials: " + ", ".join(f"{s['name']} {s['url']}" for s in SITE["socials"] if s.get("show", True)), "",
              "## Pages", ""]
     for n in SITE["nav"] + [{"label": "In the media", "href": "/media/"}, {"label": "About", "href": "/about/"}, {"label": "Support and sign-up", "href": "/support/"}, {"label": "Privacy", "href": "/privacy/"}]:
         lines.append(f"- [{n['label']}]({absu(n['href'])})")
@@ -1173,7 +1220,7 @@ def build_llms(posts, media, events, policy_items):
 def build_api(posts, media, events):
     def clean(d, drop=("d", "end_d", "html")):
         return {k: v for k, v in d.items() if k not in drop}
-    write("api/site.json", json.dumps({"name": NAME, "url": DOMAIN, "description": SITE["description"], "email": EMAIL, "location": SITE["location"]["label"],
+    write("api/site.json", json.dumps({"name": NAME, "url": DOMAIN, "description": SITE["description"], "contact": DOMAIN + "/contact/", "location": SITE["location"]["label"],
                                        "socials": [{"name": s["name"], "url": s["url"]} for s in SITE["socials"] if s.get("show", True)],
                                        "pages": [{"label": n["label"], "url": absu(n["href"])} for n in SITE["nav"]],
                                        "feeds": {"rss": DOMAIN + "/feed.xml", "json": DOMAIN + "/feed.json", "ics": DOMAIN + "/events.ics"},
@@ -1274,8 +1321,11 @@ DECAL_STAGE = ('<svg class="decal decal-stage" viewBox="0 0 400 500" preserveAsp
                '<path class="heavy" d="M200 18V34"/>'
                # baseline and plinth
                '<path class="heavy" d="M-24 500H424"/><path d="M-6 514H406"/><path class="heavy" d="M14 500V514M386 500V514"/>'
-               # stepped corner mark
-               '<path d="M340 112H392V60M352 124H404V72"/></svg>')
+               '</svg>')
+
+PLINTH = ('<svg class="plinth" viewBox="0 0 1200 20" preserveAspectRatio="none" aria-hidden="true" focusable="false">'
+          '<path class="heavy" d="M0 4H1200"/><path d="M24 16H1176"/></svg>')
+ENDMARK = ('<svg class="endmark" viewBox="0 0 44 44" aria-hidden="true" focusable="false"><path d="M8 40V22A14 14 0 0 1 36 22V40M2 40H42"/></svg>')
 
 
 def portrait(path, alt, cls="portrait-stage", attrs=""):

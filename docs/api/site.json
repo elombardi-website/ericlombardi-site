@@ -2,7 +2,7 @@
  "name": "Eric Lombardi",
  "url": "https://elombardi-website.github.io/ericlombardi-site",
  "description": "Eric Lombardi is a Toronto-based strategy consultant in financial services and technology, a writer on Ontario's economy and growth, founder of More Neighbours Toronto, and the 2026 Ontario Liberal leadership candidate who published a fully costed platform for the province.",
- "email": "eric@ericlombardi.ca",
+ "contact": "https://elombardi-website.github.io/ericlombardi-site/contact/",
  "location": "Toronto, Ontario, Canada",
  "socials": [
   {
@@ -53,5 +53,5 @@
   "json": "https://elombardi-website.github.io/ericlombardi-site/feed.json",
   "ics": "https://elombardi-website.github.io/ericlombardi-site/events.ics"
  },
- "generated": "2026-10-28T17:03:07.481232+00:00"
+ "generated": "2026-10-28T17:23:02.651339+00:00"
 }

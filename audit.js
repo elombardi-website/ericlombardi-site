@@ -50,6 +50,7 @@ const AUDIT = (TOL) => {
   const leftFindings = [];
   for (const el of document.querySelectorAll(SEL)) {
     if (!vis(el)) continue;
+    if (el.closest('.capsule')) continue;      // the campaign capsule is a scoped page-within-a-page with its own grid
     if (el.closest('.prose') && !el.matches('.prose > p, .prose > h2, .prose > h3')) continue;      // inset prose internals are intentional
     if (el.closest('.tags, .chips, .share, .article-meta, .social-list') && !el.matches('.tags,.chips')) continue;
     const parent = el.parentElement; const ps = getComputedStyle(parent);

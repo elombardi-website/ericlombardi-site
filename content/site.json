@@ -182,6 +182,28 @@
   },
   "contact": {
     "headline": "Get in touch.",
-    "text": "For consulting, interviews, or speaking invitations, email eric@ericlombardi.ca with a few details about what you have in mind."
+    "text": "For consulting, interviews, or speaking invitations, send a few details about what you have in mind and I will reply by email.",
+    "endpoint": "",
+    "method": "POST",
+    "hidden": {},
+    "_how": "endpoint = a form-to-email service URL (Web3Forms: https://api.web3forms.com/submit with hidden access_key; Formspree: https://formspree.io/f/<id>). Empty = the visitor's own email app opens, addressed to you, with the address assembled in the browser so it never appears in the page source.",
+    "topics": [
+      {
+        "id": "consulting",
+        "label": "Consulting"
+      },
+      {
+        "id": "media",
+        "label": "Media or interview request"
+      },
+      {
+        "id": "speaking",
+        "label": "Speaking invitation"
+      },
+      {
+        "id": "other",
+        "label": "Something else"
+      }
+    ]
   }
 }

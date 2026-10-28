@@ -1,0 +1,32 @@
+/* campaign.css — the 2026 leadership campaign's own design language, scoped to .capsule and
+   loaded only on the leadership page. Brand red, PP Watch display, PP Pangram Sans text, near-black ground. */
+@font-face{font-family:"PP Watch";src:url("../fonts/campaign/PPWatch-Bold.otf") format("opentype");font-weight:700;font-display:swap}
+@font-face{font-family:"PP Pangram Sans";src:url("../fonts/campaign/PPPangramSans-Regular.otf") format("opentype");font-weight:400;font-display:swap}
+@font-face{font-family:"PP Pangram Sans";src:url("../fonts/campaign/PPPangramSans-Medium.otf") format("opentype");font-weight:500;font-display:swap}
+.capsule{--red:#E81E25;--red-dk:#C9191F;--cink:#101010;--cpaper:#F2F3F6;--cline:rgba(255,255,255,.16);
+  font-family:"PP Pangram Sans",system-ui,sans-serif;background:var(--cink);color:#fff;border-radius:2px;padding:clamp(1.5rem,4vw,3.5rem);position:relative;isolation:isolate}
+.capsule::before{content:"";position:absolute;inset:.75rem;border:1px solid var(--cline);pointer-events:none}
+.capsule>*{position:relative}
+.capsule .c-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
+.capsule .c-logo{height:1.6rem;width:auto;display:block}
+.capsule .c-slogan{font-family:"PP Watch",sans-serif;font-weight:700;font-size:.8125rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:0}
+.capsule h3,.capsule h4{font-family:"PP Watch",sans-serif;font-weight:700;color:#fff;letter-spacing:-.02em;margin:0 0 .4em;text-wrap:balance}
+.capsule h3{font-size:clamp(2rem,1.4rem + 2.6vw,3.5rem);line-height:.98}
+.capsule .c-sub{font-size:clamp(1.0625rem,1rem + .4vw,1.25rem);line-height:1.45;font-weight:300;max-width:34em;color:#DADCE2;margin:0 0 1.5rem}
+.capsule .c-actions{display:flex;gap:.75rem;flex-wrap:wrap;margin:0 0 2.5rem}
+.capsule .c-btn{display:inline-flex;align-items:center;min-height:2.75rem;padding:0 1.25rem;font-weight:500;font-size:.9375rem;text-decoration:none;border:1.5px solid var(--red);background:var(--red);color:#fff;border-radius:999px}
+.capsule .c-btn:hover{background:var(--red-dk);border-color:var(--red-dk)}
+.capsule .c-btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.6)}
+.capsule .c-btn.ghost:hover{background:#fff;color:var(--cink)}
+.capsule .c-grid{display:grid;gap:1rem;border-top:1px solid var(--cline);padding-top:1.5rem}
+@media(min-width:40rem){.capsule .c-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:64rem){.capsule .c-grid{grid-template-columns:repeat(3,1fr);gap:1.25rem}}
+.capsule .c-card{display:flex;flex-direction:column;background:#17181B;border:1px solid var(--cline);color:#fff;text-decoration:none;overflow:hidden;border-radius:2px;transition:border-color .15s}
+.capsule .c-card:hover{border-color:var(--red)}
+.capsule .c-card img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.capsule .c-card .c-body{padding:1rem 1.1rem 1.2rem;display:flex;flex-direction:column;flex:1}
+.capsule .c-card .c-kicker{font-family:"PP Watch",sans-serif;font-weight:700;font-size:.6875rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:0 0 .4rem}
+.capsule .c-card h4{font-size:1.1875rem;line-height:1.12;margin:0 0 .45rem}
+.capsule .c-card p{font-size:.9rem;line-height:1.45;color:#C9CBD2;margin:0 0 .75rem;font-weight:300}
+.capsule .c-card .c-more{margin-top:auto;font-size:.875rem;font-weight:500;color:#fff}
+.capsule .c-note{font-size:.8125rem;color:#9A9DA6;margin:2rem 0 0;max-width:40em}

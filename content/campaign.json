@@ -1,0 +1,102 @@
+{
+ "wordmark_alt": "Eric Lombardi for Ontario",
+ "slogan": "Own the Future",
+ "platform_title": "Ontario Can Still Win.",
+ "platform_sub": "The fully costed platform of the 2026 leadership campaign: thirteen policy areas and more than 190 commitments, reconciled to the provincial budget baseline.",
+ "platform_url": "https://platform.ericforolp.ca",
+ "pdf_url": "https://platform.ericforolp.ca/platform.pdf",
+ "note": "This section keeps the campaign's own design so the platform reads as it did at the time. The campaign concluded on September 30, 2026.",
+ "chapters": [
+  {
+   "slug": "youth",
+   "title": "A Hopeful Future For Young Ontarians",
+   "tagline": "Give young Ontarians a real shot at the life their parents had: a serious education, a stable family, and a home of their own, in the province where they grew up.",
+   "image": "/assets/img/campaign/youth.jpg",
+   "url": "https://platform.ericforolp.ca/youth"
+  },
+  {
+   "slug": "seniors",
+   "title": "No Seniors Left Behind",
+   "tagline": "Make Ontario the best place in Canada to grow old: at home as long as possible, with care close by, and a real long-term care space when it's needed.",
+   "image": "/assets/img/campaign/seniors.jpg",
+   "url": "https://platform.ericforolp.ca/seniors"
+  },
+  {
+   "slug": "economy",
+   "title": "An Opportunity Economy",
+   "tagline": "Restore Ontario's place as Canada's growth engine: simpler taxes, faster permits, fewer subsidies, and a real comparative advantage in the industries that will drive the next economy.",
+   "image": "/assets/img/campaign/economy.jpg",
+   "url": "https://platform.ericforolp.ca/economy"
+  },
+  {
+   "slug": "democracy",
+   "title": "Restore Faith That Democracy Can Deliver",
+   "tagline": "Make Ontario's democracy worth defending: representative institutions, transparent decisions, and a public service that actually delivers.",
+   "image": "/assets/img/campaign/democracy.jpg",
+   "url": "https://platform.ericforolp.ca/democracy"
+  },
+  {
+   "slug": "housing",
+   "title": "Build Homes, Build Communities, Build Futures",
+   "tagline": "Build more homes, build them better, and build them beautifully. End the speculation that put homeownership out of reach for a generation.",
+   "image": "/assets/img/campaign/housing.jpg",
+   "url": "https://platform.ericforolp.ca/housing"
+  },
+  {
+   "slug": "health",
+   "title": "Healthcare You Can Depend On",
+   "tagline": "Healthcare that's there when you need it: a family doctor, an ER that doesn't take twelve hours, and the doctor-training capacity to keep up with the people who live here.",
+   "image": "/assets/img/campaign/health.jpg",
+   "url": "https://platform.ericforolp.ca/health"
+  },
+  {
+   "slug": "education",
+   "title": "Get Serious About Education",
+   "tagline": "Get serious about education: properly funded classrooms, restored standards, and a postsecondary system aligned to the future economy.",
+   "image": "/assets/img/campaign/education.jpg",
+   "url": "https://platform.ericforolp.ca/education"
+  },
+  {
+   "slug": "energy",
+   "title": "Clean Energy For A Prosperous Future",
+   "tagline": "Make Ontario the cheap-power capital of North America. Electricity abundance is how Ontario industrializes and decarbonizes at the same time.",
+   "image": "/assets/img/campaign/energy.jpg",
+   "url": "https://platform.ericforolp.ca/energy"
+  },
+  {
+   "slug": "north",
+   "title": "Northern and Rural Communities Deserve Better",
+   "tagline": "Ontario’s future depends on Northern and rural communities with reliable services, safer roads, growing main streets, and world-class food and resource economies.",
+   "image": "/assets/img/campaign/north.jpg",
+   "url": "https://platform.ericforolp.ca/north"
+  },
+  {
+   "slug": "transportation",
+   "title": "Build The Future Of Transportation",
+   "tagline": "Ontario pays too much and builds too little. Deliver transit continuously, connect regions by rail, and get roads moving again.",
+   "image": "/assets/img/campaign/transportation.jpg",
+   "url": "https://platform.ericforolp.ca/transportation"
+  },
+  {
+   "slug": "welfare",
+   "title": "A Welfare System That Lifts People Up",
+   "tagline": "Rebuild welfare as a path back to stability, build the treatment and crisis system Ontario has been missing, and protect housing stability for the Ontarians closest to the edge.",
+   "image": "/assets/img/campaign/welfare.jpg",
+   "url": "https://platform.ericforolp.ca/welfare"
+  },
+  {
+   "slug": "justice",
+   "title": "Real Justice and Orderly Immigration",
+   "tagline": "Restore the rule of law, defend communities from hate and intimidation, and restore faith in Ontario's immigration advantage.",
+   "image": "/assets/img/campaign/justice.jpg",
+   "url": "https://platform.ericforolp.ca/justice"
+  },
+  {
+   "slug": "reform",
+   "title": "Reform Dividends",
+   "tagline": "The savings and revenue Ontario captures when its government builds, taxes, and works competently.",
+   "image": "/assets/img/campaign/reform.jpg",
+   "url": "https://platform.ericforolp.ca/reform"
+  }
+ ]
+}

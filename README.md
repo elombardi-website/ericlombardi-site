@@ -148,6 +148,22 @@ The events page, `events.ics` and `api/events.json` all come from this file.
 Bluesky (the post page has share links). If a Substack ever makes sense, point it at
 `/feed.xml`; the site is the canonical home.
 
+## Contact form
+
+The contact page is a form; the email address never appears in the page source, the
+structured data, the API or `llms.txt` (it is stored reversed in a `data-m` attribute and
+assembled in the browser, which defeats simple scrapers). Until a sending service is
+connected, submitting opens the visitor's own email app with the message addressed to you.
+To make it send silently, set `contact.endpoint` in `site.json` to a form-to-email service and
+add its hidden fields in `contact.hidden`:
+
+- **Web3Forms** (free, no account): endpoint `https://api.web3forms.com/submit`, hidden
+  `{"access_key": "<key emailed to you by web3forms.com>"}`.
+- **Formspree** (free tier, 50 a month): endpoint `https://formspree.io/f/<form id>`.
+
+Both deliver to the address you register with them. The other "Get in touch" buttons link to the
+form with the topic preselected (`/contact/?topic=consulting|media|speaking`).
+
 ## Switches in `site.json`
 
 - `form.endpoint`: the email tool's form-post URL. Map its field names (first name, last name,

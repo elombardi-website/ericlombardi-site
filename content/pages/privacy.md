@@ -26,7 +26,7 @@ Personal information is never sold or rented.
 
 ## Consent and unsubscribing
 
-Commercial electronic messages are sent only with your express consent, given when you subscribe. Every email includes an unsubscribe link, and requests are honoured within ten business days as CASL requires. You can also withdraw consent any time by emailing eric@ericlombardi.ca.
+Commercial electronic messages are sent only with your express consent, given when you subscribe. Every email includes an unsubscribe link, and requests are honoured within ten business days as CASL requires. You can also withdraw consent any time through the [contact form](/contact/).
 
 ## Sharing
 
@@ -38,7 +38,7 @@ Data is stored with reputable providers and protected with reasonable administra
 
 ## Your rights
 
-You can ask what personal information I hold about you, ask for it to be corrected or deleted, or withdraw consent, by emailing eric@ericlombardi.ca.
+You can ask what personal information I hold about you, ask for it to be corrected or deleted, or withdraw consent, through the [contact form](/contact/).
 
 ## Changes
 
