@@ -32,7 +32,7 @@
     var btn = box.querySelector('[data-expand-for]');
     if (btn) {
       if (remaining === 0) { box.setAttribute('data-expanded', '1'); }
-      else btn.textContent = 'Show more (' + remaining + ' more)';
+      else btn.textContent = (btn.getAttribute('data-template') || 'Show more ({n} more)').replace('{n}', remaining);
     }
   }
   function expandAll(key) { reveal(key, 0); }

@@ -6,6 +6,7 @@
                                        # test build for GitHub project pages (no CNAME written)
     python3 build.py --drafts          # include posts marked  draft: true
     python3 build.py --placeholders    # include sample events marked "placeholder": true (preview only)
+    python3 build.py --out build/local # write somewhere other than docs/
 
 Content: content/   Design: assets/   Output: docs/  (served by GitHub Pages)
 """
@@ -19,8 +20,9 @@ import shutil
 import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
-CONTENT, ASSETS, OUT = HERE / "content", HERE / "assets", HERE / "docs"
+CONTENT, ASSETS = HERE / "content", HERE / "assets"
 ARGS = sys.argv[1:]
+OUT = pathlib.Path(ARGS[ARGS.index("--out") + 1]).resolve() if "--out" in ARGS else HERE / "docs"
 BASE = ARGS[ARGS.index("--base") + 1].rstrip("/") if "--base" in ARGS else ""
 DOMAIN_OVERRIDE = ARGS[ARGS.index("--domain") + 1].rstrip("/") if "--domain" in ARGS else ""
 INCLUDE_DRAFTS = "--drafts" in ARGS
@@ -32,6 +34,22 @@ def load_json(name):
 
 
 SITE = load_json("site.json")
+STRINGS = load_json("strings.json")   # every piece of interface copy; edited through the copy workbook
+from urllib.parse import quote as urlq
+
+
+def R(key, **kw):
+    """Raw copy string from strings.json ("group.key"); tokens in {braces} are filled from kw."""
+    g, k = key.split(".", 1)
+    t = STRINGS[g][k]["text"]
+    return t.format(**kw) if kw else t
+
+
+def S(key, **kw):
+    """HTML-escaped copy string for text content; kw values are inserted unescaped (for links)."""
+    g, k = key.split(".", 1)
+    t = hm.escape(STRINGS[g][k]["text"], quote=False)
+    return t.format(**kw) if kw else t
 DOMAIN = DOMAIN_OVERRIDE or SITE["domain"].rstrip("/")
 NAME = SITE["name"]
 EMAIL = SITE["email"]
@@ -337,13 +355,13 @@ def tracking_line():
     a = bool(SITE.get("analytics", {}).get("enabled"))
     x = bool(SITE.get("x_feed", {}).get("enabled"))
     if not a and not x:
-        return "No cookies, no trackers."
+        return S("site.tracking_none")
     parts = []
     if a:
-        parts.append("privacy-friendly analytics without cookies")
+        parts.append(S("site.tracking_analytics"))
     if x:
-        parts.append("embedded posts from X on the public-policy page, which may set their own cookies")
-    return "No advertising trackers. This site uses " + " and ".join(parts) + "."
+        parts.append(S("site.tracking_x"))
+    return S("site.tracking_some") + " " + " and ".join(parts) + "."
 
 
 def head_meta(title, description, path, image=None, kind="website", reading=False):
@@ -393,25 +411,25 @@ def header_html(current=""):
     return f"""<header class="site-header"><div class="wrap">
   <a class="wordmark" href="{u('/')}">{esc(NAME)}</a>
   <nav class="primary" aria-label="Primary">{links}</nav>
-  <a class="btn small secondary header-cta" href="{u('/support/')}">Support</a>
+  <a class="btn small secondary header-cta" href="{u('/support/')}">{S("site.header_support")}</a>
   <button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="mobile-nav"><span></span><span></span><span></span></button>
 </div>
-<nav class="mobile" id="mobile-nav" aria-label="Mobile">{links}<a href="{u('/about/')}">About</a><a class="btn secondary" href="{u('/support/')}">Support the work</a></nav>
+<nav class="mobile" id="mobile-nav" aria-label="Mobile">{links}<a href="{u('/about/')}">{S("site.mobile_about")}</a><a class="btn secondary" href="{u('/support/')}">{S("site.mobile_support")}</a></nav>
 </header>"""
 
 
 def footer_html():
     socials = "".join(f'<a href="{esc(s["url"])}" rel="me noopener" target="_blank">{esc(s["name"])}</a>'
                       for s in SITE["socials"] if s.get("show", True))
-    explore = nav_links() + f'<a href="{u("/media/")}">In the media</a><a href="{u("/about/")}">About</a>'
+    explore = nav_links() + f'<a href="{u("/media/")}">{S("site.footer_media_link")}</a><a href="{u("/about/")}">{S("site.footer_about_link")}</a>'
     return f"""<footer class="site-footer"><div class="wrap">
   <div class="footer-grid">
     <div><a class="wordmark" href="{u('/')}">{esc(NAME)}</a><p class="about">{esc(SITE['short_description'])}</p></div>
-    <div><h4>Explore</h4><nav>{explore}</nav></div>
-    <div><h4>Follow</h4><div class="links">{socials}<a href="{u('/feed.xml')}">RSS feed</a></div></div>
-    <div><h4>Stay in touch</h4><div class="links"><a href="mailto:{EMAIL}">{EMAIL}</a><a href="{u('/support/#signup')}">Sign up for updates</a><a href="{u('/support/')}">Support the work</a><a href="{u('/events/')}">Where I'll be</a></div></div>
+    <div><h4>{S("site.footer_explore")}</h4><nav>{explore}</nav></div>
+    <div><h4>{S("site.footer_follow")}</h4><div class="links">{socials}<a href="{u('/feed.xml')}">{S("site.footer_rss")}</a></div></div>
+    <div><h4>{S("site.footer_stay")}</h4><div class="links"><a href="mailto:{EMAIL}">{EMAIL}</a><a href="{u('/support/#signup')}">{S("site.footer_signup")}</a><a href="{u('/support/')}">{S("site.footer_support")}</a><a href="{u('/events/')}">{S("site.footer_events")}</a></div></div>
   </div>
-  <p class="fine">&copy; {TODAY.year} {esc(NAME)}. {esc(SITE['location']['label'])}. <a href="{u('/privacy/')}">Privacy</a> &middot; <a href="{u('/llms.txt')}">llms.txt</a> &middot; <a href="{u('/sitemap.xml')}">Sitemap</a>. {tracking_line()}</p>
+  <p class="fine">&copy; {TODAY.year} {esc(NAME)}. {esc(SITE['location']['label'])}. <a href="{u('/privacy/')}">{S("site.footer_privacy")}</a> &middot; <a href="{u('/llms.txt')}">llms.txt</a> &middot; <a href="{u('/sitemap.xml')}">{S("site.footer_sitemap")}</a>. {tracking_line()}</p>
 </div></footer>"""
 
 
@@ -451,7 +469,7 @@ def render(title, description, body, *, path, current="", image=None, kind="webs
 <script type="application/ld+json">{ld}</script>
 </head>
 <body class="{body_class}">
-<a class="skip" href="#main">Skip to content</a>
+<a class="skip" href="#main">{S("site.skip_link")}</a>
 {header_html(current)}
 <main id="main">
 {localize(body)}
@@ -492,14 +510,14 @@ def cat_link(p):
 def post_entry(p, compact=False):
     cls = "entry compact" if compact else "entry with-meta"
     meta = f'<div class="meta">{cat_link(p)}<span>{fmt_date(p["date"])}</span></div>'
-    body = f'<div><h3 class="title-editorial"><a href="{u(p["url"])}">{esc(p["title"])}</a></h3><p>{esc(p["summary"])}</p><a class="more" href="{u(p["url"])}">Read the essay &rarr;</a></div>'
+    body = f'<div><h3 class="title-editorial"><a href="{u(p["url"])}">{esc(p["title"])}</a></h3><p>{esc(p["summary"])}</p><a class="more" href="{u(p["url"])}">{S("site.read_essay")} &rarr;</a></div>'
     return f'<li data-filter-item="posts" data-values="{p["category"]}"><article class="{cls}">{meta}{body}</article></li>'
 
 
 def feature_post(p):
     return (f'<article class="feature-post"><div class="meta">{cat_link(p)}<span>{fmt_date(p["date"])}</span></div>'
             f'<h3 class="title-feature"><a href="{u(p["url"])}">{esc(p["title"])}</a></h3><p class="summary">{esc(p["summary"])}</p>'
-            f'<a class="btn secondary small" href="{u(p["url"])}">Read the essay</a></article>')
+            f'<a class="btn secondary small" href="{u(p["url"])}">{S("site.read_essay")}</a></article>')
 
 
 def media_row(m, group="media", extra=False):
@@ -526,7 +544,7 @@ def media_by_year(items, group="media", limit=None, wide=False, batch=10):
     html_ = "".join(out)
     if limit is not None and len(items) > limit:
         html_ = (f'<div class="expander" data-expander="{group}" data-expanded="0">{html_}'
-                 f'<button class="btn secondary small expand" type="button" data-expand-for="{group}" data-batch="{batch}">Show more ({len(items) - limit} more)</button></div>')
+                 f'<button class="btn secondary small expand" type="button" data-expand-for="{group}" data-batch="{batch}" data-template="{esc(R("site.show_more", n="{n}"))}">{S("site.show_more", n=len(items) - limit)}</button></div>')
     return html_
 
 
@@ -535,7 +553,7 @@ def writing_list(items, group="writing", limit=3, batch=10):
     html_ = f'<ul class="rule-list">{rows}</ul>'
     if len(items) > limit:
         html_ = (f'<div class="expander" data-expander="{group}" data-expanded="0">{html_}'
-                 f'<button class="btn secondary small expand" type="button" data-expand-for="{group}" data-batch="{batch}">Show more ({len(items) - limit} more)</button></div>')
+                 f'<button class="btn secondary small expand" type="button" data-expand-for="{group}" data-batch="{batch}" data-template="{esc(R("site.show_more", n="{n}"))}">{S("site.show_more", n=len(items) - limit)}</button></div>')
     return html_
 
 
@@ -546,8 +564,8 @@ def event_block(e):
     link = ""
     if e.get("url"):
         ext = e["url"].startswith("http")
-        link = f'<div class="actions"><a class="btn small {"secondary" if past else "primary"}" href="{u(e["url"]) if not ext else esc(e["url"])}"{" target=_blank rel=noopener" if ext else ""}>{"Details" if past else "Details and registration"}{" &#8599;" if ext else ""}</a></div>'
-    ph = ' <span class="tag">Sample</span>' if e.get("placeholder") else ""
+        link = f'<div class="actions"><a class="btn small {"secondary" if past else "primary"}" href="{u(e["url"]) if not ext else esc(e["url"])}"{" target=_blank rel=noopener" if ext else ""}>{S("site.event_details") if past else S("site.event_register")}{" &#8599;" if ext else ""}</a></div>'
+    ph = f' <span class="tag">{S("site.sample_tag")}</span>' if e.get("placeholder") else ""
     summ = f'<p>{esc(e["summary"])}</p>' if e.get("summary") else ""
     return (f'<article class="event{" past" if past else ""}"><div class="datebox"><span class="m">{d:%b}</span><span class="d">{d.day}</span><span class="y">{d.year}</span></div>'
             f'<div><div class="meta"><span class="cat">{esc(e.get("kind", "Event"))}</span>{ph}</div><h3>{esc(e["title"])}</h3>'
@@ -560,22 +578,22 @@ def signup_form(variant="full"):
     fl = f["fields"]
     hidden = "".join(f'<input type="hidden" name="{esc(k)}" value="{esc(v)}">' for k, v in f.get("hidden", {}).items())
     action = esc(f["endpoint"]) if f["endpoint"] else "#"
-    statement = SITE["signup"]["statement"] + f' <a href="{u("/privacy/")}">Privacy</a>.'
+    statement = SITE["signup"]["statement"] + f' <a href="{u("/privacy/")}">{S("site.privacy_link")}</a>.'
     if SITE.get("mailing_address"):
         statement += f' {esc(NAME)}, {esc(SITE["mailing_address"])}.'
     consent = (f'<label class="consent"><input type="checkbox" name="consent" value="yes" required> {statement}</label>'
                if f.get("consent") == "checkbox" else f'<p class="consent-note">{statement}</p>')
     hp = '<div class="hp" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off"></div>'
     common = f'action="{action}" method="{esc(f.get("method", "POST"))}" data-endpoint="{esc(f["endpoint"])}" data-mailto="{EMAIL}"'
-    fields = (f'<label>First name<input type="text" name="{esc(fl["first_name"])}" required autocomplete="given-name"></label>'
-              f'<label>Last name<input type="text" name="{esc(fl["last_name"])}" required autocomplete="family-name"></label>'
-              f'<label class="wide">Email<input type="email" name="{esc(fl["email"])}" required autocomplete="email"></label>'
-              f'<label class="wide">Postal code or city<input type="text" name="{esc(fl["postal"])}" required autocomplete="postal-code" title="Used to invite you to events near you"></label>')
+    fields = (f'<label>{S("site.form_first_name")}<input type="text" name="{esc(fl["first_name"])}" required autocomplete="given-name"></label>'
+              f'<label>{S("site.form_last_name")}<input type="text" name="{esc(fl["last_name"])}" required autocomplete="family-name"></label>'
+              f'<label class="wide">{S("site.form_email")}<input type="email" name="{esc(fl["email"])}" required autocomplete="email"></label>'
+              f'<label class="wide">{S("site.form_postal")}<input type="text" name="{esc(fl["postal"])}" required autocomplete="postal-code" title="{esc(R("site.form_postal_help"))}"></label>')
     if variant == "inline":
-        return (f'<form class="signup inline" {common}><div class="fields">{fields}<button class="btn primary" type="submit">Sign up</button></div>'
+        return (f'<form class="signup inline" {common}><div class="fields">{fields}<button class="btn primary" type="submit">{S("site.form_submit")}</button></div>'
                 f'{consent}{hp}{hidden}<p class="form-msg" hidden></p></form>')
     return (f'<form class="signup full" {common}><div class="fields">{fields}</div>{consent}{hp}{hidden}'
-            f'<div class="actions" style="margin-top:.25rem"><button class="btn primary" type="submit">Sign up</button></div><p class="form-msg" hidden></p></form>')
+            f'<div class="actions" style="margin-top:.25rem"><button class="btn primary" type="submit">{S("site.form_submit")}</button></div><p class="form-msg" hidden></p></form>')
 
 
 def signup_section(section_id="signup", dark=False):
@@ -591,19 +609,19 @@ def x_feed_html():
         return ""
     h = esc(x.get("handle", SITE["x_handle"]))
     return f"""<section class="section tight"><div class="wrap">
-  <div class="section-head row"><h2 class="title-ui">Latest posts from @{h}</h2><a class="more" href="https://x.com/{h}" target="_blank" rel="noopener">Follow on X &rarr;</a></div>
+  <div class="section-head row"><h2 class="title-ui">{S("site.x_feed_heading", handle=h)}</h2><a class="more" href="https://x.com/{h}" target="_blank" rel="noopener">{S("site.x_feed_link")} &rarr;</a></div>
   <div class="embed-box">
     <a class="twitter-timeline" data-height="{int(x.get('height', 700))}" data-dnt="true" data-chrome="noheader nofooter noborders" href="https://twitter.com/{h}?ref_src=twsrc%5Etfw">Posts by @{h}</a>
-    <p class="placeholder">If the feed doesn't load here, open <a href="https://x.com/{h}" target="_blank" rel="noopener">x.com/{h}</a>.</p>
+    <p class="placeholder">{S("site.x_feed_fallback", link=f'<a href="https://x.com/{h}" target="_blank" rel="noopener">x.com/{h}</a>')}</p>
   </div>
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </div></section>"""
 
 
 def cta_actions(subject="Hello"):
-    out = f'<a class="btn primary" href="mailto:{EMAIL}?subject={esc(subject)}">Email me</a>'
+    out = f'<a class="btn primary" href="mailto:{EMAIL}?subject={urlq(subject)}">{S("site.email_me")}</a>'
     if SITE.get("booking_url"):
-        out += f'<a class="btn secondary" href="{esc(SITE["booking_url"])}" target="_blank" rel="noopener">Book a call</a>'
+        out += f'<a class="btn secondary" href="{esc(SITE["booking_url"])}" target="_blank" rel="noopener">{S("site.book_call")}</a>'
     return f'<div class="actions">{out}</div>'
 
 
@@ -611,7 +629,7 @@ def contact_band():
     c = SITE["contact"]
     return f"""<section class="section band dark contact-band">{DECAL_ARC}<div class="wrap two-col">
   <div><h2>{esc(c['headline'])}</h2><p class="lede">{esc(c['text'])}</p></div>
-  <div class="actions" style="margin:0;align-self:center"><a class="btn primary" href="mailto:{EMAIL}">{EMAIL}</a><a class="btn secondary" href="{u('/contact/')}">Contact page</a></div>
+  <div class="actions" style="margin:0;align-self:center"><a class="btn primary" href="mailto:{EMAIL}">{EMAIL}</a><a class="btn secondary" href="{u('/contact/')}">{S("site.contact_band_button")}</a></div>
 </div></section>"""
 
 
@@ -637,7 +655,7 @@ def authored_items(posts, media):
         if p.get("canonical_external"):
             continue
         items.append({"title": p["title"], "d": p["date"], "url": u(p["url"]), "external": False, "source": "This site",
-                      "summary": p["summary"], "cat": cat_link(p), "action": "Read the essay", "featured": p.get("featured", False), "companion": None,
+                      "summary": p["summary"], "cat": cat_link(p), "action": R("site.read_essay"), "featured": p.get("featured", False), "companion": None,
                       "image": pic(p["slug"], p.get("image", ""))})
     for m in media:
         if m.get("kind") != "column":
@@ -646,7 +664,7 @@ def authored_items(posts, media):
         if m.get("companion"):
             comp = (m.get("companion_label", "Companion note on this site"), u(m["companion"]))
         items.append({"title": m["title"], "d": m["d"], "url": m["url"], "external": True, "source": m["outlet"],
-                      "summary": m.get("summary", ""), "cat": "", "action": f"Read at {m['outlet']}", "featured": False, "companion": comp,
+                      "summary": m.get("summary", ""), "cat": "", "action": R("site.read_at", source=m["outlet"]), "featured": False, "companion": comp,
                       "verify": m.get("verify", ""), "image": pic(m.get("id", ""))})
     items.sort(key=lambda x: x["d"], reverse=True)
     return items
@@ -698,7 +716,7 @@ def build_home(posts, media, events, policy_items):
             first, rest = "A future", headline[len("A future "):]
         headline = f'{esc(first)} <span class="brk">{esc(rest)}</span>'
     record = "".join(f"<span>{esc(r)}</span>" for r in hero.get("record", []))
-    work = band_areas("What I do", SITE["pillars"], cols=3)
+    work = band_areas(R("home.work_label"), SITE["pillars"], cols=3)
     authored = authored_items(posts, media)
     featured = next((a for a in authored if a.get("featured")), authored[0] if authored else None)
     others = [a for a in authored if a is not featured][:3]
@@ -711,7 +729,7 @@ def build_home(posts, media, events, policy_items):
     events_html = ""
     if upcoming:
         events_html = f"""<section class="section tight"><div class="wrap">
-  <div class="section-head row"><h2>Upcoming events</h2><a class="more" href="{u('/events/')}">All events &rarr;</a></div>
+  <div class="section-head row"><h2>{S("home.events_heading")}</h2><a class="more" href="{u('/events/')}">{S("home.events_link")} &rarr;</a></div>
   {''.join(event_block(e) for e in upcoming)}
 </div></section>"""
     body = f"""<section class="hero"><div class="hero-shell">
@@ -719,7 +737,7 @@ def build_home(posts, media, events, policy_items):
     {label(esc(hero['kicker']))}
     <h1 class="display">{headline}</h1>
     <p class="lede">{esc(hero['lede'])}</p>
-    <div class="actions"><a class="btn primary" href="{u('/consulting/')}">Work with me</a><a class="btn secondary" href="{u('/writing/')}">Read my writing</a></div>
+    <div class="actions"><a class="btn primary" href="{u('/consulting/')}">{S("home.cta_primary")}</a><a class="btn secondary" href="{u('/writing/')}">{S("home.cta_secondary")}</a></div>
     <p class="record-line">{record}</p>
   </div>
   {portrait(img_path('eric-hero'), NAME, cls='hero-photo portrait-stage', attrs='fetchpriority="high"')}
@@ -730,64 +748,64 @@ def build_home(posts, media, events, policy_items):
 {work}
 
 <section class="section"><div class="wrap">
-  <div class="section-head row"><h2>Latest writing</h2><a class="more" href="{u('/writing/')}">All writing &rarr;</a></div>
+  <div class="section-head row"><h2>{S("home.writing_heading")}</h2><a class="more" href="{u('/writing/')}">{S("home.writing_link")} &rarr;</a></div>
   {writing}
 </div></section>
 
 <section class="section tight"><div class="wrap">
-  <div class="section-head row"><h2 class="title-editorial">In the media</h2><a class="more" href="{u('/media/')}">More interviews and coverage &rarr;</a></div>
+  <div class="section-head row"><h2 class="title-editorial">{S("home.media_heading")}</h2><a class="more" href="{u('/media/')}">{S("home.media_link")} &rarr;</a></div>
   {media_cols}
 </div></section>
 
 <section class="section"><div class="wrap">
-  <div class="section-head row"><h2>Public policy</h2><a class="more" href="{u('/policy/')}">The civic work &rarr;</a></div>
+  <div class="section-head row"><h2>{S("home.policy_heading")}</h2><a class="more" href="{u('/policy/')}">{S("home.policy_link")} &rarr;</a></div>
   {record_rows(policy_items)}
 </div></section>
 
 {events_html}
 
 <section class="section tight"><div class="wrap feature">
-  <div><h2 class="title-editorial">Support the work</h2><p>Contributions fund events, travel and the community around the public policy work. None of it is personal income, and the support page says how it is used.</p><div class="actions"><a class="btn secondary" href="{u('/support/')}">How support works</a></div></div>
+  <div><h2 class="title-editorial">{S("home.support_heading")}</h2><p>{S("home.support_text")}</p><div class="actions"><a class="btn secondary" href="{u('/support/')}">{S("home.support_cta")}</a></div></div>
   <img src="{u('/assets/img/support.jpg')}" alt="" loading="lazy" width="1600" height="1000">
 </div></section>
 
 {contact_band()}"""
-    render(f"{NAME}: strategy consultant, writer and advocate", SITE["description"], body, path="/", current="/", lastmod=TODAY)
+    render(R("home.meta_title"), SITE["description"], body, path="/", current="/", lastmod=TODAY)
 
 
 def build_consulting():
     c = load_json("consulting.json")
     intro = "".join(f"<p>{inline(p)}</p>" for p in c.get("intro", []))
     intro_html = f'<section class="section tight"><div class="wrap"><div class="prose">{intro}</div></div></section>' if intro else ""
-    services = band_areas("Services", [{"symbol": sv.get("symbol"), "title": sv["title"], "text": sv["summary"]} for sv in c["services"]], cols=4)
+    services = band_areas(R("consulting.services_label"), [{"symbol": sv.get("symbol"), "title": sv["title"], "text": sv["summary"]} for sv in c["services"]], cols=4)
     steps = "".join(f'<div><div class="num">{i}</div><h3>{esc(st["title"])}</h3><p>{esc(st["text"])}</p></div>'
                     for i, st in enumerate(c["how"]["steps"], start=1))
     partner = c["partner"]
     ptext = "".join(f"<p>{inline(p)}</p>" for p in partner["text"])
     pserv = "".join(f'<span class="tag">{esc(s)}</span>' for s in partner["services"])
     sectors = "".join(f'<span class="tag">{esc(s)}</span>' for s in c["sectors"])
-    body = f"""{page_hero(c['kicker'], esc(c['headline']), esc(c['lede']), cta_actions('Consulting enquiry'), image=img_path('eric-consulting'), alt=NAME)}
+    body = f"""{page_hero(c['kicker'], esc(c['headline']), esc(c['lede']), cta_actions(R('consulting.enquiry_subject')), image=img_path('eric-consulting'), alt=NAME)}
 {intro_html}
 {services}
-<section class="section tight"><div class="wrap">{label("Sectors")}<div class="tags">{sectors}</div></div></section>
+<section class="section tight"><div class="wrap">{label(S("consulting.sectors_label"))}<div class="tags">{sectors}</div></div></section>
 <section class="section"><div class="wrap">
-  <div class="section-head">{label("How I work", rule=True)}<h2>{esc(c['how']['headline'])}</h2><p class="lede">{esc(c['how']['text'])}</p></div>
+  <div class="section-head">{label(S("consulting.how_label"), rule=True)}<h2>{esc(c['how']['headline'])}</h2><p class="lede">{esc(c['how']['text'])}</p></div>
   <div class="cols cols-3 divided">{steps}</div>
 </div></section>
 <section class="section tight" id="electric-mind"><div class="wrap two-col">
-  <div>{label("Partners")}<h2 class="title-editorial">{esc(partner['headline'])}</h2>{ptext}<p><a class="more" href="{esc(partner['url'])}" target="_blank" rel="noopener">Visit {esc(partner['name'])} &#8599;</a></p></div>
-  <div>{label("What the partnership brings")}<div class="tags">{pserv}</div></div>
+  <div>{label(S("consulting.partners_label"))}<h2 class="title-editorial">{esc(partner['headline'])}</h2>{ptext}<p><a class="more" href="{esc(partner['url'])}" target="_blank" rel="noopener">{S("consulting.partners_visit", name=esc(partner['name']))} &#8599;</a></p></div>
+  <div>{label(S("consulting.partners_brings_label"))}<div class="tags">{pserv}</div></div>
 </div></section>
 <section class="section band dark"><div class="wrap two-col">
   <div><h2>{esc(c['cta']['headline'])}</h2><p class="lede">{esc(c['cta']['text'])}</p></div>
-  <div class="actions" style="margin:0;align-self:center"><a class="btn primary" href="mailto:{EMAIL}?subject=Consulting%20enquiry">{EMAIL}</a>{f'<a class="btn secondary" href="{esc(SITE["booking_url"])}" target="_blank" rel="noopener">Book a call</a>' if SITE.get('booking_url') else ''}</div>
+  <div class="actions" style="margin:0;align-self:center"><a class="btn primary" href="mailto:{EMAIL}?subject={urlq(R('consulting.enquiry_subject'))}">{EMAIL}</a>{f'<a class="btn secondary" href="{esc(SITE["booking_url"])}" target="_blank" rel="noopener">{S("site.book_call")}</a>' if SITE.get('booking_url') else ''}</div>
 </div></section>"""
-    desc = "Eric Lombardi advises companies and investors in financial services and technology on strategy, acquisitions, product development and delivery, independently and with partner firms like Electric Mind."
+    desc = R("consulting.meta_description")
     ld = [{"@type": "ProfessionalService", "@id": DOMAIN + "/consulting/#service", "name": f"{NAME} Consulting", "url": absu("/consulting/"),
            "provider": {"@id": PERSON_ID}, "areaServed": ["Canada", "United States"], "description": desc,
            "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Services", "itemListElement": [
                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": s["title"], "description": s["summary"]}} for s in c["services"]]}}]
-    render(T("Consulting in financial services and technology"), desc, body, path="/consulting/", current="/consulting/", image=None if is_cutout(img_path("eric-consulting")) else img_path("eric-consulting"), jsonld=ld)
+    render(T(R("consulting.meta_title")), desc, body, path="/consulting/", current="/consulting/", image=None if is_cutout(img_path("eric-consulting")) else img_path("eric-consulting"), jsonld=ld)
 
 
 def build_writing(posts, media):
@@ -796,25 +814,25 @@ def build_writing(posts, media):
     rest = [a for a in authored if a is not featured]
     top3, archive = rest[:3], rest[3:]
     feature = f'<div class="feature-grid">{feature_article(featured)}<div class="secondary"><ul class="rule-list">{"".join(article_entry(a, compact=True) for a in top3)}</ul></div></div>' if featured else ""
-    chips = ('<div class="chips" data-filter-group="writing"><button class="chip" data-value="all" aria-pressed="true">All</button>'
-             '<button class="chip" data-value="local" aria-pressed="false">On this site</button>'
-             '<button class="chip" data-value="external" aria-pressed="false">Elsewhere</button></div>')
+    chips = (f'<div class="chips" data-filter-group="writing"><button class="chip" data-value="all" aria-pressed="true">{S("writing.filter_all")}</button>'
+             f'<button class="chip" data-value="local" aria-pressed="false">{S("writing.filter_local")}</button>'
+             f'<button class="chip" data-value="external" aria-pressed="false">{S("writing.filter_external")}</button></div>')
     about_me = [m for m in media if m["kind"] in ("interview", "coverage")][:3]
     media_sub = f'<ul class="list wide">{"".join(media_row(m, "writing-media") for m in about_me)}</ul>'
-    lede = "Essays, columns and notes on politics, prosperity and technology, with a focus on Ontario. Everything I have written is here in one list, whether it was published on this site, in The Hub, in the Toronto Star or elsewhere."
-    actions = f'<div class="actions"><a class="btn secondary small" href="{u("/feed.xml")}">RSS feed</a><a class="btn secondary small" href="#signup">New writing by email</a></div>'
-    body = f"""{page_hero('Writing and media', 'Writing on politics, prosperity and technology.', lede, actions)}
+    lede = S("writing.lede")
+    actions = f'<div class="actions"><a class="btn secondary small" href="{u("/feed.xml")}">{S("writing.rss_button")}</a><a class="btn secondary small" href="#signup">{S("writing.email_button")}</a></div>'
+    body = f"""{page_hero(R('writing.kicker'), S('writing.headline'), lede, actions)}
 <section class="section tight"><div class="wrap">{feature}</div></section>
 <section class="section tight"><div class="wrap">
-  <div class="section-head row"><h2 class="title-editorial">More writing</h2>{chips}</div>
+  <div class="section-head row"><h2 class="title-editorial">{S("writing.more_heading")}</h2>{chips}</div>
   {writing_list(archive, 'writing', limit=3, batch=10)}
 </div></section>
 <section class="section tight"><div class="wrap">
-  <div class="section-head row"><div>{label("About the work")}<h2 class="title-editorial">In the media</h2></div><a class="more" href="{u('/media/')}">More interviews, coverage and the media kit &rarr;</a></div>
+  <div class="section-head row"><div>{label(S("writing.media_label"))}<h2 class="title-editorial">{S("writing.media_heading")}</h2></div><a class="more" href="{u('/media/')}">{S("writing.media_link")} &rarr;</a></div>
   {media_sub}
 </div></section>
 {signup_section('signup', dark=True)}"""
-    render(T("Writing and media"), "Essays and columns by Eric Lombardi on politics, prosperity and technology, published on this site, in The Hub, the Toronto Star and elsewhere.", body, path="/writing/", current="/writing/",
+    render(T(R("writing.meta_title")), R("writing.meta_description"), body, path="/writing/", current="/writing/",
            jsonld=[{"@type": "Blog", "@id": DOMAIN + "/writing/#blog", "name": f"{NAME}: writing", "url": absu("/writing/"), "author": {"@id": PERSON_ID},
                     "blogPost": [{"@type": "BlogPosting", "headline": a["title"], "url": a["url"] if a["external"] else absu(a["url"].replace(BASE, "", 1)), "datePublished": a["d"].isoformat(),
                                   **({"publisher": {"@type": "Organization", "name": a["source"]}} if a["external"] else {})} for a in authored[:30]]}],
@@ -823,34 +841,35 @@ def build_writing(posts, media):
     for cat in cats_used:
         sub = [p for p in posts if p["category"] == cat]
         lab = SITE["categories"][cat]
-        body = f"""{page_hero('Writing', esc(lab), f'{len(sub)} post{"s" if len(sub) != 1 else ""} on this site in this category. <a href="{u("/writing/")}">All writing</a>.')}
+        count = f"{len(sub)} {R('writing.post_singular' if len(sub) == 1 else 'writing.post_plural')}"
+        body = f"""{page_hero(R('writing.kicker'), esc(lab), S('writing.category_lede', n=count, link=f'<a href="{u("/writing/")}">{S("writing.category_link")}</a>'))}
 <section class="section tight"><div class="wrap"><ul class="rule-list">{''.join(post_entry(p) for p in sub)}</ul></div></section>"""
         render(T(f"{lab}: writing"), f"Posts by {NAME} on {lab.lower()}.", body, path=f"/writing/category/{cat}/", current="/writing/", lastmod=sub[0]["date"])
     for i, p in enumerate(posts):
         newer = posts[i - 1] if i > 0 else None
         older = posts[i + 1] if i + 1 < len(posts) else None
         pager = '<nav class="pager" aria-label="More posts">'
-        pager += f'<a href="{u(older["url"])}"><span class="lbl">Older</span>{esc(older["title"])}</a>' if older else "<span></span>"
-        pager += f'<a class="next" href="{u(newer["url"])}"><span class="lbl">Newer</span>{esc(newer["title"])}</a>' if newer else ""
+        pager += f'<a href="{u(older["url"])}"><span class="lbl">{S("article.older")}</span>{esc(older["title"])}</a>' if older else "<span></span>"
+        pager += f'<a class="next" href="{u(newer["url"])}"><span class="lbl">{S("article.newer")}</span>{esc(newer["title"])}</a>' if newer else ""
         pager += "</nav>"
         notice = ""
         if p["origin"] == "campaign":
-            notice = f'<div class="notice"><p>Originally published on ericforolp.ca during the <a href="{u("/policy/ontario-liberal-leadership-2026/")}">2026 Ontario Liberal leadership campaign</a>. Some links and asks are of their time.</p></div>'
+            notice = f'<div class="notice"><p>{S("article.campaign_notice", link=f'<a href="{u("/policy/ontario-liberal-leadership-2026/")}">{S("article.campaign_link")}</a>')}</p></div>'
         if p.get("canonical_external"):
-            notice += f'<div class="notice"><p>This is a companion note to a piece published elsewhere: <a href="{esc(p["canonical_external"])}" target="_blank" rel="noopener">read the original &#8599;</a>.</p></div>'
+            notice += f'<div class="notice"><p>{S("article.companion_notice", link=f'<a href="{esc(p["canonical_external"])}" target="_blank" rel="noopener">{S("article.companion_link")} &#8599;</a>')}</p></div>'
         hero_img = f'<img class="ratio-16x9" src="{u(p["image"])}" alt="" style="max-width:54rem;margin-bottom:2rem" width="1600" height="900">' if p.get("image") else ""
         share_url = absu(p["url"])
-        share = (f'<div class="share"><span class="muted">Share</span>'
+        share = (f'<div class="share"><span class="muted">{S("article.share")}</span>'
                  f'<a href="https://x.com/intent/post?text={esc(p["title"])}&url={share_url}" target="_blank" rel="noopener">X</a>'
                  f'<a href="https://www.linkedin.com/sharing/share-offsite/?url={share_url}" target="_blank" rel="noopener">LinkedIn</a>'
                  f'<a href="https://bsky.app/intent/compose?text={esc(p["title"])}%20{share_url}" target="_blank" rel="noopener">Bluesky</a>'
-                 f'<a href="mailto:?subject={esc(p["title"])}&body={share_url}">Email</a></div>')
+                 f'<a href="mailto:?subject={esc(p["title"])}&body={share_url}">{S("article.share_email")}</a></div>')
         more = [a for a in authored if a["url"] != u(p["url"])][:3]
-        related = ('<section class="section tight"><div class="wrap"><div class="section-head row"><h2 class="title-editorial">More writing</h2><a class="more" href="' + u("/writing/") + '">All writing and media &rarr;</a></div><ul class="rule-list">' + "".join(article_entry(a, compact=True) for a in more) + "</ul></div></section>") if more else ""
+        related = ('<section class="section tight"><div class="wrap"><div class="section-head row"><h2 class="title-editorial">' + S("article.more_heading") + '</h2><a class="more" href="' + u("/writing/") + '">' + S("article.more_link") + ' &rarr;</a></div><ul class="rule-list">' + "".join(article_entry(a, compact=True) for a in more) + "</ul></div></section>") if more else ""
         body = f"""<section class="wrap"><header class="article-head">
   {label(cat_link(p), rule=True)}
   <h1>{esc(p['title'])}</h1>
-  <p class="article-meta"><span>By <a href="{u('/about/')}">{esc(NAME)}</a></span><span>&middot;</span><span>{fmt_date(p['date'])}</span><span>&middot;</span><span>{reading_time(p['html'])} min read</span></p>
+  <p class="article-meta"><span>{S("article.by")} <a href="{u('/about/')}">{esc(NAME)}</a></span><span>&middot;</span><span>{fmt_date(p['date'])}</span><span>&middot;</span><span>{S("article.min_read", n=reading_time(p['html']))}</span></p>
 </header>
 {hero_img}{notice}
 <article class="prose">{p['html']}</article>
@@ -870,63 +889,65 @@ def build_media(media):
     interviews = [m for m in media if m["kind"] == "interview"]
     coverage = [m for m in media if m["kind"] == "coverage" and not m.get("campaign")]
     formats = sorted({m.get("format", "") for m in interviews if m.get("format")})
-    chips = '<div class="chips" data-filter-group="media"><button class="chip" data-value="all" aria-pressed="true">All</button>' + "".join(
+    chips = f'<div class="chips" data-filter-group="media"><button class="chip" data-value="all" aria-pressed="true">{S("media.filter_all")}</button>' + "".join(
         f'<button class="chip" data-value="{esc(f)}" aria-pressed="false">{esc(f.title())}</button>' for f in formats) + "</div>"
-    lede = f"Interviews, profiles and coverage about the work. My own columns and essays are in <a href=\"{u('/writing/')}\">Writing and media</a>, and coverage of the 2026 leadership campaign is archived <a href=\"{u('/policy/ontario-liberal-leadership-2026/#coverage')}\">on the campaign page</a>."
-    actions = f'<div class="actions"><a class="btn primary small" href="mailto:{EMAIL}?subject=Media%20request">Media and speaking requests</a><a class="btn secondary small" href="#media-kit">Media kit</a></div>'
+    lede = S("media.lede", writing=f'<a href="{u("/writing/")}">{S("media.lede_writing_link")}</a>', campaign=f'<a href="{u("/policy/ontario-liberal-leadership-2026/#coverage")}">{S("media.lede_campaign_link")}</a>')
+    actions = f'<div class="actions"><a class="btn primary small" href="mailto:{EMAIL}?subject={urlq(R("media.request_subject"))}">{S("media.requests_button")}</a><a class="btn secondary small" href="#media-kit">{S("media.kit_button")}</a></div>'
     news = ""
     if coverage:
-        news = f"""<section class="section tight"><div class="wrap"><div class="section-head"><h2 class="title-editorial">Coverage of the work</h2></div>{media_by_year(coverage, 'news', limit=3, wide=True)}</div></section>"""
-    body = f"""{page_hero('In the media', 'Interviews, coverage and appearances.', lede, actions)}
+        news = f"""<section class="section tight"><div class="wrap"><div class="section-head"><h2 class="title-editorial">{S("media.coverage_heading")}</h2></div>{media_by_year(coverage, 'news', limit=3, wide=True)}</div></section>"""
+    body = f"""{page_hero(R('media.kicker'), S('media.headline'), lede, actions)}
 <section class="section tight"><div class="wrap">
-  <div class="section-head">{label("Interviews and appearances", rule=True)}<h2 class="title-editorial">Podcasts, broadcast and print</h2></div>
+  <div class="section-head">{label(S("media.interviews_label"), rule=True)}<h2 class="title-editorial">{S("media.interviews_heading")}</h2></div>
   {chips}
   {media_by_year(interviews, 'media', limit=3, wide=True)}
 </div></section>
 <section class="section band limestone" id="media-kit"><div class="wrap">
-  <div class="section-head">{label("Media kit")}<h2 class="title-editorial">For producers, editors and organizers.</h2></div>
+  <div class="section-head">{label(S("media.kit_label"))}<h2 class="title-editorial">{S("media.kit_heading")}</h2></div>
   <div class="cols cols-3 divided">
-    <div><h3>Short bio</h3><p>{esc(SITE['description'])}</p></div>
-    <div><h3>Headshot</h3><p>Square, 800 &times; 800, suitable for print and web.</p><div class="actions"><a class="btn secondary small" href="{u('/assets/img/eric-headshot.jpg')}" download>Download JPG</a></div></div>
-    <div><h3>Requests</h3><p>For interviews, comment, columns and speaking invitations, email a few details about what you have in mind.</p><div class="actions"><a class="btn primary small" href="mailto:{EMAIL}?subject=Media%20request">{EMAIL}</a></div></div>
+    <div><h3>{S("media.kit_bio_heading")}</h3><p>{esc(SITE['description'])}</p></div>
+    <div><h3>{S("media.kit_headshot_heading")}</h3><p>{S("media.kit_headshot_text")}</p><div class="actions"><a class="btn secondary small" href="{u('/assets/img/eric-headshot.jpg')}" download>{S("media.kit_headshot_button")}</a></div></div>
+    <div><h3>{S("media.kit_requests_heading")}</h3><p>{S("media.kit_requests_text")}</p><div class="actions"><a class="btn primary small" href="mailto:{EMAIL}?subject={urlq(R("media.request_subject"))}">{EMAIL}</a></div></div>
   </div>
 </div></section>
 {news}"""
-    render(T("In the media: interviews and coverage"), f"Interviews, profiles and coverage of {NAME}'s work on podcasts, radio, television and in print.", body, path="/media/", current="/writing/",
+    render(T(R("media.meta_title")), R("media.meta_description"), body, path="/media/", current="/writing/",
            lastmod=media[0]["d"] if media else TODAY)
 
 
 def build_policy(policy, media):
     idx_meta, idx_html, items = policy
     # priorities: the existing "What I argue for" list, rendered as the band component
-    pri = [{"title": re.sub(r"\.$", "", strip_tags(m.group(1))), "text": strip_tags(m.group(2)).strip()} for m in re.finditer(r"<li><strong>(.*?)</strong>(.*?)</li>", idx_html, re.S)]
-    band = band_areas("What I argue for", pri, cols=len(pri)) if pri else ""
-    rest_html = re.sub(r"<h2>What I argue for</h2>\s*<ul>.*?</ul>", "", idx_html, flags=re.S).strip()
-    panel = f'<div class="panel accent">{label("The platform")}<h3 class="title-pillar">Ontario Can Still Win</h3><p>The fully costed 2026 platform: thirteen policy areas, more than 190 commitments, reconciled to the provincial budget baseline. It remains online chapter by chapter, with the full PDF, and others are welcome to borrow from it.</p><div class="actions"><a class="btn primary small" href="{esc(SITE["platform_url"])}" target="_blank" rel="noopener">Read the platform &#8599;</a><a class="btn secondary small" href="{u("/policy/ontario-liberal-leadership-2026/")}">About the campaign</a></div></div>'
+    # the first "## heading + bullet list" in policy/_index.md becomes the dark priorities band; its heading is the band label
+    mh = re.search(r"<h2>(.*?)</h2>\s*<ul>(.*?)</ul>", idx_html, re.S)
+    pri = [{"title": re.sub(r"\.$", "", strip_tags(m.group(1))), "text": strip_tags(m.group(2)).strip()} for m in re.finditer(r"<li><strong>(.*?)</strong>(.*?)</li>", mh.group(2), re.S)] if mh else []
+    band = band_areas(strip_tags(mh.group(1)), pri, cols=len(pri)) if pri else ""
+    rest_html = (idx_html[:mh.start()] + idx_html[mh.end():]).strip() if mh else idx_html.strip()
+    panel = f'<div class="panel accent">{label(S("policy.platform_label"))}<h3 class="title-pillar">{S("policy.platform_heading")}</h3><p>{S("policy.platform_text")}</p><div class="actions"><a class="btn primary small" href="{esc(SITE["platform_url"])}" target="_blank" rel="noopener">{S("policy.platform_button")} &#8599;</a><a class="btn secondary small" href="{u("/policy/ontario-liberal-leadership-2026/")}">{S("policy.platform_campaign_button")}</a></div></div>'
     platform_block = (f'<section class="section tight"><div class="wrap two-col"><div class="prose">{rest_html}</div><aside>{panel}</aside></div></section>' if rest_html
                       else f'<section class="section tight"><div class="wrap">{panel}</div></section>')
     body = f"""{page_hero(idx_meta.get('kicker', 'Public policy'), esc(idx_meta.get('headline', 'Public policy')), esc(idx_meta.get('lede', '')))}
 {band}
-<section class="section"><div class="wrap"><div class="section-head row"><h2>The record</h2></div>{record_rows(items)}</div></section>
+<section class="section"><div class="wrap"><div class="section-head row"><h2>{S("policy.record_heading")}</h2></div>{record_rows(items)}</div></section>
 {platform_block}
 {x_feed_html()}"""
-    render(T("Public policy and civic work"), f"{NAME}'s public policy work: More Neighbours Toronto, Build Toronto and the 2026 Ontario Liberal leadership campaign and platform.", body, path="/policy/", current="/policy/")
+    render(T(R("policy.meta_title")), R("policy.meta_description"), body, path="/policy/", current="/policy/")
     campaign_items = [m for m in media if m.get("campaign")]
     for it in items:
         links = "".join(f'<a class="btn {"primary" if l["primary"] else "secondary"}" href="{esc(l["url"])}" target="_blank" rel="noopener">{esc(l["label"])} &#8599;</a>' for l in it["links"])
-        facts = "".join(f'<div><dt>{k}</dt><dd>{esc(it[key])}</dd></div>' for k, key in (("Role", "role"), ("When", "dates")) if it.get(key))
+        facts = "".join(f'<div><dt>{k}</dt><dd>{esc(it[key])}</dd></div>' for k, key in ((S("policy.fact_role"), "role"), (S("policy.fact_when"), "dates")) if it.get(key))
         gallery = f'<div class="gallery" style="margin-top:2rem">{"".join(f"<img src=\"{u(g)}\" alt=\"\" loading=\"lazy\">" for g in it["gallery"])}</div>' if it["gallery"] else ""
         coverage = ""
         if truthy(it.get("coverage", "")) and campaign_items:
             coverage = f"""<section class="section" id="coverage"><div class="wrap">
-  <div class="section-head">{label("Archive", rule=True)}<h2 class="title-editorial">Campaign coverage, columns and interviews</h2><p class="muted">{len(campaign_items)} items from the 2026 leadership campaign, kept separate from my other <a href="{u('/media/')}">media</a> and <a href="{u('/writing/')}">writing</a>.</p></div>
-  <div class="chips" data-filter-group="coverage"><button class="chip" data-value="all" aria-pressed="true">All</button><button class="chip" data-value="column" aria-pressed="false">Columns by Eric</button><button class="chip" data-value="interview" aria-pressed="false">Interviews</button><button class="chip" data-value="coverage" aria-pressed="false">Coverage</button></div>
+  <div class="section-head">{label(S("policy.archive_label"), rule=True)}<h2 class="title-editorial">{S("policy.archive_heading")}</h2><p class="muted">{S("policy.archive_text", n=len(campaign_items), media=f'<a href="{u("/media/")}">{S("policy.archive_media_link")}</a>', writing=f'<a href="{u("/writing/")}">{S("policy.archive_writing_link")}</a>')}</p></div>
+  <div class="chips" data-filter-group="coverage"><button class="chip" data-value="all" aria-pressed="true">{S("policy.archive_filter_all")}</button><button class="chip" data-value="column" aria-pressed="false">{S("policy.archive_filter_columns")}</button><button class="chip" data-value="interview" aria-pressed="false">{S("policy.archive_filter_interviews")}</button><button class="chip" data-value="coverage" aria-pressed="false">{S("policy.archive_filter_coverage")}</button></div>
   {media_by_year(campaign_items, 'coverage', limit=3, wide=True)}
 </div></section>"""
         feature = ""
         if it.get("feature_title"):
             feature = f"""<section class="section band limestone"><div class="wrap feature"><img src="{u(it.get('feature_image', it.get('image')))}" alt="" loading="lazy" width="1600" height="1000"><div>{label(esc(it.get('feature_kicker', '')))}<h2 class="title-editorial">{esc(it['feature_title'])}</h2><p>{esc(it.get('feature_text', ''))}</p><div class="actions"><a class="btn primary" href="{esc(it.get('feature_url', '#'))}" target="_blank" rel="noopener">{esc(it.get('feature_cta', 'Open'))} &#8599;</a></div></div></div></section>"""
-        body = f"""{page_hero('Public policy', esc(it['title']), esc(it.get('summary', '')), f'<div class="actions">{links}</div>' if links else '', image=it.get('image'), alt=it['title'])}
+        body = f"""{page_hero(R('policy.subpage_kicker'), esc(it['title']), esc(it.get('summary', '')), f'<div class="actions">{links}</div>' if links else '', image=it.get('image'), alt=it['title'])}
 <section class="section tight"><div class="wrap"><dl class="facts">{facts}</dl><div class="prose">{it['html']}</div>{gallery}</div></section>
 {feature}{coverage}"""
         ld = []
@@ -938,23 +959,23 @@ def build_policy(policy, media):
 def build_events(events):
     upcoming = [e for e in events if not e["past"]]
     past = list(reversed([e for e in events if e["past"]]))
-    up_html = "".join(event_block(e) for e in upcoming) if upcoming else '<div class="empty">No events are scheduled at the moment. New dates are added here as they are confirmed, and sign-ups hear first.</div>'
+    up_html = "".join(event_block(e) for e in upcoming) if upcoming else f'<div class="empty">{S("events.empty")}</div>'
     past_html = ""
     if past:
-        past_html = f'<details class="past" style="margin-top:2.5rem"><summary>Where I have been ({len(past)})</summary>{"".join(event_block(e) for e in past)}</details>'
+        past_html = f'<details class="past" style="margin-top:2.5rem"><summary>{S("events.past_summary", n=len(past))}</summary>{"".join(event_block(e) for e in past)}</details>'
     ics = absu("/events.ics")
     webcal = ics.replace("https://", "webcal://").replace("http://", "webcal://")
-    body = f"""{page_hero('Events', "Where I'll be.", "Talks, panels, meetups and the occasional debate. Dates are added as they're confirmed, and third-party registration links open on the organizer's site.")}
+    body = f"""{page_hero(R('events.kicker'), S('events.headline'), S('events.lede'))}
 <section class="section tight"><div class="wrap two-col">
   <div>
-    <div class="section-head">{label("Upcoming", rule=True)}<h2 class="title-editorial">Coming up</h2></div>
+    <div class="section-head">{label(S("events.upcoming_label"), rule=True)}<h2 class="title-editorial">{S("events.upcoming_heading")}</h2></div>
     {up_html}
     {past_html}
   </div>
   <aside class="stack">
-    <div class="panel quiet">{label("Calendar")}<h3>Subscribe to the calendar</h3><p class="small">New events appear in your calendar automatically.</p><div class="actions"><a class="btn primary small" href="{webcal}">Add to calendar</a><button class="btn secondary small" type="button" data-copy="{ics}">Copy feed URL</button></div><p class="fine" style="margin-top:.75rem">Or <a href="{u('/events.ics')}">download the .ics file</a>.</p></div>
-    <div class="panel quiet">{label("Invitations")}<h3>Invite me to speak</h3><p class="small">I speak on Ontario's economy, housing, infrastructure delivery, public services, and strategy in financial services and technology. Email a date, a place and an audience.</p><div class="actions"><a class="btn secondary small" href="mailto:{EMAIL}?subject=Speaking%20invitation">Email an invitation</a></div></div>
-    <div class="panel quiet">{label("Updates")}<h3>Hear about events near you</h3><p class="small">Your postal code or city lets me tell you about the ones nearby.</p><div class="actions"><a class="btn secondary small" href="{u('/support/#signup')}">Sign up</a></div></div>
+    <div class="panel quiet">{label(S("events.calendar_label"))}<h3>{S("events.calendar_heading")}</h3><p class="small">{S("events.calendar_text")}</p><div class="actions"><a class="btn primary small" href="{webcal}">{S("events.calendar_add")}</a><button class="btn secondary small" type="button" data-copy="{ics}">{S("events.calendar_copy")}</button></div><p class="fine" style="margin-top:.75rem">{S("events.calendar_download", link=f'<a href="{u("/events.ics")}">{S("events.calendar_download_link")}</a>')}</p></div>
+    <div class="panel quiet">{label(S("events.invite_label"))}<h3>{S("events.invite_heading")}</h3><p class="small">{S("events.invite_text")}</p><div class="actions"><a class="btn secondary small" href="mailto:{EMAIL}?subject={urlq(R("events.invite_subject"))}">{S("events.invite_button")}</a></div></div>
+    <div class="panel quiet">{label(S("events.updates_label"))}<h3>{S("events.updates_heading")}</h3><p class="small">{S("events.updates_text")}</p><div class="actions"><a class="btn secondary small" href="{u('/support/#signup')}">{S("events.updates_button")}</a></div></div>
   </aside>
 </div></section>"""
     ld = []
@@ -967,7 +988,7 @@ def build_events(events):
         if e.get("city") or e.get("venue"):
             ev["location"] = {"@type": "Place", "name": e.get("venue") or e.get("city"), "address": {"@type": "PostalAddress", "addressLocality": e.get("city", ""), "addressRegion": "ON", "addressCountry": "CA"}}
         ld.append(ev)
-    render(T("Events: where I'll be"), f"Upcoming talks, panels and meetups with {NAME}, with a calendar feed you can subscribe to.", body, path="/events/", current="/events/", jsonld=ld)
+    render(T(R("events.meta_title")), R("events.meta_description"), body, path="/events/", current="/events/", jsonld=ld)
     def ics_esc(s): return str(s).replace("\\", "\\\\").replace(";", "\\;").replace(",", "\\,").replace("\n", "\\n")
     host = DOMAIN.split("//")[1].split("/")[0]
     lines = ["BEGIN:VCALENDAR", "VERSION:2.0", f"PRODID:-//{NAME}//{host}//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
@@ -1002,12 +1023,12 @@ def build_support():
     live = bool(sup.get("live")) and bool(sup.get("contribute_url"))
     platform = esc(sup.get("platform") or "a third-party platform")
     if live:
-        monthly = f'<a class="btn primary" href="{esc(sup["contribute_url"])}" target="_blank" rel="noopener">Contribute monthly &#8599;</a>'
-        once = f'<a class="btn secondary" href="{esc(sup["one_time_url"])}" target="_blank" rel="noopener">Give once &#8599;</a>' if sup.get("one_time_url") else ""
+        monthly = f'<a class="btn primary" href="{esc(sup["contribute_url"])}" target="_blank" rel="noopener">{S("support.monthly_button")} &#8599;</a>'
+        once = f'<a class="btn secondary" href="{esc(sup["one_time_url"])}" target="_blank" rel="noopener">{S("support.once_button")} &#8599;</a>' if sup.get("one_time_url") else ""
     else:
-        monthly = '<a class="btn primary" href="#" aria-disabled="true">Contribute monthly</a>'
-        once = '<a class="btn secondary" href="#" aria-disabled="true">Give once</a><span class="note-inline">Payments are not open yet</span>'
-    hero_actions = '<div class="actions"><a class="btn primary" href="#contribute">Contribute</a><a class="btn secondary" href="#signup">Sign up for updates</a></div>'
+        monthly = f'<a class="btn primary" href="#" aria-disabled="true">{S("support.monthly_button")}</a>'
+        once = f'<a class="btn secondary" href="#" aria-disabled="true">{S("support.once_button")}</a><span class="note-inline">{S("support.not_open")}</span>'
+    hero_actions = f'<div class="actions"><a class="btn primary" href="#contribute">{S("support.hero_contribute")}</a><a class="btn secondary" href="#signup">{S("support.hero_signup")}</a></div>'
     pledge = "".join(f"<p>{inline(p)}</p>" for p in s["pledge"]["paragraphs"])
     uses = "".join(f'<div><h3>{esc(x["title"])}</h3><p>{esc(x["text"])}</p></div>' for x in s["uses"])
     faq = "".join(f'<details class="faq"><summary>{esc(q["q"])}</summary><p>{esc(q["a"])}</p></details>' for q in s["faq"])
@@ -1016,16 +1037,16 @@ def build_support():
     sg = SITE["signup"]
     body = f"""{page_hero(s['kicker'], esc(s['headline']), esc(s['lede']), hero_actions)}
 <section class="section tight" id="contribute"><div class="wrap two-col">
-  <div class="panel quiet">{label("The pledge")}<h2>{esc(s['pledge']['title'])}</h2>{pledge}</div>
-  <div class="panel accent">{label("Contribute")}<h2>{esc(c['title'])}</h2><p>{esc(c['text'])}</p><div class="actions">{monthly}{once}</div><p class="fine" style="margin-top:1rem">{note}</p></div>
+  <div class="panel quiet">{label(S("support.pledge_label"))}<h2>{esc(s['pledge']['title'])}</h2>{pledge}</div>
+  <div class="panel accent">{label(S("support.contribute_label"))}<h2>{esc(c['title'])}</h2><p>{esc(c['text'])}</p><div class="actions">{monthly}{once}</div><p class="fine" style="margin-top:1rem">{note}</p></div>
 </div></section>
-<section class="section band limestone"><div class="wrap"><div class="section-head">{label("Where it goes", rule=True)}<h2 class="title-editorial">What contributions pay for.</h2></div><div class="cols cols-4 divided">{uses}</div></div></section>
+<section class="section band limestone"><div class="wrap"><div class="section-head">{label(S("support.uses_label"), rule=True)}<h2 class="title-editorial">{S("support.uses_heading")}</h2></div><div class="cols cols-4 divided">{uses}</div></div></section>
 <section class="section" id="signup"><div class="wrap two-col">
-  <div><h2 class="title-editorial">{esc(sg['title'])}</h2><p class="lede">{esc(sg['text'])}</p><p class="small">Prefer a feed? Writing is on <a href="{u('/feed.xml')}">RSS</a>, and events on a <a href="{u('/events.ics')}">calendar feed</a>.</p></div>
+  <div><h2 class="title-editorial">{esc(sg['title'])}</h2><p class="lede">{esc(sg['text'])}</p><p class="small">{S("support.feed_note", rss=f'<a href="{u("/feed.xml")}">{S("support.feed_rss_link")}</a>', calendar=f'<a href="{u("/events.ics")}">{S("support.feed_calendar_link")}</a>')}</p></div>
   <div>{signup_form('full')}</div>
 </div></section>
-<section class="section tight"><div class="wrap"><div class="section-head">{label("Questions")}<h2 class="title-editorial">The fine print, in plain words.</h2></div>{faq}</div></section>"""
-    render(T("Support the work"), "Support Eric Lombardi's public policy and advocacy work: sign up for updates, or contribute what you want to fund community, events, research and travel across Ontario. None of it is personal income.", body, path="/support/", current="/support/")
+<section class="section tight"><div class="wrap"><div class="section-head">{label(S("support.faq_label"))}<h2 class="title-editorial">{S("support.faq_heading")}</h2></div>{faq}</div></section>"""
+    render(T(R("support.meta_title")), R("support.meta_description"), body, path="/support/", current="/support/")
     for old, anchor in (("subscribe", ""), ("signup", "#signup")):
         write(f"{old}/index.html", f"""<!DOCTYPE html><html lang="en-CA"><head><meta charset="utf-8"><title>Support | {esc(NAME)}</title>
 <meta http-equiv="refresh" content="0; url={u('/support/')}{anchor}"><link rel="canonical" href="{absu('/support/')}"><meta name="robots" content="noindex"></head>
@@ -1035,40 +1056,41 @@ def build_support():
 
 def build_about():
     meta, md = read_md(CONTENT / "pages" / "about.md")
-    facts = """<dl class="facts"><div><dt>Based in</dt><dd>Toronto, Ontario</dd></div><div><dt>Education</dt><dd>BASc, Nanotechnology Engineering, University of Waterloo</dd></div><div><dt>Work</dt><dd>Consultant, financial services and technology</dd></div><div><dt>Civic</dt><dd>Founder and former president, More Neighbours Toronto (2021 to 2026). Former chair, Build Toronto (2025 to 2026). Ontario Liberal leadership candidate, 2026.</dd></div></dl>"""
+    facts = "".join(f'<div><dt>{S("about.fact_" + k + "_label")}</dt><dd>{S("about.fact_" + k)}</dd></div>' for k in ("based", "education", "work", "civic"))
+    facts = f'<dl class="facts">{facts}</dl>'
     about_img = img_path('eric-about') if meta.get('image', '').startswith('/assets/img/eric-about') else meta.get('image')
-    body = f"""{page_hero('About', esc(meta.get('headline', 'About')), esc(meta.get('lede', '')), cta_actions(), image=about_img, alt=NAME)}
+    body = f"""{page_hero(R('about.kicker'), esc(meta.get('headline', 'About')), esc(meta.get('lede', '')), cta_actions(), image=about_img, alt=NAME)}
 <section class="section tight"><div class="wrap">{facts}<div class="prose">{md_to_html(md)}</div>
-<div class="entry-actions" style="margin-top:2rem"><a class="more" href="{u('/assets/img/eric-headshot.jpg')}" download>Download headshot &darr;</a><a class="more" href="{u('/media/#media-kit')}">Media kit &rarr;</a></div></div></section>"""
-    render(T("About Eric"), SITE["description"], body, path="/about/", current="", image=meta.get("image"), kind="profile", reading=True)
+<div class="entry-actions" style="margin-top:2rem"><a class="more" href="{u('/assets/img/eric-headshot.jpg')}" download>{S("about.headshot_link")} &darr;</a><a class="more" href="{u('/media/#media-kit')}">{S("about.kit_link")} &rarr;</a></div></div></section>"""
+    render(T(R("about.meta_title")), SITE["description"], body, path="/about/", current="", image=meta.get("image"), kind="profile", reading=True)
 
 
 def build_contact():
     c = SITE["contact"]
     socials = "".join(f'<li><a href="{esc(s["url"])}" rel="me noopener" target="_blank">{esc(s["name"])}{(" " + esc(s["handle"])) if s.get("handle") else ""}</a></li>' for s in SITE["socials"] if s.get("show", True))
-    booking = f'<a class="btn secondary small" href="{esc(SITE["booking_url"])}" target="_blank" rel="noopener">Book a call</a>' if SITE.get("booking_url") else ""
-    addr = f'<p class="small muted" style="margin-top:.75rem">Mail: {esc(SITE["mailing_address"])}</p>' if SITE.get("mailing_address") else ""
-    body = f"""{page_hero('Contact', esc(c['headline']), esc(c['text']), f'<div class="actions"><a class="btn primary" href="mailto:{EMAIL}">{EMAIL}</a>{booking}</div>')}
+    booking = f'<a class="btn secondary small" href="{esc(SITE["booking_url"])}" target="_blank" rel="noopener">{S("site.book_call")}</a>' if SITE.get("booking_url") else ""
+    addr = f'<p class="small muted" style="margin-top:.75rem">{S("contact.mail_prefix")} {esc(SITE["mailing_address"])}</p>' if SITE.get("mailing_address") else ""
+    body = f"""{page_hero(R('contact.kicker'), esc(c['headline']), esc(c['text']), f'<div class="actions"><a class="btn primary" href="mailto:{EMAIL}">{EMAIL}</a>{booking}</div>')}
 <section class="section tight"><div class="wrap cols cols-3 divided">
-  <div>{label("Consulting")}<h3>Work with me</h3><p>A few details about the problem and the timing are enough to start.</p><div class="actions"><a class="btn primary small" href="mailto:{EMAIL}?subject=Consulting%20enquiry">Email about a project</a></div></div>
-  <div>{label("Media and speaking")}<h3>Interviews, columns, events</h3><p>For interview requests, comment, or an invitation to speak. <a href="{u('/media/#media-kit')}">Media kit and headshot</a>.</p><div class="actions"><a class="btn secondary small" href="mailto:{EMAIL}?subject=Media%20request">Email a request</a></div></div>
-  <div>{label("Follow")}<h3>Social</h3><ul class="social-list">{socials}</ul>{addr}<p class="small" style="margin-top:.75rem"><a href="{u('/support/#signup')}">Sign up for updates</a>.</p></div>
+  <div>{label(S("contact.consulting_label"))}<h3>{S("contact.consulting_heading")}</h3><p>{S("contact.consulting_text")}</p><div class="actions"><a class="btn primary small" href="mailto:{EMAIL}?subject={urlq(R("consulting.enquiry_subject"))}">{S("contact.consulting_button")}</a></div></div>
+  <div>{label(S("contact.media_label"))}<h3>{S("contact.media_heading")}</h3><p>{S("contact.media_text", link=f'<a href="{u("/media/#media-kit")}">{S("contact.media_link")}</a>')}</p><div class="actions"><a class="btn secondary small" href="mailto:{EMAIL}?subject={urlq(R("media.request_subject"))}">{S("contact.media_button")}</a></div></div>
+  <div>{label(S("contact.follow_label"))}<h3>{S("contact.follow_heading")}</h3><ul class="social-list">{socials}</ul>{addr}<p class="small" style="margin-top:.75rem"><a href="{u('/support/#signup')}">{S("contact.signup_link")}</a>.</p></div>
 </div></section>"""
-    render(T("Contact"), f"Contact {NAME} for consulting, media and speaking requests.", body, path="/contact/", current="/contact/")
+    render(T(R("contact.meta_title")), R("contact.meta_description"), body, path="/contact/", current="/contact/")
 
 
 def build_privacy():
     meta, md = read_md(CONTENT / "pages" / "privacy.md")
     upd = fmt_date(parse_date(meta["updated"])) if meta.get("updated") else fmt_date(TODAY)
-    body = f"""{page_hero('Privacy', esc(meta.get('headline', 'Privacy policy')), esc(meta.get('lede', '')))}
-<section class="section tight"><div class="wrap"><p class="fine">Last updated {upd}</p><div class="prose">{md_to_html(md)}</div></div></section>"""
-    render(T("Privacy policy"), "How ericlombardi.ca collects and uses personal information, and how to unsubscribe.", body, path="/privacy/", current="", reading=True)
+    body = f"""{page_hero(R('privacy.kicker'), esc(meta.get('headline', 'Privacy policy')), esc(meta.get('lede', '')))}
+<section class="section tight"><div class="wrap"><p class="fine">{S("privacy.updated", date=upd)}</p><div class="prose">{md_to_html(md)}</div></div></section>"""
+    render(T(R("privacy.meta_title")), R("privacy.meta_description"), body, path="/privacy/", current="", reading=True)
 
 
 def build_404():
-    body = f"""{page_hero('404', 'That page is not here.', 'It may have moved when the site was rebuilt. Try one of these instead.')}
-<section class="section tight"><div class="wrap"><div class="actions" style="margin:0"><a class="btn primary" href="{u('/')}">Home</a><a class="btn secondary" href="{u('/writing/')}">Writing</a><a class="btn secondary" href="{u('/consulting/')}">Consulting</a><a class="btn secondary" href="{u('/policy/')}">Public policy</a></div></div></section>"""
-    render(T("Page not found"), "Page not found.", body, path="/404.html", current="", sitemap=False)
+    body = f"""{page_hero(R('notfound.kicker'), S('notfound.headline'), S('notfound.lede'))}
+<section class="section tight"><div class="wrap"><div class="actions" style="margin:0"><a class="btn primary" href="{u('/')}">{S("notfound.home")}</a><a class="btn secondary" href="{u('/writing/')}">{S("notfound.writing")}</a><a class="btn secondary" href="{u('/consulting/')}">{S("notfound.consulting")}</a><a class="btn secondary" href="{u('/policy/')}">{S("notfound.policy")}</a></div></div></section>"""
+    render(T(R("notfound.meta_title")), R("notfound.meta_title") + ".", body, path="/404.html", current="", sitemap=False)
 
 
 # --------------------------------------------------------------------------- feeds and machine-readable
@@ -1289,7 +1311,7 @@ def main():
         warn("form.endpoint is empty: subscribe form falls back to mailto")
     if not SITE["support"].get("live"):
         warn("support.live is false: contribution buttons are disabled")
-    print(f"Built {len(SITEMAP)} pages + feeds into {OUT.relative_to(HERE)}/ (base='{BASE or '/'}')")
+    print(f"Built {len(SITEMAP)} pages + feeds into {OUT.relative_to(HERE) if OUT.is_relative_to(HERE) else OUT}/ (base='{BASE or '/'}')")
     for w in WARN:
         print("  warning:", w)
 

@@ -4,3 +4,4 @@ node_modules/
 fonts-staging/
 photos/*
 !photos/README.md
+copy/
