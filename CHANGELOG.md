@@ -10,6 +10,10 @@
 - The featured piece is a horizontal card: picture in the first seven columns, source, title and
   action in the last five, vertically centred. The next three pieces sit in a row beneath it with
   dividers, titles on one row and actions on a common bottom row (checked by the linter).
+- An entablature closes every header: a heavy bronze rule over a thin one with a tick at each
+  of the twelve column boundaries, spanning the content width. It sits under inner-page headers,
+  the home opening and article headers, and replaces the lighter rules that used to begin the
+  content below.
 - Two layouts, both on the 12-column grid: `two-col` (columns 1 to 7 and 8 to 12) for paired
   content, and `main-rail` (columns 1 to 8 and 10 to 12) for a main column with a side rail that
   lines up with the header's decal zone. Events and Contact use the rail; their side blocks

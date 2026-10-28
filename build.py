@@ -500,8 +500,8 @@ def page_hero(kicker, headline, lede="", actions="", image=None, alt="", mark="d
     text = f'<div class="text">{label(esc(kicker), rule=True)}<h1>{headline}</h1>{lede_html}{actions}</div>'
     if image:
         media_html = portrait(image, alt) if is_cutout(image) else f'<img src="{u(image)}" alt="{esc(alt)}" width="1600" height="1200">'
-        return f'<section class="page-hero"><div class="wrap"><div class="inner with-image">{text}<div class="media">{media_html}</div></div></div></section>'
-    return f'<section class="page-hero"><div class="wrap"><div class="inner">{text}<div class="side">{header_mark(mark)}</div></div></div></section>'
+        return f'<section class="page-hero"><div class="wrap"><div class="inner with-image">{text}<div class="media">{media_html}</div></div>{ENTABLATURE}</div></section>'
+    return f'<section class="page-hero"><div class="wrap"><div class="inner">{text}<div class="side">{header_mark(mark)}</div></div>{ENTABLATURE}</div></section>'
 
 
 def cat_link(p):
@@ -763,7 +763,7 @@ def build_home(posts, media, events, policy_items):
     <p class="record-line">{record}</p>
   </div>
   {portrait(img_path('eric-hero'), NAME, cls='hero-photo portrait-stage', attrs='fetchpriority="high"')}
-</div></section>
+</div><div class="wrap">{ENTABLATURE}</div></section>
 
 {signup_section()}
 
@@ -896,6 +896,7 @@ def build_writing(posts, media):
   <h1>{esc(p['title'])}</h1>
   <p class="article-meta"><span>{S("article.by")} <a href="{u('/about/')}">{esc(NAME)}</a></span><span>&middot;</span><span>{fmt_date(p['date'])}</span><span>&middot;</span><span>{S("article.min_read", n=reading_time(p['html']))}</span></p>
 </header>
+{ENTABLATURE}
 {hero_img}{notice}
 <article class="prose">{p['html']}</article>
 <div class="endmark-wrap">{ENDMARK}<span class="visually-hidden">{S("article.end_mark_label")}</span></div>
@@ -1325,6 +1326,11 @@ DECAL_STAGE = ('<svg class="decal decal-stage" viewBox="0 0 400 500" preserveAsp
                # baseline and plinth
                '<path class="heavy" d="M-24 500H424"/><path d="M-6 514H406"/><path class="heavy" d="M14 500V514M386 500V514"/>'
                '</svg>')
+
+# Entablature under every page header: heavy rule over a thin one, ticks at the twelve column boundaries.
+ENTABLATURE = ('<div class="entablature" aria-hidden="true"><svg viewBox="0 0 1200 14" preserveAspectRatio="none" focusable="false">'
+               '<path class="heavy" d="M0 1.5H1200"/><path d="M0 13H1200"/>'
+               '<path d="' + "".join(f"M{x} 1.5V13" for x in range(0, 1201, 100)) + '"/></svg></div>')
 
 PLINTH = ('<svg class="plinth" viewBox="0 0 1200 20" preserveAspectRatio="none" aria-hidden="true" focusable="false">'
           '<path class="heavy" d="M0 4H1200"/><path d="M24 16H1176"/></svg>')

@@ -165,7 +165,13 @@ nav.mobile a.btn{margin-top:var(--space-4);border-bottom:0;justify-content:cente
    Title and introduction share one width (columns 1-8). With no image, columns 10-12 hold a
    decal; with an image, the text takes columns 1-7 and the image columns 8-12, stretched to the
    height of the text. ---- */
-.page-hero{padding:var(--section-tight) 0 var(--space-8)}
+.page-hero{padding:var(--section-tight) 0 0}
+.entablature{margin-top:var(--space-8)}
+.entablature svg{display:block;width:100%;height:.875rem;fill:none;stroke:var(--bronze);stroke-width:1.25;overflow:visible}
+.entablature svg *{vector-effect:non-scaling-stroke}
+.entablature .heavy{stroke-width:2.25}
+.hero .entablature{margin-top:var(--space-8)}
+.article-head+.entablature{max-width:var(--reading-max);margin:0 0 var(--space-8)}
 .page-hero .inner{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--space-6);row-gap:var(--space-6);align-items:end}
 .page-hero .side{align-self:stretch;display:flex;align-items:flex-end;justify-content:flex-end;min-height:0}
 .page-hero .text{grid-column:1 / -1;min-width:0}
@@ -189,7 +195,9 @@ nav.mobile a.btn{margin-top:var(--space-4);border-bottom:0;justify-content:cente
   .page-hero .media>img{height:100%;aspect-ratio:auto;max-height:none}
   .page-hero .media .portrait-stage{width:100%;height:100%;aspect-ratio:auto;max-height:none}
 }
-.page-hero+.section,.page-hero+.band>.section{padding-top:var(--space-8)}
+.page-hero+.section,.page-hero+.band>.section{padding-top:var(--space-12)}
+.page-hero+.band{margin-top:var(--space-12)}
+.page-hero+.band>.section,.page-hero+.band.band-areas{padding-top:var(--band-pad)}
 
 /* ---- Band of areas (reusable dark component: home pillars, consulting services, policy priorities) ---- */
 .band-areas{padding:var(--band-pad) 0}
@@ -236,7 +244,7 @@ a.area:hover .more{text-decoration:underline}
 }
 
 /* ---- Featured piece (picture left, details right) and the next three in a row ---- */
-.feature-post{display:grid;gap:var(--space-6);align-items:center;padding-top:var(--space-6);border-top:1px solid var(--bronze)}
+.feature-post{display:grid;gap:var(--space-6);align-items:center;padding-top:0}
 .feature-post .feature-img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:var(--radius-subtle);margin:0}
 .feature-post .meta{margin-bottom:var(--space-2)}
 .feature-post .title-feature{margin-bottom:.35em}
@@ -347,7 +355,7 @@ a.area:hover .more{text-decoration:underline}
 @media(min-width:48rem){.feature{grid-template-columns:1fr 1fr;gap:var(--space-12)}}
 
 /* ---- Sign-up (compact invitation) ---- */
-.signup{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:var(--section-tight) 0}
+.signup{border-bottom:1px solid var(--line);padding:var(--section-tight) 0}
 .signup-grid{display:grid;gap:var(--space-6)}
 .signup-grid h2{font-family:var(--font-display);font-weight:var(--display-weight);font-size:var(--fs-pillar);line-height:1.15;letter-spacing:var(--display-tracking);margin-bottom:.3em}
 .signup.band.dark{border-color:var(--dark-line)}
@@ -413,7 +421,7 @@ details.faq p{margin:0 0 var(--space-4)}
 details.faq{max-width:calc(var(--measure) + 4rem)}
 
 /* ---- Article / prose ---- */
-.article-head{max-width:46em;padding:var(--section-tight) 0 var(--space-6)}
+.article-head{max-width:var(--reading-max);padding:var(--section-tight) 0 0}
 .article-head h1{max-width:none;margin-bottom:.3em}
 .article-meta{font-size:var(--fs-meta);color:var(--muted);display:flex;gap:var(--space-3);flex-wrap:wrap;align-items:center;margin:0}
 .prose{max-width:var(--reading-max);font-size:var(--fs-body);line-height:var(--lh-body)}
