@@ -1,5 +1,25 @@
 # Change log
 
+## 28 October 2026 (later): page headers on the grid, horizontal feature
+
+- Page headers now sit on the same 12-column grid as everything else. Title and introduction
+  share one width, columns 1 to 8, so the introduction no longer wraps earlier than the title.
+  Pages without an image carry a small archway mark in columns 10 to 12, bottom-aligned to the
+  text; pages with an image put the text in columns 1 to 7 and stretch the image column to the
+  height of the text (the cut-out portraits scale their arch to fit).
+- The featured piece is a horizontal card: picture in the first seven columns, source, title and
+  action in the last five, vertically centred. The next three pieces sit in a row beneath it with
+  dividers, titles on one row and actions on a common bottom row (checked by the linter).
+- Writing and media: beneath the featured piece and the next three, two columns: the writing
+  archive on the left (four shown, then Show more) and the news feed on the right.
+- The media page no longer has a separate "Coverage of the work" section; the two pre-campaign
+  profiles join the main list.
+- Public-work rows: the photograph stretches to the height of its text from tablet width up,
+  and moves above the text on phones.
+- Earlier the same day: contact form replacing every mailto, archway without its corner mark,
+  footer plinth and article end marks, quieter writing lists, photo rows and a campaign capsule
+  on the public-policy pages, six priorities, centred sign-up block.
+
 ## 28 October 2026: portraits, archway decal, copy workbook, offline preview
 
 - Eric's cut-out portraits (transparent PNG) are kept transparent by the photo sync and shown

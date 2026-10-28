@@ -495,13 +495,13 @@ def label(text, rule=False):
 
 
 def page_hero(kicker, headline, lede="", actions="", image=None, alt=""):
+    """Page header on the 12-column grid: text in columns 1-8 (1-7 with an image), then either a decal zone or the image."""
     lede_html = f'<p class="lede">{lede}</p>' if lede else ""
+    text = f'<div class="text">{label(esc(kicker), rule=True)}<h1>{headline}</h1>{lede_html}{actions}</div>'
     if image:
         media_html = portrait(image, alt) if is_cutout(image) else f'<img src="{u(image)}" alt="{esc(alt)}" width="1600" height="1200">'
-        return (f'<section class="page-hero"><div class="wrap"><div class="inner with-image"><div>{label(esc(kicker), rule=True)}<h1>{headline}</h1>{lede_html}{actions}</div>'
-                f'{media_html}</div></div></section>')
-    return (f'<section class="page-hero"><div class="wrap"><div class="inner"><div>{label(esc(kicker), rule=True)}<h1>{headline}</h1></div>'
-            f'<div class="side">{lede_html}{actions}</div></div></div></section>')
+        return f'<section class="page-hero"><div class="wrap"><div class="inner with-image">{text}<div class="media">{media_html}</div></div></div></section>'
+    return f'<section class="page-hero"><div class="wrap"><div class="inner">{text}<div class="side">{HEADER_MARK}</div></div></div></section>'
 
 
 def cat_link(p):
@@ -549,8 +549,8 @@ def media_by_year(items, group="media", limit=None, wide=False, batch=10):
     return html_
 
 
-def writing_list(items, group="writing", limit=3, batch=10):
-    rows = "".join(article_entry(a, extra=(i >= limit)) for i, a in enumerate(items))
+def writing_list(items, group="writing", limit=3, batch=10, compact=False):
+    rows = "".join(article_entry(a, compact=compact, extra=(i >= limit)) for i, a in enumerate(items))
     html_ = f'<ul class="rule-list">{rows}</ul>'
     if len(items) > limit:
         html_ = (f'<div class="expander" data-expander="{group}" data-expanded="0">{html_}'
@@ -710,9 +710,9 @@ def feature_article(a):
     src = a["cat"] if a["cat"] else f'<span class="cat">{esc(a["source"])}</span>'
     summ = f'<p class="summary">{esc(a["summary"])}</p>' if a.get("summary") else ""
     comp = f'<a class="more" href="{a["companion"][1]}" style="margin-left:1rem">{esc(a["companion"][0])} &rarr;</a>' if a.get("companion") else ""
-    return (f'<article class="feature-post"><a href="{esc(a["url"])}"{ext} tabindex="-1" aria-hidden="true"><img class="feature-img" src="{u(a["image"])}" alt="" width="1600" height="1000"></a><div class="meta">{src}<span>{fmt_date(a["d"])}</span></div>'
+    return (f'<article class="feature-post"><a href="{esc(a["url"])}"{ext} tabindex="-1" aria-hidden="true"><img class="feature-img" src="{u(a["image"])}" alt="" width="1600" height="1000"></a><div class="body"><div class="meta">{src}<span>{fmt_date(a["d"])}</span></div>'
             f'<h3 class="title-feature"><a href="{esc(a["url"])}"{ext}>{esc(a["title"])}</a></h3>{summ}'
-            f'<div class="actions" style="margin-top:0"><a class="btn secondary small" href="{esc(a["url"])}"{ext}>{esc(a["action"])}{" &#8599;" if a["external"] else ""}</a>{comp}</div></article>')
+            f'<div class="actions" style="margin-top:0"><a class="btn secondary small" href="{esc(a["url"])}"{ext}>{esc(a["action"])}{" &#8599;" if a["external"] else ""}</a>{comp}</div></div></article>')
 
 
 def band_areas(label_text, areas, cols=None):
@@ -744,7 +744,7 @@ def build_home(posts, media, events, policy_items):
     others = [a for a in authored if a is not featured][:3]
     writing = ""
     if featured:
-        writing = f'<div class="feature-grid">{feature_article(featured)}<div class="secondary"><ul class="rule-list">{"".join(article_entry(a, compact=True) for a in others)}</ul></div></div>'
+        writing = f'{feature_article(featured)}<ul class="feature-next">{"".join(article_entry(a, compact=True) for a in others)}</ul>'
     recent_media = [m for m in media if m["kind"] in ("interview", "coverage")][:3]
     media_cols = f'<ul class="list wide">{"".join(media_row(m, "home") for m in recent_media)}</ul>'
     upcoming = [e for e in events if not e["past"]][:3]
@@ -835,23 +835,26 @@ def build_writing(posts, media):
     featured = next((a for a in authored if a.get("featured")), authored[0] if authored else None)
     rest = [a for a in authored if a is not featured]
     top3, archive = rest[:3], rest[3:]
-    feature = f'<div class="feature-grid">{feature_article(featured)}<div class="secondary"><ul class="rule-list">{"".join(article_entry(a, compact=True) for a in top3)}</ul></div></div>' if featured else ""
+    feature = f'{feature_article(featured)}<ul class="feature-next">{"".join(article_entry(a, compact=True) for a in top3)}</ul>' if featured else ""
     chips = (f'<div class="chips" data-filter-group="writing"><button class="chip" data-value="all" aria-pressed="true">{S("writing.filter_all")}</button>'
              f'<button class="chip" data-value="local" aria-pressed="false">{S("writing.filter_local")}</button>'
              f'<button class="chip" data-value="external" aria-pressed="false">{S("writing.filter_external")}</button></div>')
-    about_me = [m for m in media if m["kind"] in ("interview", "coverage")][:3]
-    media_sub = f'<ul class="list wide">{"".join(media_row(m, "writing-media") for m in about_me)}</ul>'
+    about_me = [m for m in media if m["kind"] in ("interview", "coverage")][:5]
+    media_sub = f'<ul class="list compact">{"".join(media_row(m, "writing-media") for m in about_me)}</ul>'
     lede = S("writing.lede")
     actions = f'<div class="actions"><a class="btn secondary small" href="{u("/feed.xml")}">{S("writing.rss_button")}</a><a class="btn secondary small" href="#signup">{S("writing.email_button")}</a></div>'
     body = f"""{page_hero(R('writing.kicker'), S('writing.headline'), lede, actions)}
 <section class="section tight"><div class="wrap">{feature}</div></section>
-<section class="section tight"><div class="wrap">
-  <div class="section-head row"><h2 class="title-editorial">{S("writing.more_heading")}</h2>{chips}</div>
-  {writing_list(archive, 'writing', limit=3, batch=10)}
-</div></section>
-<section class="section tight"><div class="wrap">
-  <div class="section-head row"><div>{label(S("writing.media_label"))}<h2 class="title-editorial">{S("writing.media_heading")}</h2></div><a class="more" href="{u('/media/')}">{S("writing.media_link")} &rarr;</a></div>
-  {media_sub}
+<section class="section tight"><div class="wrap two-col">
+  <div>
+    <div class="section-head row"><h2 class="title-editorial">{S("writing.more_heading")}</h2>{chips}</div>
+    {writing_list(archive, 'writing', limit=4, batch=10, compact=True)}
+  </div>
+  <aside>
+    <div class="section-head row"><div>{label(S("writing.media_label"))}<h2 class="title-editorial">{S("writing.media_heading")}</h2></div></div>
+    {media_sub}
+    <p style="margin-top:1rem"><a class="more" href="{u('/media/')}">{S("writing.media_link")} &rarr;</a></p>
+  </aside>
 </div></section>
 {signup_section('signup', dark=True)}"""
     render(T(R("writing.meta_title")), R("writing.meta_description"), body, path="/writing/", current="/writing/",
@@ -909,8 +912,8 @@ def build_writing(posts, media):
 
 
 def build_media(media):
-    interviews = [m for m in media if m["kind"] == "interview"]
-    coverage = [m for m in media if m["kind"] == "coverage" and not m.get("campaign")]
+    interviews = [m for m in media if m["kind"] == "interview" or (m["kind"] == "coverage" and not m.get("campaign"))]
+    coverage = []
     formats = sorted({m.get("format", "") for m in interviews if m.get("format")})
     chips = f'<div class="chips" data-filter-group="media"><button class="chip" data-value="all" aria-pressed="true">{S("media.filter_all")}</button>' + "".join(
         f'<button class="chip" data-value="{esc(f)}" aria-pressed="false">{esc(f.title())}</button>' for f in formats) + "</div>"
@@ -1325,6 +1328,10 @@ DECAL_STAGE = ('<svg class="decal decal-stage" viewBox="0 0 400 500" preserveAsp
 
 PLINTH = ('<svg class="plinth" viewBox="0 0 1200 20" preserveAspectRatio="none" aria-hidden="true" focusable="false">'
           '<path class="heavy" d="M0 4H1200"/><path d="M24 16H1176"/></svg>')
+HEADER_MARK = ('<svg class="header-mark" viewBox="0 0 300 150" aria-hidden="true" focusable="false">'
+               '<path class="niche" d="M70 150V96A60 60 0 0 1 190 96V150Z"/>'
+               '<path class="heavy" d="M48 150V90A82 82 0 0 1 212 90V150"/><path d="M70 150V96A60 60 0 0 1 190 96V150"/>'
+               '<path d="M0 90H48M212 90H300"/><path class="heavy" d="M0 150H300"/><path d="M20 162H280"/></svg>')
 ENDMARK = ('<svg class="endmark" viewBox="0 0 44 44" aria-hidden="true" focusable="false"><path d="M8 40V22A14 14 0 0 1 36 22V40M2 40H42"/></svg>')
 
 

@@ -161,25 +161,33 @@ nav.mobile a.btn{margin-top:var(--space-4);border-bottom:0;justify-content:cente
 }
 @media(min-width:64rem){.hero-copy{padding-right:var(--space-8)}}
 
-/* ---- Page hero (inner pages) ---- */
+/* ---- Page header (inner pages): the same 12-column grid as the rest of the page.
+   Title and introduction share one width (columns 1-8). With no image, columns 10-12 hold a
+   decal; with an image, the text takes columns 1-7 and the image columns 8-12, stretched to the
+   height of the text. ---- */
 .page-hero{padding:var(--section-tight) 0 var(--space-8)}
-.page-hero .inner{display:grid;gap:var(--space-4)}
-.page-hero h1{max-width:12em;margin-bottom:0}
-.page-hero .side{margin-top:var(--space-2)}
-.page-hero .side .lede{margin:0}
-.page-hero .side .actions{margin-top:var(--space-6)}
+.page-hero .inner{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--space-6);row-gap:var(--space-6);align-items:end}
+.page-hero .text{grid-column:1 / -1;min-width:0}
+.page-hero .side{display:none}
+.page-hero .media{grid-column:1 / -1;min-width:0}
+.page-hero h1{max-width:none;margin-bottom:.3em}
+.page-hero .lede{max-width:none;margin:0}
+.page-hero .actions{margin-top:var(--space-6)}
 .page-hero .pagemeta{font-size:var(--fs-small);color:var(--muted);margin:var(--space-3) 0 0}
-.page-hero .inner.with-image h1{margin-bottom:.35em}
-.page-hero .inner.with-image .lede{margin-bottom:0}
-.page-hero .inner.with-image .actions{margin-top:var(--space-6)}
-.page-hero>.wrap>.inner>img{width:100%;aspect-ratio:16/10;max-height:24rem;object-fit:cover;object-position:50% 20%;border-radius:var(--radius-subtle)}
-.page-hero .portrait-stage{max-height:24rem}
-@media(min-width:48rem){
-  .page-hero .inner.with-image{grid-template-columns:1.2fr .8fr;gap:var(--space-12);align-items:center}
-  .page-hero>.wrap>.inner>img{aspect-ratio:4/3;max-height:none}
-  .page-hero .portrait-stage{max-height:none}
+.page-hero .media>img{width:100%;aspect-ratio:16/10;max-height:24rem;object-fit:cover;object-position:50% 20%;border-radius:var(--radius-subtle)}
+.page-hero .media .portrait-stage{max-height:24rem}
+.header-mark{display:block;width:100%;height:auto;fill:none;stroke:var(--bronze);stroke-width:1.25}
+.header-mark .heavy{stroke-width:2.25}
+.header-mark .niche{fill:var(--bg-2);stroke:none}
+@media(min-width:64rem){
+  .page-hero .text{grid-column:1 / span 8}
+  .page-hero .side{display:block;grid-column:10 / span 3;align-self:end}
+  .page-hero .inner.with-image{align-items:stretch}
+  .page-hero .inner.with-image .text{grid-column:1 / span 7;align-self:center}
+  .page-hero .inner.with-image .media{grid-column:8 / span 5;display:flex;align-items:stretch}
+  .page-hero .media>img{height:100%;aspect-ratio:auto;max-height:none}
+  .page-hero .media .portrait-stage{width:100%;height:100%;aspect-ratio:auto;max-height:none}
 }
-@media(min-width:64rem){.page-hero .inner.with-image{grid-template-columns:7fr 5fr;gap:var(--space-16)}}
 .page-hero+.section,.page-hero+.band>.section{padding-top:var(--space-8)}
 
 /* ---- Band of areas (reusable dark component: home pillars, consulting services, policy priorities) ---- */
@@ -226,16 +234,22 @@ a.area:hover .more{text-decoration:underline}
   @media(min-width:64rem){.area{display:flex;flex-direction:column}.area .more{margin-top:auto}}
 }
 
-/* ---- Featured writing + secondary entries ---- */
-.feature-grid{display:grid;gap:var(--space-8)}
-.feature-post{padding-top:var(--space-4);border-top:1px solid var(--bronze)}
+/* ---- Featured piece (picture left, details right) and the next three in a row ---- */
+.feature-post{display:grid;gap:var(--space-6);align-items:center;padding-top:var(--space-6);border-top:1px solid var(--bronze)}
+.feature-post .feature-img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:var(--radius-subtle);margin:0}
 .feature-post .meta{margin-bottom:var(--space-2)}
 .feature-post .title-feature{margin-bottom:.35em}
 .feature-post .title-feature a{color:var(--ink);text-decoration:none}
 .feature-post .title-feature a:hover{text-decoration:underline;text-underline-offset:.12em}
-.feature-post .summary{font-size:var(--fs-lede);line-height:var(--lh-lede);max-width:var(--measure);margin-bottom:var(--space-4)}
-.secondary .rule-list{border-top:1px solid var(--line)}
-@media(min-width:64rem){.feature-grid{grid-template-columns:7fr 5fr;gap:var(--space-16);align-items:start}}
+.feature-post .summary{font-size:var(--fs-lede);line-height:var(--lh-lede);max-width:none;margin-bottom:var(--space-4)}
+@media(min-width:64rem){.feature-post{grid-template-columns:7fr 5fr;gap:var(--space-12)}}
+.feature-next{list-style:none;padding:0;margin:var(--space-8) 0 0;display:grid;gap:var(--space-6)}
+.feature-next>li{margin:0;display:flex;flex-direction:column;padding-top:var(--space-4);border-top:1px solid var(--line);min-width:0}
+.feature-next .entry{display:flex;flex-direction:column;flex:1;padding:0}
+.feature-next .entry>div:not(.meta){display:flex;flex-direction:column;flex:1}
+.feature-next .entry-actions{margin-top:auto;padding-top:var(--space-3)}
+@media(min-width:48rem){.feature-next{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:64rem){.feature-next{gap:0}.feature-next>li{border-top:0;padding:0 var(--space-8);border-left:1px solid var(--line)}.feature-next>li:first-child{padding-left:0;border-left:0}.feature-next>li:last-child{padding-right:0}}
 
 /* ---- Rule lists and entries ---- */
 .rule-list{list-style:none;padding:0;margin:0;border-top:1px solid var(--line)}
@@ -248,7 +262,7 @@ a.area:hover .more{text-decoration:underline}
 .entry .meta{margin:0}
 .entry-actions{display:flex;gap:var(--space-4);flex-wrap:wrap;align-items:baseline}
 @media(min-width:48rem){.entry.with-meta{grid-template-columns:10rem 1fr;gap:var(--space-8)}}
-.entry.compact{padding:var(--space-4) 0}
+.entry.compact{padding:var(--space-4) 0;gap:var(--space-1)}
 .entry.compact p{font-size:var(--fs-small)}
 /* image roles: large for the featured piece, small thumbnails for the next three and for lists */
 .feature-post .feature-img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:var(--radius-subtle);margin:0 0 var(--space-4)}
@@ -260,20 +274,23 @@ a.area:hover .more{text-decoration:underline}
 @media(min-width:48rem){.entry.with-thumb{grid-template-columns:7.5rem 1fr;gap:var(--space-6)}}
 .entry.with-thumb.compact .meta{margin-bottom:.25rem}
 
-/* ---- Dated record (public policy) ---- */
+/* ---- Public-work record: photo matches the height of the text; stacks on phones ---- */
 .record{list-style:none;padding:0;margin:0;border-top:1px solid var(--line)}
 .record>li{margin:0;border-bottom:1px solid var(--line)}
-.record-row{display:grid;gap:var(--space-2);padding:var(--space-6) 0}
-.record-row .when{font-size:var(--fs-meta);color:var(--muted);letter-spacing:.02em;font-weight:500}
+.record-row{display:grid;grid-template-columns:1fr;gap:var(--space-4);padding:var(--space-6) 0}
+.record-row .pic{display:block;min-width:0}
+.record-row .pic img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:var(--radius-subtle)}
 .record-row .role{font-size:var(--fs-meta);text-transform:uppercase;letter-spacing:var(--label-tracking);color:var(--link);font-weight:500;margin:0 0 .3rem}
 .record-row h3{font-family:var(--font-display);font-weight:var(--display-weight);font-size:var(--fs-editorial);line-height:1.18;letter-spacing:var(--display-tracking);margin-bottom:.3em}
 .record-row h3 a{color:var(--ink);text-decoration:none}
 .record-row h3 a:hover{text-decoration:underline;text-underline-offset:.15em}
 .record-row p{margin:0 0 var(--space-2);max-width:var(--measure)}
-.record-row .pic{display:block}
-.record-row .pic img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--radius-subtle)}
-.record-row .when{margin:var(--space-2) 0 0}
-@media(min-width:48rem){.record-row{grid-template-columns:12rem 1fr;gap:var(--space-8);align-items:start}}
+.record-row .when{font-size:var(--fs-meta);color:var(--muted);letter-spacing:.02em;font-weight:500;margin:var(--space-2) 0 0}
+@media(min-width:48rem){
+  .record-row{grid-template-columns:4fr 8fr;column-gap:var(--space-8);align-items:stretch}
+  .record-row .pic{height:100%}
+  .record-row .pic img{height:100%;aspect-ratio:auto;min-height:9rem}
+}
 
 /* ---- Media / coverage lists (compact, sans) ---- */
 .list{list-style:none;padding:0;margin:0;border-top:1px solid var(--line)}
