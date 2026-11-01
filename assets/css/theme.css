@@ -53,51 +53,100 @@
   --display-weight:400;
   --display-tracking:-.01em;
 
-  /* Type scale (fluid, rem). Targets from the briefs at default settings. */
-  --fs-display:clamp(2.75rem,1.5rem + 5vw,5.5rem);      /* 44 → 88 */
-  --fs-h1:clamp(2.25rem,1.6rem + 2.6vw,4rem);            /* 36 → 64: inner-page title */
-  --fs-h2:clamp(1.75rem,1.45rem + 1.2vw,2.625rem);      /* 28 → 42: significant section heading */
-  --fs-feature:clamp(2.25rem,1.75rem + 1.6vw,2.75rem);  /* 36 → 44: featured essay */
-  --fs-editorial:clamp(1.4375rem,1.3rem + .6vw,2rem);   /* 23 → 32: authored article title */
-  --fs-pillar:clamp(1.5rem,1.4rem + .45vw,1.875rem);     /* 24 → 30: pillar / service heading */
-  --fs-ui:clamp(1.25rem,1.15rem + .4vw,1.5rem);         /* 20 → 24: work, event, project headings */
-  --fs-compact:clamp(1.0625rem,1rem + .25vw,1.1875rem); /* 17 → 19: compact list titles */
-  --fs-lede:clamp(1.125rem,1.05rem + .35vw,1.375rem);   /* 18 → 22 */
-  --fs-body:clamp(1.0625rem,1rem + .2vw,1.125rem);      /* 17 → 18 */
-  --fs-reading:clamp(1.1875rem,1.1rem + .4vw,1.3125rem);/* 19 → 21 */
-  --fs-meta:.8125rem;                                   /* 13 */
-  --fs-small:.9375rem;                                  /* 15 */
-  --fs-nav:.875rem;                                     /* 14 */
-  --fs-wordmark:clamp(1.375rem,1.1rem + 1vw,1.875rem);  /* 22 → 30 */
+  /* Interaction surfaces: redeclared by dark bands and the campaign capsule */
+  --link:var(--colour-petrol);
+  --link-hover:var(--colour-petrol-hover);
+  --focus-colour:var(--colour-petrol);
+  --focus-width:2px;
+  --focus-offset:2px;
+  --field-border:var(--colour-slate);
+  --field-error:#9B2C2C;
+  --nup-line:var(--colour-rule);
+  --scrim:rgba(23,42,49,.35);
+
+  /* Type scale (fluid, rem) */
+  --fs-display:clamp(2.75rem,1.5rem + 5vw,5.5rem);      /* 44 → 88: home opening */
+  --fs-page:clamp(2.25rem,1.6rem + 2.6vw,4rem);          /* 36 → 64: page title */
+  --fs-section:clamp(1.75rem,1.45rem + 1.2vw,2.625rem); /* 28 → 42: section title */
+  --fs-sub:clamp(1.4375rem,1.3rem + .6vw,2rem);          /* 23 → 32: minor section, band and record titles */
+  --fs-feature:calc(var(--fs-section) * .88);            /* 25 → 37: the featured piece */
+  --fs-item:clamp(1.25rem,1.15rem + .4vw,1.5rem);        /* 20 → 24: article, event and list titles */
+  --fs-block:clamp(1.0625rem,1rem + .25vw,1.1875rem);    /* 17 → 19: rail, panel and form-group titles */
+  --fs-lede:clamp(1.125rem,1.05rem + .35vw,1.375rem);    /* 18 → 22 */
+  --fs-body:clamp(1.0625rem,1rem + .2vw,1.125rem);       /* 17 → 18 */
+  --fs-reading:clamp(1.1875rem,1.1rem + .4vw,1.3125rem); /* 19 → 21 */
+  --fs-meta:.8125rem;                                    /* 13 */
+  --fs-small:.9375rem;                                   /* 15 */
+  --fs-nav:.875rem;                                      /* 14 */
+  --fs-wordmark:clamp(1.375rem,1.1rem + 1vw,1.875rem);   /* 22 → 30 */
   --lh-display:1.06;
   --lh-heading:1.18;
   --lh-lede:1.5;
   --lh-body:1.6;
+  --lh-small:1.55;
+  --lh-meta:1.5;
   --lh-reading:1.68;
   --label-tracking:.1em;
   --name-tracking:.01em;
 
-  /* Spacing scale */
+  /* Spacing scale (size steps) */
   --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-6:1.5rem;
   --space-8:2rem;--space-12:3rem;--space-16:4rem;--space-24:6rem;--space-32:8rem;
-  --section:clamp(4rem,2.6rem + 3vw,5.5rem);            /* 64 → 88: editorial sections */
-  --section-tight:clamp(2.5rem,2rem + 1.5vw,3.5rem);    /* 40 → 56: compact lists */
-  --hero-pad:clamp(3rem,2rem + 2.5vw,4.5rem);           /* 48 → 72 */
-  --band-pad:clamp(2rem,1.5rem + 1.5vw,3rem);           /* 32 → 48: dark work band */
+  /* Spacing roles: components use these, never a size step for a structural gap */
+  --space-section:clamp(4rem,2.6rem + 3vw,5.5rem);      /* 64 → 88: between sections on one ground */
+  --space-band:clamp(3rem,2rem + 2.5vw,4.5rem);          /* 48 → 72: inside a coloured band, top and bottom */
+  --space-band-compact:clamp(2rem,1.5rem + 1.5vw,3rem);  /* 32 → 48: the compact work band on the home page */
+  --space-page-top:clamp(2.5rem,2rem + 1.5vw,3.5rem);   /* 40 → 56: header to page-header text */
+  --space-header:3rem;                                   /* 48: entablature to the first content */
+  --space-block:2rem;                                    /* 32: section head to its content; text to entablature */
+  --space-action:1.5rem;                                 /* 24: text to its actions */
+  --space-item:1rem;                                     /* 16: hairline list rows */
+  --space-item-loose:1.5rem;                             /* 24: records, events, n-up items */
+  --space-kicker:.75rem;                                 /* 12: kicker to title */
+  --space-meta:.5rem;                                    /* 8: meta line to title */
+  --box-pad:clamp(1.25rem,.75rem + 2vw,2rem);            /* inside bordered panels */
 
-  /* Layout */
-  --content-max:80rem;
-  --hero-max:90rem;                                     /* the opening may run wider */
-  --measure:36rem;                                      /* one text measure for ledes, prose, section intros */
-  --reading-max:var(--measure);
-  --col:calc((var(--content-max) - 2 * var(--gutter)) / 12);  /* 12-column grid inside the content width */
+  /* The master grid. One grid for every page: 4 columns on phones, 12 from 48rem.
+     The content box is constant (1160px) from about 1268px wide. Columns that hold a nested
+     grid redeclare --grid-cols to the number of master columns they span, so nested tracks
+     land exactly on master tracks. */
+  --content-max:72.5rem;                                /* the content box, without gutters */
   --gutter:clamp(1.25rem,.6rem + 3.5vw,5rem);           /* 20 → 80 */
+  --grid-cols:4;
+  --grid-gap:clamp(1.5rem,.75rem + 1.5625vw,2rem);      /* 24 at 768, 28 at 1024, 32 from 1280 */
+  /* the reading measure expressed in master columns of the content box (used on direct children of .wrap) */
+  /* master-relative widths (resolve against the nearest .wrap, which is a size container) */
+  --colw:calc((100cqw - 11 * var(--grid-gap)) / 12);
+  --span-4:calc(var(--colw) * 4 + var(--grid-gap) * 3);
+  --span-5:calc(var(--colw) * 5 + var(--grid-gap) * 4);
+  --span-7:calc(var(--colw) * 7 + var(--grid-gap) * 6);
+  --measure:36rem;
+  --measure-cols:4;
+  --measure-w:100%;
+
+  /* Rules */
+  --rule-heavy:2px;
+  --rule-thin:1px;
+  --rule-length:2.75rem;
+
+  /* Image slots */
+  --hero-media-min:clamp(20rem,8rem + 25vw,34rem);      /* header image cell: never shorter than this */
+  --hero-media-min-display:clamp(22rem,10rem + 30vw,38rem);
+  --pic-min-ar:2.4;                                     /* record photos: never wider than 2.4:1 */
+  --pic-max-ar:.75;                                     /* never taller than 3:4 */
+
   --header-h:clamp(4.25rem,4rem + 1vw,5.25rem);         /* 68 → 84 */
   --radius-subtle:.125rem;
   --radius-control:.125rem;
-  --rule-length:2.75rem;
   --control-height:2.75rem;
+  --tap-min:2.75rem;
   --dark-line:rgba(245,241,232,.18);
   --transition:180ms ease;
 }
-@media(max-width:22.5em){:root{--gutter:1rem;--fs-wordmark:1.25rem}}          /* 16px at 320 */
+/* Breakpoints (one scale, used everywhere; CSS cannot read custom properties in @media):
+   sm 40rem (640) · md 48rem (768) · lg 64rem (1024) · xl 80rem (1280) · nav 66rem (Eric's brief v2).
+   xs (max-width:22.49rem) only adjusts the gutter and wordmark at 320px. */
+@media(max-width:22.49rem){:root{--gutter:1rem;--fs-wordmark:1.25rem}}
+@media(min-width:48rem){:root{--grid-cols:12;--measure-cols:10;--measure-w:calc((100% - 11 * var(--grid-gap)) / 12 * var(--measure-cols) + (var(--measure-cols) - 1) * var(--grid-gap))}}
+@media(min-width:64rem){:root{--measure-cols:7}}
+@media(min-width:80rem){:root{--measure-cols:6}}

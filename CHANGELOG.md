@@ -1,5 +1,53 @@
 # Change log
 
+## 1 November 2026: one grid, one component set, a linter that cannot certify itself
+
+A multi-agent review (twelve reviewers plus four gap reviews, each checked by a skeptical
+verifier) confirmed about 380 defects. Most came from a few causes, now fixed at the source:
+
+- **One master grid.** Before, the home opening and the entablature used one grid, page headers
+  another, and about sixteen components set their own column tracks, so edges that should line
+  up landed 6 to 25px apart. Now every layout and component that has columns uses one template:
+  12 columns from 768px (4 on phones), one gap (24 to 32px), and a content box that stays
+  1160px wide from about 1268px up. Columns that hold another grid declare how many master
+  columns they span, so nested tracks land exactly on master tracks. The home opening is now an
+  ordinary page header with the same split as every image header.
+- **The entablature is the grid.** It is drawn in CSS from the grid itself: a tick on every
+  gutter centre and at both ends (thirteen evenly spaced ticks on phones). The footer plinth sits
+  on the colour seam.
+- **One n-up row** for every row of items (home pillars, consulting services, the six areas,
+  how I work, where the money goes, the media kit, the next three pieces, the end-of-page rows):
+  any count from one table, titles, text and actions on shared lines, dividers on gutter centres,
+  separators that meet them cleanly.
+- **Headers led by the text.** Every page's title starts at the same height and the entablature
+  sits the same distance under the text; the mark zone and image stretch to the text. Marks and
+  the portrait stage were redrawn so no line runs outside its frame.
+- **Spacing by role, not by size.** Sections no longer stack padding (the gaps between sections
+  were 138 to 170px depending on the page; now one section gap), bands are symmetric, and no
+  page carries inline spacing.
+- **Type by role.** One style per job (page title, section, sub-section, item, block, lede, meta,
+  label), and context rules can no longer override them (dates in lists had been rendering at
+  body size).
+- **Shared components:** one section head (with or without filters, same height), one meta line,
+  one list with Show more (three, then ten at a time; filters affect only their own list and "All"
+  restores the short view), one form (fields, then button and status, then the note), one record
+  row, one events list, one closing band, one link per card.
+- **Articles and public-work pages** use the page header (category kicker, summary, by-line
+  meta with the campaign or companion-note provenance in place of the boxed notices) and end with
+  "Keep reading" or "More public work". The reading column is the measure expressed in columns.
+- **Organization:** previews show what their "more" link leads to; Support shows no disabled
+  payment buttons while payments are closed; the orphan category page is gone; kickers on
+  sub-pages link to their section; the footer lists each destination once; the menu on phones is
+  an overlay; the leadership timeline renders as a dated list; the campaign capsule's cards share
+  their lines.
+- **Panels** are rule-topped like everything else (the accent one carries the heavy bronze rule).
+- **audit.js rewritten.** The old linter accepted every grid's own columns as legal edges, so
+  components certified themselves and it reported 0 while the pages drifted. The new one measures
+  against the master grid only and checks tracks, left and right edges, shared rows, vertical
+  rhythm, decal containment, overflow, duplicate ids and inline styles on every page at 390, 768,
+  1024 and 1440. On the previous build it reports 1,790 findings; on this build, 0.
+- `DECISIONS.md` lists the choices that are Eric's (defaults shipped until he decides).
+
 ## 28 October 2026 (later): page headers on the grid, horizontal feature
 
 - Page headers now sit on the same 12-column grid as everything else. Title and introduction

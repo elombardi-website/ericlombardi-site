@@ -187,6 +187,46 @@
     "form_fallback": {
       "where": "Contact form, when no sending service is connected",
       "text": "Your email app should open with this message ready to send. If it did not, write to the address shown in your email app's To field."
+    },
+    "menu": {
+      "where": "Menu button label (phones)",
+      "text": "Menu"
+    },
+    "status_copied": {
+      "where": "Status message after copying the calendar address",
+      "text": "Copied the calendar address."
+    },
+    "status_copy_manual": {
+      "where": "Status message when the browser cannot copy",
+      "text": "Copy the address from the field below."
+    },
+    "form_signup_fallback": {
+      "where": "Sign-up form, when no list service is connected",
+      "text": "The sign-up list is not connected yet. Your email app should open with your details so I can add you by hand."
+    },
+    "form_error": {
+      "where": "Any form, when sending fails",
+      "text": "That did not send. Please try again in a moment."
+    },
+    "form_invalid": {
+      "where": "Any form, when a field needs attention",
+      "text": "Please check the highlighted fields."
+    },
+    "showing": {
+      "where": "Status after \"Show more\" ({shown} and {total} are counts)",
+      "text": "Showing {shown} of {total}"
+    },
+    "footer_calendar": {
+      "where": "Footer link to the events calendar feed",
+      "text": "Calendar feed"
+    },
+    "x_feed_line": {
+      "where": "Public policy page, link to the X profile ({handle} is the handle)",
+      "text": "Posts by @{handle} on X"
+    },
+    "form_signup_sent": {
+      "where": "Sign-up form, after a successful sign-up (when a list service is connected)",
+      "text": "Thanks. You are on the list."
     }
   },
   "home": {
@@ -361,6 +401,10 @@
     "post_plural": {
       "where": "Category pages, count word",
       "text": "posts"
+    },
+    "feature_heading": {
+      "where": "Writing page, heading for the featured piece and the next three (read by screen readers only)",
+      "text": "Latest writing"
     }
   },
   "article": {
@@ -415,6 +459,26 @@
     "end_mark_label": {
       "where": "Hidden label on the end-of-article mark",
       "text": "End of article"
+    },
+    "provenance_campaign": {
+      "where": "Article header, campaign posts ({link} is the campaign link)",
+      "text": "From the {link}"
+    },
+    "provenance_companion": {
+      "where": "Article header, companion notes ({link} is the original piece)",
+      "text": "Companion note to {link}"
+    },
+    "companion_meta_link": {
+      "where": "Article header, link text to the original piece ({source} is the publication)",
+      "text": "the column in {source}"
+    },
+    "keep_reading": {
+      "where": "End of an article, heading above the next reads",
+      "text": "Keep reading"
+    },
+    "related": {
+      "where": "End of an article, label on a related piece",
+      "text": "Related"
     }
   },
   "media": {
@@ -603,6 +667,18 @@
     "subpage_meta_sep": {
       "where": "Separator between role and dates on sub-pages",
       "text": "·"
+    },
+    "more_records": {
+      "where": "End of a public-work page, heading above the other records",
+      "text": "More public work"
+    },
+    "all_link": {
+      "where": "End of a public-work page, link to the public policy page",
+      "text": "All public policy"
+    },
+    "read_more": {
+      "where": "Public-work rows, link line",
+      "text": "Read more"
     }
   },
   "events": {
@@ -890,6 +966,10 @@
     },
     "form_label": {
       "where": "Small label above the contact form",
+      "text": "Send a message"
+    },
+    "form_heading": {
+      "where": "Contact page, heading above the form (read by screen readers only)",
       "text": "Send a message"
     }
   },

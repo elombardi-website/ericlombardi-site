@@ -6,5 +6,6 @@
 .prose{font-family:var(--font-reading);font-size:var(--fs-reading);line-height:var(--lh-reading)}
 .prose strong{font-weight:600}
 .prose h2,.prose h3{font-family:var(--font-display)}
+.prose h3{font-size:max(1.25 * 1em,clamp(1.25rem,1.1rem + .6vw,1.5rem))}
 .prose figcaption,.prose .embed,.prose code,.prose pre{font-family:var(--font-interface)}
 .prose code,.prose pre{font-family:var(--font-mono)}
