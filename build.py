@@ -600,16 +600,29 @@ def block(title, body="", kicker=None, actions="", variant="rail", level=3, titl
     return f'<div class="block block--{variant}{(" " + cls) if cls else ""}">{k}<h{level} class="{title_cls}">{title}</h{level}>{body}{actions}</div>'
 
 
+def rail_block(kicker, body):
+    """A side-column block with a label and no title: facts, links, short notes."""
+    return f'<div class="block block--rail">{label(kicker)}{body}</div>'
+
+
 def disclosure(summary, body):
     return f'<details class="disclosure"><summary><span>{summary}</span></summary>{body}</details>'
 
 
-def page_hero(kicker, headline, lede="", actions="", image=None, alt="", mark="default", meta="", kicker_href=None, display=False, foot="", img_attrs=""):
+def tabs(current):
+    """Writing and In the media are two pages of one section: tabs at the top of both."""
+    items = [("/writing/", S("writing.tab_writing")), ("/media/", S("writing.tab_media"))]
+    links = "".join(f'<a href="{u(h)}"{" aria-current=\"page\"" if h == current else ""}>{l}</a>' for h, l in items)
+    return f'<nav class="tabs" aria-label="{S("writing.kicker")}">{links}</nav>'
+
+
+def page_hero(kicker, headline, lede="", actions="", image=None, alt="", mark="default", meta="", kicker_href=None, display=False, foot="", img_attrs="", tabs_html=""):
     """Page header on the master grid, led by the text. Text in columns 1-8 with a mark in 10-12, or text in
     1-7 with an image in 8-12 that stretches to the text's height. Always closes with the entablature."""
     lede_html = f'<p class="t-lede">{lede}</p>' if lede else ""
     h1 = f'<h1 class="{"t-display" if display else "t-page"}">{headline}</h1>'
-    text = f'<div class="text">{label(esc(kicker), rule=True, href=kicker_href)}{h1}{lede_html}{meta}{actions}{foot}</div>'
+    top = tabs_html or label(esc(kicker), rule=True, href=kicker_href)
+    text = f'<div class="text">{top}{h1}{lede_html}{meta}{actions}{foot}</div>'
     cls = "page-hero" + (" with-image" if image else "") + (" display" if display else "")
     if image:
         media_html = portrait(image, alt, attrs=img_attrs) if is_cutout(image) else f'<img src="{u(image)}" alt="{esc(alt)}" width="1600" height="1200" {img_attrs}>'
@@ -723,8 +736,8 @@ def article_entry(a, compact=False, extra=False, filterable=False, show_cat=True
     return f'<li{data}{" hidden" if extra else ""}><article class="{cls}">{body}</article></li>'
 
 
-def writing_list(items, key, limit=LIST_LIMIT, compact=True, years=None, chips=""):
-    inner = grouped(items, lambda a, x: article_entry(a, compact=compact, extra=x, filterable=True), "rule-list", limit, years)
+def writing_list(items, key, limit=LIST_LIMIT, compact=True, years=None, chips="", row=False):
+    inner = grouped(items, lambda a, x: article_entry(a, compact=compact, extra=x, filterable=True, row=row), "rule-list", limit, years)
     return expander(inner, key, len(items), limit, chips=chips)
 
 
@@ -986,11 +999,10 @@ def build_writing(posts, media):
     chips = chips_html("writing-archive", [("all", S("writing.filter_all")), ("local", S("writing.filter_local")), ("external", S("writing.filter_external"))])
     lede = S("writing.lede")
     actions = f'<div class="actions"><a class="btn secondary sm" href="{u("/feed.xml")}">{S("writing.rss_button")}</a><a class="btn secondary sm" href="#signup">{S("writing.email_button")}</a></div>'
-    body = f"""{page_hero(R('writing.kicker'), S('writing.headline'), lede, actions, mark='writing')}
+    body = f"""{page_hero(R('writing.kicker'), S('writing.headline'), lede, actions, mark='writing', tabs_html=tabs("/writing/"))}
 <section class="section"><div class="wrap">{section_head(S("writing.feature_heading"), hidden=True)}{feature_group(featured, top3)}</div></section>
-<section class="section"><div class="wrap two-col peers">
-  <div>{section_head(S("writing.more_heading"), tier="minor", aside=chips)}{writing_list(archive, "writing-archive")}</div>
-  <aside>{section_head(S("writing.media_heading"), tier="minor", aside=link_to(S("writing.media_link"), "/media/"))}{media_list(media_items(media)[:HOME_PREVIEW], "writing-media", wide=False, preview=True)}</aside>
+<section class="section"><div class="wrap">
+  {section_head(S("writing.more_heading"), tier="minor", aside=chips)}{writing_list(archive, "writing-archive", row=True)}
 </div></section>
 {signup_section('signup', dark=True)}"""
     render(T(R("writing.meta_title")), R("writing.meta_description"), body, path="/writing/", current="/writing/",
@@ -1025,11 +1037,17 @@ def build_writing(posts, media):
         if p.get("hero") and p["hero"] not in p["html"]:
             hero_img = f'<figure class="article-hero"><img src="{u(p["hero"])}" alt=""></figure>'
         share_url = absu(p["url"])
-        share = (f'<div class="share"><span class="muted">{S("article.share")}</span>'
-                 f'<a href="https://x.com/intent/post?text={esc(p["title"])}&url={share_url}" target="_blank" rel="noopener">X</a>'
-                 f'<a href="https://www.linkedin.com/sharing/share-offsite/?url={share_url}" target="_blank" rel="noopener">LinkedIn</a>'
-                 f'<a href="https://bsky.app/intent/compose?text={esc(p["title"])}%20{share_url}" target="_blank" rel="noopener">Bluesky</a>'
-                 f'<a href="mailto:?subject={esc(p["title"])}&body={share_url}">{S("article.share_email")}</a></div>')
+        share = (f'<ul class="link-list">'
+                 f'<li><a href="https://x.com/intent/post?text={esc(p["title"])}&url={share_url}" target="_blank" rel="noopener">X</a></li>'
+                 f'<li><a href="https://www.linkedin.com/sharing/share-offsite/?url={share_url}" target="_blank" rel="noopener">LinkedIn</a></li>'
+                 f'<li><a href="https://bsky.app/intent/compose?text={esc(p["title"])}%20{share_url}" target="_blank" rel="noopener">Bluesky</a></li>'
+                 f'<li><a href="mailto:?subject={esc(p["title"])}&body={share_url}">{S("article.share_email")}</a></li></ul>')
+        if p.get("canonical_external"):
+            topic = rail_block(S("article.rail_original"), f'<p>{link_to(S("article.companion_meta_link", source=esc(src)), p["canonical_external"])}</p>')
+        else:
+            topic = rail_block(S("article.rail_topic"), f'<p>{link_to(S("article.rail_topic_link", topic=esc(p["category_label"])), khref)}</p>')
+        rail = (topic + rail_block(S("article.share"), share) +
+                rail_block(S("article.rail_signup_heading"), f'<p>{link_to(S("article.rail_signup_link"), "#signup")}</p>'))
         # keep reading: the older and newer pieces in the one collection, then related work to make three
         picks, labels = [], {}
         if idx is not None:
@@ -1043,12 +1061,12 @@ def build_writing(posts, media):
             picks.append(a); labels[id(a)] = S("article.related")
         close = page_close(S("article.keep_reading"), next_items(picks, lambda a: labels.get(id(a), "")), S("article.more_link"), "/writing/")
         body = f"""{page_hero(kicker, esc(p['title']), esc(p['summary']), meta=meta, mark='writing', kicker_href=khref)}
-<section class="section"><div class="wrap">
-{hero_img}<article class="prose">{p['html']}</article>
-<div class="endmark-wrap">{ENDMARK}<span class="visually-hidden">{S("article.end_mark_label")}</span></div>
-{share}
-{close}
+<section class="section"><div class="wrap main-rail reading">
+  <div>{hero_img}<article class="prose">{p['html']}</article>
+  <div class="endmark-wrap">{ENDMARK}<span class="visually-hidden">{S("article.end_mark_label")}</span></div></div>
+  <aside class="rail">{rail}</aside>
 </div></section>
+<section class="section"><div class="wrap">{close}</div></section>
 {signup_section('signup', dark=True)}"""
         ld = [{"@type": "BlogPosting", "@id": absu(p["url"]) + "#article", "headline": p["title"], "description": p["summary"], "url": absu(p["url"]),
                "datePublished": p["date"].isoformat(), "dateModified": (p["updated"] or p["date"]).isoformat(),
@@ -1071,7 +1089,7 @@ def build_media(media):
             "action": f'<a class="btn secondary sm" href="{u("/assets/img/eric-headshot.jpg")}" download>{S("media.kit_headshot_button")} &#8595;</a>'},
            {"title": S("media.kit_requests_heading"), "body": f'<p>{S("media.kit_requests_text")}</p>',
             "action": f'<a class="btn primary sm" href="{contact_href("media")}">{S("media.kit_requests_button")}</a>'}]
-    body = f"""{page_hero(R('media.kicker'), S('media.headline'), lede, actions, mark='media')}
+    body = f"""{page_hero(R('media.kicker'), S('media.headline'), lede, actions, mark='media', tabs_html=tabs("/media/"))}
 <section class="section"><div class="wrap">
   {section_head(S("media.interviews_heading"), kicker=S("media.interviews_label"))}{media_list(items, 'media', chips=chips)}
 </div></section>
@@ -1116,10 +1134,14 @@ def build_policy(policy, media):
         others = [o for o in items if o is not it]
         close_items = [{"card": True, "mark": f'<p class="t-label">{esc(o.get("role", ""))}</p>', "title": f'<a class="stretch" href="{u(o["url"])}">{esc(o["title"])}</a>',
                         "body": f'<p>{esc(o.get("summary", ""))}</p>', "action": f'<span class="more">{S("policy.read_more")} &rarr;</span>'} for o in others]
+        glance = f'<dl class="glance"><div><dt>{S("policy.fact_role")}</dt><dd>{esc(it.get("role", ""))}</dd></div>' + (f'<div><dt>{S("policy.fact_when")}</dt><dd>{esc(it["dates"])}</dd></div>' if it.get("dates") else "") + "</dl>"
+        ext = "".join(f'<li>{link_to(esc(l["label"]), l["url"])}</li>' for l in it["links"])
+        more = "".join(f'<li><a href="{u(o["url"])}">{esc(o["title"])}</a><span class="t-meta">{esc(o.get("role", ""))}</span></li>' for o in others)
+        rail = (rail_block(S("policy.glance_label"), glance) +
+                rail_block(S("policy.more_records"), f'<ul class="link-list stacked">{more}</ul><p>{link_to(S("policy.all_link"), "/policy/")}</p>'))
         body = f"""{page_hero(R('policy.subpage_kicker'), esc(it['title']), esc(it.get('summary', '')), f'<div class="actions">{links}</div>' if links else '', image=it.get('image'), alt=it['title'], meta=meta, kicker_href='/policy/')}
-<section class="section"><div class="wrap"><div class="prose">{timelines(it['html'])}</div>{gallery}</div></section>
-{feature}{coverage}
-<section class="section"><div class="wrap">{page_close(S("policy.more_records"), close_items, S("policy.all_link"), "/policy/")}</div></section>"""
+<section class="section"><div class="wrap main-rail reading"><div><div class="prose">{timelines(it['html'])}</div>{gallery}</div><aside class="rail">{rail}</aside></div></section>
+{feature}{coverage}"""
         ld = []
         if it["slug"] != "ontario-liberal-leadership-2026" and it["links"]:
             ld.append({"@type": "Organization", "name": it["title"], "url": it["links"][0]["url"], "founder": {"@id": PERSON_ID}})
@@ -1247,11 +1269,11 @@ def build_support():
 def build_about():
     meta, md = read_md(CONTENT / "pages" / "about.md")
     facts = "".join(f'<div><dt>{S("about.fact_" + k + "_label")}</dt><dd>{S("about.fact_" + k)}</dd></div>' for k in ("based", "education", "work", "civic"))
-    facts = f'<dl class="facts">{facts}</dl>'
+    facts = f'<dl class="glance">{facts}</dl>'
     about_img = img_path('eric-about') if meta.get('image', '').startswith('/assets/img/eric-about') else meta.get('image')
     body = f"""{page_hero(R('about.kicker'), esc(meta.get('headline', 'About')), esc(meta.get('lede', '')), cta_actions(), image=about_img, alt=NAME)}
-<section class="section"><div class="wrap">{facts}<div class="prose">{md_to_html(md)}</div>
-<p class="entry-actions about-links">{link_to(S("about.headshot_link"), "/assets/img/eric-headshot.jpg", download=True)}{link_to(S("about.kit_link"), "/media/#media-kit")}</p></div></section>"""
+<section class="section"><div class="wrap main-rail reading"><div class="prose">{md_to_html(md)}</div>
+<aside class="rail">{rail_block(S("about.glance_label"), facts)}{rail_block(S("about.press_label"), f'<ul class="link-list"><li>{link_to(S("about.headshot_link"), "/assets/img/eric-headshot.jpg", download=True)}</li><li>{link_to(S("about.kit_link"), "/media/#media-kit")}</li></ul>')}</aside></div></section>"""
     render(T(R("about.meta_title")), SITE["description"], body, path="/about/", current="/about/", image=meta.get("image"), kind="profile", reading=True)
 
 
@@ -1277,7 +1299,8 @@ def build_privacy():
     meta, md = read_md(CONTENT / "pages" / "privacy.md")
     upd = fmt_date(parse_date(meta["updated"])) if meta.get("updated") else fmt_date(TODAY)
     body = f"""{page_hero(R('privacy.kicker'), esc(meta.get('headline', 'Privacy policy')), esc(meta.get('lede', '')), mark='privacy', meta=meta_line(S("privacy.updated", date=upd)))}
-<section class="section"><div class="wrap"><div class="prose">{md_to_html(md)}</div></div></section>"""
+<section class="section"><div class="wrap main-rail reading"><div class="prose">{md_to_html(md)}</div>
+<aside class="rail">{rail_block(S("privacy.rail_label"), f'<p>{S("privacy.rail_text")}</p><p>{link_to(S("privacy.rail_link"), "/contact/")}</p>')}</aside></div></section>"""
     render(T(R("privacy.meta_title")), R("privacy.meta_description"), body, path="/privacy/", current="", reading=True)
 
 
@@ -1467,29 +1490,22 @@ DECAL_STAGE = ('<svg class="decal decal-stage" viewBox="0 0 400 520" preserveAsp
 
 # Entablature under every header: drawn in CSS from the grid itself (heavy and thin rule, a tick on every
 # gutter centre and at both ends), so the ticks ARE the columns.
-ENTABLATURE = '<div class="entablature" aria-hidden="true">' + "<i></i>" * 12 + "</div>"
+ENTABLATURE = '<div class="entablature" aria-hidden="true"></div>'
 PLINTH = '<div class="plinth" aria-hidden="true"></div>'
 
-# Header marks: square 300x300 drawings, page-specific, standing on a double base rule at y 286/298.
+# Header marks: square 300x300 drawings in the archway family (heavy outer arch, thin inner arch, limestone niche),
+# one composition per page, each standing on a double base rule at y 286/298.
 # Ink stays inside the viewBox; the mark fills the shorter side of its zone, bottom-right.
 _BASE = '<path class="heavy" d="M1.25 286H298.75"/><path d="M1.25 298H298.75"/>'
 HEADER_MARKS = {
-    # writing: a page of rules with a drop-cap square
-    "writing": '<path class="heavy" d="M1.25 20H298.75"/><path d="M1.25 50H60V110H1.25Z"/><path d="M80 66H298.75M80 94H240M1.25 140H298.75M1.25 168H210M1.25 196H298.75M1.25 224H250M1.25 252H160"/>' + _BASE,
-    # media: arcs radiating from the corner, a broadcast
-    "media": '<path d="M1.25 1.25V286"/><path class="heavy" d="M1.25 206A80 80 0 0 1 81.25 286"/><path d="M1.25 146A140 140 0 0 1 141.25 286M1.25 86A200 200 0 0 1 201.25 286M1.25 26A260 260 0 0 1 261.25 286"/>' + _BASE,
-    # events: a timeline carried on posts, one date raised and marked
-    "events": '<path class="heavy" d="M1.25 150H298.75"/><path d="M1.25 164H298.75"/><path d="M25 130V150M75 130V150M125 130V150M225 130V150M275 130V150"/><path class="heavy" d="M175 96V150"/><path class="niche" d="M160 66H190V96H160Z"/><path class="heavy" d="M160 66H190V96H160Z"/><path d="M25 164V286M150 164V286M275 164V286"/>' + _BASE,
-    # policy: a colonnade under an entablature
-    "policy": '<path class="heavy" d="M1.25 30H298.75"/><path d="M1.25 44H298.75"/><path d="M30 44H80V52H30ZM125 44H175V52H125ZM220 44H270V52H220Z"/><path d="M40 52V286M70 52V286M135 52V286M165 52V286M230 52V286M260 52V286"/>' + _BASE,
-    # support: a stepped base, something to stand on
-    "support": '<path class="heavy" d="M1.25 286V240H60V180H120V120H180V60H240V1.25H298.75"/><path d="M14 286V254H74V194H134V134H194V74H254V14H298.75"/>' + _BASE,
-    # contact: a doorway with a transom
+    "writing": '<path class="niche" d="M62 286V152A88.0 88.0 0 0 1 238 152V286Z"/><path class="heavy" d="M50 286V140A100.0 100.0 0 0 1 250 140V286"/><path d="M62 286V152A88.0 88.0 0 0 1 238 152V286"/><path d="M1.25 140H50M250 140H298.75"/><path d="M92 180H208M92 204H190M92 228H208M92 252H170"/>' + _BASE,
+    "media": '<path class="niche" d="M102 286V192A48.0 48.0 0 0 1 198 192V286Z"/><path class="heavy" d="M90 286V180A60.0 60.0 0 0 1 210 180V286"/><path d="M102 286V192A48.0 48.0 0 0 1 198 192V286"/><path d="M60 180A90 90 0 0 1 240 180M30 180A120 120 0 0 1 270 180M1.25 180A148.75 148.75 0 0 1 298.75 180"/>' + _BASE,
+    "events": '<path class="heavy" d="M1.25 150H298.75"/><path d="M1.25 162H298.75"/><path d="M8 286V216A22.0 22.0 0 0 1 52 216V286"/><path d="M68 286V216A22.0 22.0 0 0 1 112 216V286"/><path class="niche" d="M128 286V216A22.0 22.0 0 0 1 172 216V286Z"/><path class="heavy" d="M122 286V210A28.0 28.0 0 0 1 178 210V286"/><path d="M128 286V216A22.0 22.0 0 0 1 172 216V286"/><path d="M188 286V216A22.0 22.0 0 0 1 232 216V286"/><path d="M248 286V216A22.0 22.0 0 0 1 292 216V286"/>' + _BASE,
+    "policy": '<path class="heavy" d="M1.25 30H298.75"/><path d="M1.25 44H298.75"/><path class="niche" d="M124 286V132A26.0 26.0 0 0 1 176 132V286Z"/><path class="heavy" d="M112 286V120A38.0 38.0 0 0 1 188 120V286"/><path d="M124 286V132A26.0 26.0 0 0 1 176 132V286"/><path d="M20 286V120A38.0 38.0 0 0 1 96 120V286"/><path d="M204 286V120A38.0 38.0 0 0 1 280 120V286"/>' + _BASE,
+    "support": '<path class="niche" d="M82 254V152A68 68 0 0 1 218 152V254Z"/><path class="heavy" d="M70 254V140A80 80 0 0 1 230 140V254"/><path d="M82 254V152A68 68 0 0 1 218 152V254"/><path d="M40 254H260M20 270H280"/><path d="M40 254V270M260 254V270M20 270V286M280 270V286"/>' + _BASE,
     "contact": '<path class="niche" d="M74 286V124A76 76 0 0 1 226 124V286Z"/><path class="heavy" d="M60 286V110A90 90 0 0 1 240 110V286"/><path d="M74 286V124A76 76 0 0 1 226 124V286"/><path d="M60 124H240"/><path d="M1.25 110H60M240 110H298.75"/>' + _BASE,
-    # privacy: a screen
-    "privacy": '<path class="heavy" d="M1.25 1.25H298.75V298.75H1.25Z"/><path d="M60 1.25V298.75M120 1.25V298.75M180 1.25V298.75M240 1.25V298.75M1.25 60H298.75M1.25 120H298.75M1.25 180H298.75M1.25 240H298.75"/>',
-    # not found: an empty pedestal (rectilinear, so the page shows one arch, in the body)
-    "notfound": '<path class="niche" d="M90 286V196H210V286Z"/><path class="heavy" d="M90 286V196H210V286"/><path class="heavy" d="M72 196H228"/><path d="M78 184H222M84 172H216"/>' + _BASE,
+    "privacy": '<path class="niche" d="M62 286V162A88.0 88.0 0 0 1 238 162V286Z"/><path class="heavy" d="M50 286V150A100.0 100.0 0 0 1 250 150V286"/><path d="M62 286V162A88.0 88.0 0 0 1 238 162V286"/><path d="M100 286V96M150 286V74M200 286V96M62 200H238M62 244H238"/>' + _BASE,
+    "notfound": '<path class="heavy" d="M50 286V150A100 100 0 0 1 135 51.1"/><path class="heavy" d="M165 51.1A100 100 0 0 1 250 150V286"/><path class="niche" d="M62 286V162A88.0 88.0 0 0 1 238 162V286Z"/><path d="M62 286V162A88.0 88.0 0 0 1 238 162V286"/><path class="heavy" d="M141 268H159V286H141Z"/>' + _BASE,
 }
 HEADER_MARKS["default"] = HEADER_MARKS["contact"]
 

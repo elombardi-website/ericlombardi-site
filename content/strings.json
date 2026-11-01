@@ -405,6 +405,14 @@
     "feature_heading": {
       "where": "Writing page, heading for the featured piece and the next three (read by screen readers only)",
       "text": "Latest writing"
+    },
+    "tab_writing": {
+      "where": "Tabs at the top of Writing and In the media",
+      "text": "Writing"
+    },
+    "tab_media": {
+      "where": "Tabs at the top of Writing and In the media",
+      "text": "In the media"
     }
   },
   "article": {
@@ -479,6 +487,26 @@
     "related": {
       "where": "End of an article, label on a related piece",
       "text": "Related"
+    },
+    "rail_topic": {
+      "where": "Article side column, label above the topic link",
+      "text": "Topic"
+    },
+    "rail_topic_link": {
+      "where": "Article side column, link to the topic page ({topic} is its name)",
+      "text": "More on {topic}"
+    },
+    "rail_original": {
+      "where": "Companion note side column, label above the original piece",
+      "text": "The original"
+    },
+    "rail_signup_heading": {
+      "where": "Article side column, sign-up heading",
+      "text": "New writing by email"
+    },
+    "rail_signup_link": {
+      "where": "Article side column, sign-up link",
+      "text": "Sign up"
     }
   },
   "media": {
@@ -679,6 +707,14 @@
     "read_more": {
       "where": "Public-work rows, link line",
       "text": "Read more"
+    },
+    "glance_label": {
+      "where": "Public-work page side column, label",
+      "text": "At a glance"
+    },
+    "links_label": {
+      "where": "Public-work page side column, label above external links",
+      "text": "Links"
     }
   },
   "events": {
@@ -897,6 +933,14 @@
     "kit_link": {
       "where": "Link under the biography",
       "text": "Media kit"
+    },
+    "glance_label": {
+      "where": "About page side column, label above the facts",
+      "text": "At a glance"
+    },
+    "press_label": {
+      "where": "About page side column, label above headshot and media kit",
+      "text": "For press"
     }
   },
   "contact": {
@@ -989,6 +1033,18 @@
     "updated": {
       "where": "Fine print above the policy ({date} is filled in)",
       "text": "Last updated {date}"
+    },
+    "rail_label": {
+      "where": "Privacy page side column, label",
+      "text": "Questions"
+    },
+    "rail_text": {
+      "where": "Privacy page side column, text",
+      "text": "Ask about your data, or ask to be removed from the list, through the contact form."
+    },
+    "rail_link": {
+      "where": "Privacy page side column, link",
+      "text": "Contact"
     }
   },
   "notfound": {

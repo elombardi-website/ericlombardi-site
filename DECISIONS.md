@@ -9,11 +9,10 @@ The site ships the **default** in each item until you choose otherwise. Mark eac
    zone, bottom-right, so every page's title starts at the same height and sits the same distance
    above the entablature. On short headers (category pages, Contact, Privacy) the mark is smaller.
    Option: redraw each mark so it stretches to fill the whole zone.
-2. **Phone entablature.** Default: thirteen evenly spaced ticks, as approved. Options: five ticks
-   on the phone's four-column grid, or the two rules with no ticks.
-3. **Panels.** Default (new): the last two boxed panels (Support's pledge and contribution, the
-   platform panel on Public policy) are rule-topped like everything else, the accent one with the
-   heavy bronze rule. Option: put the borders back, which takes their text off the column lines.
+2. **Header separator.** Default (2 Nov): the plain heavy-over-thin bronze double rule, the same as
+   the footer, with no ticks. Option: a small archway glyph at its left end.
+3. **Panels.** Default: the last two boxed panels are rule-topped with the same hairline as every
+   other separator. Option: put the borders back, which takes their text off the column lines.
 4. **Menu breakpoint.** Default: the full menu appears from 1056px (your brief v2). Option:
    1024px, so it switches together with the twelve-column layout.
 5. **Section headings on inner pages.** Default: full-width sections use the large size and
@@ -56,7 +55,7 @@ The site ships the **default** in each item until you choose otherwise. Mark eac
 23. **Consulting.** Fold the sectors into the dark services band as its closing row, and style
     the Electric Mind capabilities differently from your sectors.
 24. **Campaign archive order.** Newest first (now), oldest first, or "Columns by Eric" first.
-25. **/writing/ columns.** Kept at 7 and 5 columns (28 Oct). Option: 8 and 3, the rail width.
+25. **Writing and In the media** are now two tabbed pages; the In the media column on Writing is gone.
 26. **Long archives.** Cap "Show more" at two batches, then link to a full archive page.
 
 ## Content corrections (your words, so not changed)

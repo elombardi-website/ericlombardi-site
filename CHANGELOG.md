@@ -1,5 +1,21 @@
 # Change log
 
+## 2 November 2026: reading pages, archway marks, one separator
+
+After Eric's review of the test build:
+- Reading pages (articles, the three public-work pages, About, Privacy) use the main column and
+  side column like Events and Contact: the text runs across columns 1 to 8 instead of a half-width
+  strip, and the side column carries the page's details (at a glance, the other public work,
+  topic, share, sign-up, press links).
+- Every header mark is redrawn in the archway family Eric likes: an arched window of text
+  (writing), an arch and its echoes (media), an arcade with one marked arch (events), a portico of
+  three arches (public policy), an arch on steps (support), the doorway (contact), an arch closed by
+  a screen (privacy), and an arch missing its keystone (404).
+- Writing and In the media are two pages of one section with tabs at the top of both; the
+  writing archive runs full width with date on the left and title on the right.
+- The header separator is now the plain heavy-over-thin bronze double rule, the same as the footer;
+  the ruler ticks are gone. Every separator line is one hairline colour; bronze is kept for the motif.
+
 ## 1 November 2026: one grid, one component set, a linter that cannot certify itself
 
 A multi-agent review (twelve reviewers plus four gap reviews, each checked by a skeptical

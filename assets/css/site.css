@@ -82,8 +82,8 @@ a.more:hover{text-decoration:underline}
 
 /* ---------- 2. The master grid ---------- */
 .wrap{width:100%;max-width:calc(var(--content-max) + 2 * var(--gutter));margin:0 auto;padding:0 var(--gutter);container-type:inline-size}
-:where(.grid,.page-hero .inner,.two-col,.main-rail,.nup,.pair,.record-row,.signup-grid,.footer-grid,.facts,.list.wide .row,.entry.row,.events-list .event,.entablature,.cta-grid,.timeline>li){display:grid;grid-template-columns:repeat(var(--grid-cols),minmax(0,1fr));column-gap:var(--grid-gap)}
-:where(.grid,.page-hero .inner,.two-col,.main-rail,.nup,.pair,.record-row,.signup-grid,.footer-grid,.facts,.list.wide .row,.entry.row,.events-list .event,.entablature,.cta-grid,.timeline>li)>*{grid-column:1/-1;min-width:0}
+:where(.grid,.page-hero .inner,.two-col,.main-rail,.nup,.pair,.record-row,.signup-grid,.footer-grid,.facts,.list.wide .row,.entry.row,.events-list .event,.cta-grid,.timeline>li){display:grid;grid-template-columns:repeat(var(--grid-cols),minmax(0,1fr));column-gap:var(--grid-gap)}
+:where(.grid,.page-hero .inner,.two-col,.main-rail,.nup,.pair,.record-row,.signup-grid,.footer-grid,.facts,.list.wide .row,.entry.row,.events-list .event,.cta-grid,.timeline>li)>*{grid-column:1/-1;min-width:0}
 .main-rail{row-gap:var(--space-section)}
 .measure{max-width:var(--measure-w)}
 @media(min-width:64rem){
@@ -181,20 +181,11 @@ main>.section:not(.band)+.section:not(.band){padding-top:0}
 }
 .header-mark{display:block;fill:none;stroke:var(--bronze);stroke-width:1.25;overflow:visible}
 
-/* Entablature: heavy rule over a thin one, a tick on every gutter centre and at both ends.
-   Drawn from the grid itself, so the ticks are the columns. On phones each of the four
-   columns is split in thirds, keeping thirteen ticks. */
-.entablature{position:relative;height:.875rem;margin-top:var(--space-block);border-top:var(--rule-heavy) solid var(--bronze);border-bottom:var(--rule-thin) solid var(--bronze)}
-.entablature::before,.entablature::after{content:"";position:absolute;top:0;bottom:0;border-left:var(--rule-thin) solid var(--bronze)}
-.entablature::before{left:0}
-.entablature::after{right:0}
-.entablature>i{position:relative;grid-column:auto;display:block}
-.entablature>i+i::before{content:"";position:absolute;top:0;bottom:0;left:calc(var(--grid-gap) / -2);border-left:var(--rule-thin) solid var(--bronze)}
-@media(max-width:47.99rem){   /* phones: thirteen evenly spaced ticks, the motif as approved; the 4-column grid has too few lines */
-  .entablature{background:linear-gradient(90deg,var(--bronze) 0 1px,transparent 1px) 0 0/calc(100% / 12) 100% repeat-x;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .entablature>i{display:none}
-}
-
+/* Entablature: the heavy bronze rule over a thin one that closes every header. The footer's plinth
+   is the same double rule, so the page opens and closes on one motif. */
+.entablature,.plinth{position:relative;height:.625rem;border-top:var(--rule-heavy) solid var(--bronze)}
+.entablature::after,.plinth::after{content:"";position:absolute;left:0;right:0;bottom:0;border-top:var(--rule-thin) solid var(--bronze)}
+.entablature{margin-top:var(--space-block)}
 
 /* N-up row: any count, spans from one table (build.py), rows shared through subgrid.
    Dividers sit on gutter centres; separators run through the gutter to meet them. Row-start
@@ -359,13 +350,10 @@ details.disclosure>.events-list>li:last-child{border-bottom:0}
 .block .actions{margin-top:var(--space-3);gap:var(--space-2)}
 .block--rail{padding-top:var(--space-item);border-top:1px solid var(--line)}
 .rail>*+*{margin-top:var(--space-block)}
-/* panels are rule-topped like everything else (no boxes, so their text stays on the column lines);
-   the accent panel carries the heavy bronze rule of the entablature */
-.block--panel{padding-top:var(--space-item);border-top:1px solid var(--line-strong)}
-.block--panel.quiet{border-top-color:var(--line)}
-.block--panel.accent{border-top:var(--rule-heavy) solid var(--bronze)}
+/* panels are rule-topped like everything else (no boxes, so their text stays on the column lines). */
+.block--panel{padding-top:var(--space-item);border-top:1px solid var(--line)}
 :where(.block--panel) p{font-size:var(--fs-body);line-height:var(--lh-body)}
-@media(min-width:64rem){.main-rail>*>:first-child:not(.block){padding-top:var(--space-item);border-top:1px solid var(--line)}}
+@media(min-width:64rem){.main-rail>:first-child{padding-top:var(--space-item);border-top:1px solid var(--line)}}
 
 /* Pair of columns on /writing/: both heads have the same slots and height */
 .two-col .section-head{margin-bottom:var(--space-block)}
@@ -379,12 +367,11 @@ details.disclosure>.events-list>li:last-child{border-bottom:0}
 .facts dd{margin:.3rem 0 0;color:var(--ink);font-size:var(--fs-small);line-height:1.45}
 
 /* Timeline (a "## How it unfolded" list of dated entries) */
-.timeline{list-style:none;padding:0;margin:0 0 1.15em;border-top:1px solid var(--line);--grid-cols:4}
+.timeline{list-style:none;padding:0;margin:0 0 1.15em;border-top:1px solid var(--line)}
 .timeline>li{margin:0;padding-block:var(--space-3);border-bottom:1px solid var(--line);row-gap:var(--space-1)}
 .timeline time{font-family:var(--font-interface);font-size:var(--fs-meta);font-weight:500;letter-spacing:.02em;color:var(--muted);line-height:1.9}
-@media(min-width:48rem){.timeline{--grid-cols:10}.timeline time{grid-column:1/span 3}.timeline .tl-text{grid-column:4/-1}}
-@media(min-width:64rem){.timeline{--grid-cols:7}.timeline time{grid-column:1/span 2}.timeline .tl-text{grid-column:3/-1}}
-@media(min-width:80rem){.timeline{--grid-cols:6}}
+@media(min-width:48rem){.timeline time{grid-column:1/span 3}.timeline .tl-text{grid-column:4/-1}}
+@media(min-width:64rem){.timeline time{grid-column:1/span 2}.timeline .tl-text{grid-column:3/-1}}
 
 /* Forms: one component. Fields, then the footer (button and status), then the note. */
 .form{display:block;margin:0}
@@ -506,8 +493,7 @@ html.menu-open{overflow:hidden}
 
 /* Footer: the plinth sits on the colour seam; groups on the master grid */
 .site-footer{background:var(--bg-2);padding:0 0 var(--space-8)}
-.plinth{position:relative;height:var(--space-12);border-top:var(--rule-heavy) solid var(--bronze);margin-bottom:var(--space-6)}
-.plinth::after{content:"";position:absolute;left:0;right:0;top:.625rem;border-top:var(--rule-thin) solid var(--bronze)}
+.plinth{margin-bottom:var(--space-12)}
 .footer-grid{row-gap:var(--space-block)}
 .footer-grid>.f-brand{grid-column:1/-1}
 .footer-grid>.f-group{grid-column:span 2}
@@ -567,6 +553,28 @@ a.cat:hover{text-decoration:underline}
 .flow>h2.t-sub{margin:0 0 var(--space-3)}
 .embed-box .twitter-timeline{display:inline-block}
 .article-hero{margin:0 0 var(--space-block);max-width:var(--measure-w)}
+
+/* Tabs: Writing and In the media are two pages of one section */
+.tabs{display:flex;gap:var(--space-6);align-items:center;margin:0 0 var(--space-kicker)}
+.tabs::before{content:"";width:var(--rule-length);height:1px;background:var(--bronze);flex:none;margin-right:calc(var(--space-3) - var(--space-6))}
+.tabs a{font-weight:500;font-size:var(--fs-meta);letter-spacing:var(--label-tracking);text-transform:uppercase;color:var(--muted);text-decoration:none;padding:.35rem 0;border-bottom:2px solid transparent}
+.tabs a:hover{color:var(--ink)}
+.tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--bronze)}
+
+/* Reading pages: the text in the main column (1-8), page details in the side column (10-12) */
+.reading .prose{max-width:none}
+.reading .endmark-wrap{max-width:none}
+.glance{margin:0}
+.glance>div+div{margin-top:var(--space-3)}
+.glance dt{font-size:var(--fs-meta);color:var(--muted);font-weight:500}
+.glance dd{margin:.15rem 0 0;font-size:var(--fs-small);line-height:var(--lh-small);color:var(--ink)}
+.link-list{list-style:none;padding:0;margin:0}
+.link-list li{margin:0;padding:.3rem 0;font-size:var(--fs-small)}
+.link-list a{text-decoration:none;font-weight:500}
+.link-list a:hover{text-decoration:underline}
+.link-list.stacked li{display:flex;flex-direction:column;gap:.1rem;padding:.4rem 0}
+.link-list.stacked a{color:var(--ink)}
+.block--rail+.block--rail{margin-top:var(--space-block)}
 
 /* ---------- Trailing-margin trim (last, so it wins) ---------- */
 :is(.wrap,.section-head .sh-text,.prose,.nup-item>.n-body,.block,.flow,.text,.sg-text,.cta-text,.p-body,.d-body,.rail)>:last-child{margin-bottom:0}
