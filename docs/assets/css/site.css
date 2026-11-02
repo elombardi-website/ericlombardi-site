@@ -119,13 +119,13 @@ main>.section:not(.band)+.section:not(.band){padding-top:0}
 /* ---------- 4. Components ---------- */
 
 /* Buttons and controls */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;font-family:var(--font-interface);font-weight:500;font-size:var(--fs-small);line-height:1;min-height:var(--control-height);padding:0 1.25rem;border-radius:var(--radius-control);border:1px solid transparent;cursor:pointer;text-decoration:none;transition:background var(--transition),color var(--transition),border-color var(--transition)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;font-family:var(--font-display);font-weight:400;font-size:var(--fs-body);line-height:1;min-height:var(--control-height);padding:0 1.25rem;border-radius:var(--radius-control);border:1px solid transparent;cursor:pointer;text-decoration:none;transition:background var(--transition),color var(--transition),border-color var(--transition)}
 .btn:hover{text-decoration:none}
 .btn.primary{background:var(--colour-petrol);color:var(--colour-ivory);border-color:var(--colour-petrol)}
 .btn.primary:hover{background:var(--colour-petrol-hover);border-color:var(--colour-petrol-hover);color:var(--colour-ivory)}
 .btn.secondary{background:transparent;color:var(--ink);border-color:var(--ink)}
 .btn.secondary:hover{background:var(--ink);color:var(--colour-ivory)}
-.btn.sm{min-height:2.5rem;padding:0 1rem;font-size:.875rem}
+.btn.sm{min-height:2.5rem;padding:0 1rem;font-size:1rem}
 .band.dark .btn.primary{background:var(--colour-ivory);color:var(--ink);border-color:var(--colour-ivory)}
 .band.dark .btn.primary:hover{background:#fff;color:var(--ink)}
 .band.dark .btn.secondary{color:var(--dark-text);border-color:var(--dark-text)}
@@ -140,6 +140,8 @@ main>.section:not(.band)+.section:not(.band){padding-top:0}
 .status{margin:0;min-block-size:0;font-size:var(--fs-small);font-weight:500;color:var(--ink)}
 .status[data-state="error"]{color:var(--field-error)}
 .band.dark .status{color:var(--dark-text)}
+.status[data-state="sent"]{font-family:var(--font-display);font-weight:400;font-size:var(--fs-block);line-height:1.3;color:var(--colour-petrol)}
+.band.dark .status[data-state="sent"]{color:var(--dark-text)}
 
 /* Decals: purely decorative SVG; ink never leaves its viewBox (build.py checks) */
 .decal{position:absolute;pointer-events:none;fill:none;stroke:var(--bronze);stroke-width:1.25;stroke-linecap:square;stroke-linejoin:miter}

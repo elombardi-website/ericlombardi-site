@@ -16,6 +16,9 @@ got `{"success":true}` for blank and invalid values, so test from a browser. A r
 double opt-in saved the postal code, city and riding on both lists. The confirmation email is
 rebuilt in the site's look and sent from Eric Lombardi. The privacy policy now covers the optional
 field and the Represent lookup.
+Buttons are now set in Canela, one step larger because of its smaller letters. A form's sent message
+is now Canela at the block size, in petrol on light grounds, so the prompt to look for the email stands
+out; dark bands keep their light text, because petrol is unreadable on ink.
 
 ## 2 November 2026: reading pages, archway marks, one separator
 
