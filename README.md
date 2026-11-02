@@ -171,6 +171,14 @@ form with the topic preselected (`/contact/?topic=consulting|media|speaking`).
   While empty, the sign-up form opens the visitor's email app with their details addressed to
   eric@ericlombardi.ca. `form.consent` is `statement` (consent text under the button, quick)
   or `checkbox` (an unticked box the visitor must tick, the most conservative CASL reading).
+- **Brevo** connects through Brevo's own sign-up form, so no API key goes in the site. The form
+  is "ericlombardi.ca sign-up" (Marketing > Forms): first name, last name and email are required;
+  postal code, city and riding are optional, and it has no captcha block. Its `action` URL is
+  `form.endpoint`, and `form.fields` holds its input names. The site shows one optional "City or
+  postal code" field. A city is sent as typed. A full postal code goes to `POSTAL_CODE`, and the
+  browser looks up its city and Ontario riding on Represent
+  (`represent.opennorth.ca`, free to 60 requests a minute; `form.riding_set` names the boundary
+  set) before sending. A failed or slow lookup (2.5 seconds) never blocks the sign-up.
 - One Support page (`/support/`) holds both the free sign-up form (`#signup`) and the
   pay-what-you-want contribution. The home page keeps the quick sign-up bar under the hero.
   `/signup/` and `/subscribe/` redirect to `/support/`.

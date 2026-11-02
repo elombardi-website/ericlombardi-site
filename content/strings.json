@@ -88,12 +88,12 @@
       "where": "Sign-up form label",
       "text": "Email"
     },
-    "form_postal": {
+    "form_location": {
       "where": "Sign-up form label",
-      "text": "Postal code or city"
+      "text": "City or postal code (optional)"
     },
-    "form_postal_help": {
-      "where": "Sign-up form, tooltip on the postal field",
+    "form_location_help": {
+      "where": "Sign-up form, tooltip on the city or postal code field",
       "text": "Used to invite you to events near you"
     },
     "form_submit": {
@@ -227,6 +227,10 @@
     "form_signup_sent": {
       "where": "Sign-up form, after a successful sign-up (when a list service is connected)",
       "text": "Thanks. You are on the list."
+    },
+    "form_signup_confirm": {
+      "where": "Sign-up form, after a successful sign-up (when the list sends a confirmation email)",
+      "text": "Thanks. Please check your email and confirm to finish signing up."
     }
   },
   "home": {

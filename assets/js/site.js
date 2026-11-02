@@ -88,12 +88,51 @@
     return bad.length === 0;
   }
   function honeypot(form) { var hp = form.querySelector('.hp input'); return hp && hp.value; }
-  function send(form, endpoint, okText, status) {
+  // A service can answer 200 and still refuse (Brevo: {success: false, errors: {FIELD: message}}), so read the body too.
+  function send(form, endpoint, okText, status, prepare) {
     var btn = form.querySelector('button[type=submit]'); if (btn) btn.disabled = true;
-    return fetch(endpoint, { method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(form) })
-      .then(function (r) { if (!r.ok) throw new Error(r.status); form.reset(); say(status, okText, 'sent'); })
+    var body = new FormData(form); body.delete('website');
+    return Promise.resolve(prepare && prepare(form, body))
+      .then(function () { return fetch(endpoint, { method: 'POST', headers: { 'Accept': 'application/json' }, body: body }); })
+      .then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (res) {
+          if (r.ok && res.success !== false) { form.reset(); say(status, okText, 'sent'); return; }
+          var bad = Object.keys(res.errors || {}).map(function (k) { return form.elements[k]; }).filter(Boolean);
+          bad.forEach(function (el) { el.setAttribute('aria-invalid', 'true'); });
+          if (bad.length) { bad[0].focus(); say(status, form.getAttribute('data-invalid-msg'), 'error'); }
+          else say(status, form.getAttribute('data-error-msg'), 'error');
+        });
+      })
       .catch(function () { say(status, form.getAttribute('data-error-msg'), 'error'); })
       .then(function () { if (btn) btn.disabled = false; });
+  }
+
+  // City or postal code, one optional field. A city is sent as typed. A postal code goes to the postal
+  // field, and Represent supplies its city and riding; if the lookup fails, the sign-up goes on without them.
+  var POSTAL_CODE = /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i;
+  var POSTAL_AREA = /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z]$/i;
+  function titleCase(text) { return text.toLowerCase().replace(/(^|[\s-])\S/g, function (c) { return c.toUpperCase(); }); }
+  function place(form, body) {
+    var cityField = form.getAttribute('data-city-field'), postalField = form.getAttribute('data-postal-field');
+    var typed = (body.get(cityField) || '').trim();
+    body.delete(cityField);
+    if (!typed) return;
+    if (POSTAL_AREA.test(typed)) { body.set(postalField, typed.toUpperCase()); return; }
+    if (!POSTAL_CODE.test(typed)) { body.set(cityField, typed); return; }
+    var code = typed.toUpperCase().replace(/[ -]/, '');
+    body.set(postalField, code.slice(0, 3) + ' ' + code.slice(3));
+    var timer = new AbortController();
+    setTimeout(function () { timer.abort(); }, 2500);
+    return fetch('https://represent.opennorth.ca/postcodes/' + code + '/', { signal: timer.signal })
+      .then(function (r) { return r.ok ? r.json() : {}; })
+      .then(function (found) {
+        if (found.city) body.set(cityField, titleCase(found.city));
+        var riding = (found.boundaries_centroid || []).concat(found.boundaries_concordance || []).filter(function (b) {
+          return ((b.related || {}).boundary_set_url || '').indexOf('/' + form.getAttribute('data-riding-set') + '/') !== -1;
+        })[0];
+        if (riding) body.set(form.getAttribute('data-riding-field'), riding.name);
+      })
+      .catch(function () {});
   }
 
   // Sign-up: with no list endpoint configured this is NOT a working subscription; it opens an
@@ -106,7 +145,7 @@
       if (honeypot(form)) return;
       if (!validate(form)) { say(status, form.getAttribute('data-invalid-msg'), 'error'); return; }
       var endpoint = form.getAttribute('data-endpoint');
-      if (endpoint) { send(form, endpoint, form.getAttribute('data-sent-msg') || '', status); return; }
+      if (endpoint) { send(form, endpoint, form.getAttribute('data-sent-msg') || '', status, place); return; }
       var fd = new FormData(form), lines = [], name = [];
       fd.forEach(function (v, k) { if (k !== 'website' && v) lines.push(k + ': ' + v); });
       ['first_name', 'last_name'].forEach(function (k) { if (fd.get(k)) name.push(fd.get(k)); });

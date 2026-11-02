@@ -142,17 +142,24 @@
     "campaign-notes": "Campaign notes"
   },
   "form": {
-    "endpoint": "",
+    "endpoint": "https://efbcef4e.sibforms.com/serve/MUIFABBE-h6z9-NBuuyaheT3efFYLDfDOdjD_MqDPvQhg3pALQQzOrv85e3mkvWy4M4x4WxJ9POyzZCDXqxvT5eCl7KZMexSwg_nun9Gl8y606hgFgBBz4LYWf6A4tDhFaqY83np1bH2YiEHY4bGpFGstzST8sd27gHvZUqgDUEgWZxsjDMGa9eljWPfJaSr2-_eWwvMAE4VFvkdMg==",
     "method": "POST",
     "fields": {
-      "first_name": "first_name",
-      "last_name": "last_name",
-      "email": "email",
-      "postal": "postal_code"
+      "first_name": "FIRSTNAME",
+      "last_name": "LASTNAME",
+      "email": "EMAIL",
+      "postal": "POSTAL_CODE",
+      "city": "CITY",
+      "riding": "RIDING"
     },
-    "hidden": {},
+    "riding_set": "ontario-electoral-districts-representation-act-2015",
+    "hidden": {
+      "email_address_check": "",
+      "locale": "en"
+    },
     "consent": "statement",
-    "_how": "endpoint = the email tool's form-post URL; map its field names in fields; consent = 'statement' (text under the button) or 'checkbox' (CASL-conservative). Empty endpoint = mailto fallback."
+    "double_opt_in": true,
+    "_how": "endpoint = the email tool's form-post URL; map its field names in fields; consent = 'statement' (text under the button) or 'checkbox' (CASL-conservative); double_opt_in = true when the list sends a confirmation email, so the success message says to check it. The one optional location field posts as fields.city; a postal code goes to fields.postal, with the city and riding looked up from Represent (riding_set = the boundary set to read). Empty endpoint = mailto fallback. Brevo: see README."
   },
   "analytics": {
     "provider": "simpleanalytics",

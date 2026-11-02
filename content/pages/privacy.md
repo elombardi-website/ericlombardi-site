@@ -2,14 +2,14 @@
 title: Privacy
 headline: Privacy policy
 lede: This site collects as little as it can. Here is what it collects, why, and what you can do about it.
-updated: 2026-10-26
+updated: 2026-11-02
 ---
 
 This policy explains how personal information is collected, used and protected through ericlombardi.ca (the "Site"), in accordance with Canadian privacy law, including the Personal Information Protection and Electronic Documents Act (PIPEDA), and Canada's Anti-Spam Legislation (CASL).
 
 ## What is collected
 
-**Information you give me.** If you subscribe, contact me, register for an event or support the work, you may provide your name, email address, postal code or city, and the content of any message. Postal codes are used only to understand where readers and supporters are, so I can plan events and travel.
+**Information you give me.** If you subscribe, contact me, register for an event or support the work, you may provide your name, email address, postal code or city, and the content of any message. Giving your city or postal code is optional. If you give a postal code, the Site uses Open North's Represent service to find your city and Ontario riding, and saves them with your sign-up. This information is used only to understand where readers and supporters are, so I can plan events and travel and invite you to events nearby.
 
 **Information collected automatically.** If analytics are enabled, the Site uses a privacy-friendly service that does not use cookies and does not identify individuals, recording aggregate page views, referrers and device types. No advertising trackers are used.
 

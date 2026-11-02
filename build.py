@@ -800,18 +800,21 @@ def signup_form(variant="full"):
     fl = f["fields"]
     hidden = "".join(f'<input type="hidden" name="{esc(k)}" value="{esc(v)}">' for k, v in f.get("hidden", {}).items())
     action = esc(f["endpoint"]) if f["endpoint"] else "#"
+    # Brevo's form URL answers with JSON only when asked; without scripts the plain URL shows Brevo's own page.
+    post_url = f["endpoint"] + "?isAjax=1" if "sibforms.com" in f["endpoint"] else f["endpoint"]
     statement = SITE["signup"]["statement"] + f' <a href="{u("/privacy/")}">{S("site.privacy_link")}</a>.'
     if SITE.get("mailing_address"):
         statement += f' {esc(NAME)}, {esc(SITE["mailing_address"])}.'
     note = (f'<label class="consent"><input type="checkbox" name="consent" value="yes" required> {statement}</label>'
             if f.get("consent") == "checkbox" else f'<p class="form-note">{statement}</p>')
     hp = '<div class="hp" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off"></div>'
-    data = (f'data-form="signup" data-endpoint="{esc(f["endpoint"])}" data-fallback-msg="{esc(R("site.form_signup_fallback"))}" '
-            f'data-sent-msg="{esc(R("site.form_signup_sent"))}" data-error-msg="{esc(R("site.form_error"))}" data-invalid-msg="{esc(R("site.form_invalid"))}"')
+    data = (f'data-form="signup" data-endpoint="{esc(post_url)}" data-fallback-msg="{esc(R("site.form_signup_fallback"))}" '
+            f'data-sent-msg="{esc(R("site.form_signup_confirm" if f.get("double_opt_in") else "site.form_signup_sent"))}" data-error-msg="{esc(R("site.form_error"))}" data-invalid-msg="{esc(R("site.form_invalid"))}" '
+            f'data-city-field="{esc(fl["city"])}" data-postal-field="{esc(fl["postal"])}" data-riding-field="{esc(fl["riding"])}" data-riding-set="{esc(f["riding_set"])}"')
     fields = (f'<label>{S("site.form_first_name")}<input type="text" name="{esc(fl["first_name"])}" required autocomplete="given-name"></label>'
               f'<label>{S("site.form_last_name")}<input type="text" name="{esc(fl["last_name"])}" required autocomplete="family-name"></label>'
               f'<label class="wide">{S("site.form_email")}<input type="email" name="{esc(fl["email"])}" required autocomplete="email"></label>'
-              f'<label class="wide">{S("site.form_postal")}<input type="text" name="{esc(fl["postal"])}" required autocomplete="postal-code" title="{esc(R("site.form_postal_help"))}"></label>')
+              f'<label class="wide">{S("site.form_location")}<input type="text" name="{esc(fl["city"])}" autocomplete="postal-code" title="{esc(R("site.form_location_help"))}"></label>')
     submit = f'<button class="btn primary" type="submit">{S("site.form_submit")}</button>'
     inline = variant == "inline"
     cls = "form form--signup " + ("form--inline" if inline else "form--full")
@@ -1561,6 +1564,8 @@ def main():
             warn(f"social {s['name']}: {s['verify']}")
     if not SITE["form"]["endpoint"]:
         warn("form.endpoint is empty: subscribe form falls back to mailto")
+    elif "sibforms.com" in SITE["form"]["endpoint"] and "EMAIL" not in SITE["form"]["fields"].values():
+        warn("form.fields do not use Brevo's attribute names (EMAIL, FIRSTNAME, ...): Brevo will refuse sign-ups")
     if not SITE["support"].get("live"):
         warn("support.live is false: contribution buttons are disabled")
     print(f"Built {len(SITEMAP)} pages + feeds into {OUT.relative_to(HERE) if OUT.is_relative_to(HERE) else OUT}/ (base='{BASE or '/'}')")

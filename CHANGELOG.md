@@ -1,5 +1,22 @@
 # Change log
 
+## 2 November 2026: Brevo sign-up support
+
+The sign-up forms can post straight to a Brevo form, with no API key in the site. `site.js` now
+reads the response body, because Brevo can answer 200 and still refuse, and marks any field Brevo
+rejects. The honeypot field is no longer sent. `form.double_opt_in` switches the success message
+to "check your email" (new string `site.form_signup_confirm`; the copy workbook still lacks it).
+`form.*` in `site.json` now points at the Brevo form "ericlombardi.ca sign-up": double opt-in with
+the default template, adding people to Website Sign-ups (#10) and Events (#7), with first name,
+last name and email required. The site's location field is now one optional "City or postal code":
+a city is sent as typed, and a postal code also gets its city and Ontario riding from Represent,
+for new sign-ups only. All go to the contact's existing attributes. An invalid address
+sent from a real browser gets Brevo's field error, which the form marks. Note that plain `curl`
+got `{"success":true}` for blank and invalid values, so test from a browser. A real sign-up with
+double opt-in saved the postal code, city and riding on both lists. The confirmation email is
+rebuilt in the site's look and sent from Eric Lombardi. The privacy policy now covers the optional
+field and the Represent lookup.
+
 ## 2 November 2026: reading pages, archway marks, one separator
 
 After Eric's review of the test build:

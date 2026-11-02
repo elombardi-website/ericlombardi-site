@@ -387,7 +387,7 @@ details.disclosure>.events-list>li:last-child{border-bottom:0}
   .form--inline .form-fields .wide{grid-column:1/-1}
 }
 @container (min-width:44rem){
-  .form--inline .form-fields{grid-template-columns:1fr 1fr 1.3fr 1.1fr auto;align-items:end;gap:var(--space-3)}
+  .form--inline .form-fields{grid-template-columns:1fr 1fr 1.25fr 1.75fr auto;align-items:end;gap:var(--space-3)}
   .form--inline .form-fields .wide{grid-column:auto}
 }
 .form-footer{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-3) var(--space-4)}
